@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# determine OS and other useful information
+#if [ "$OSTYPE" = "darwin12" ] || [ "$OSTYPE" = "darwin13" ]; then
+if [[ $OSTYPE = darwin* ]]; then
+	OS="OSX"
+	CPUS=`sysctl -n hw.ncpu`
+	FREEMEM="$(( $(vm_stat | awk '/free/ {gsub(/\./, "", $3); print $3}') * 4096 / 1048576))"
+else
+	OS="LINUX"
+	CPUS=`grep vendor_id /proc/cpuinfo | wc -l`
+	FREEMEM=`grep -i memfree /proc/meminfo | sed -e 's/MemFree:[ ]*//' | sed -e 's/ kB//'`
+	n=$((FREEMEM / 1024))
+	FREEMEM=$n
+fi
+FREEMEM=$((FREEMEM/2))
+
+# figure out where decaf dependencies are
+# assume /usr/local/decaf
+#
+# but maybe user is working within the git working set
+# so see if the dependencies are in the current directory
+DECAF='/usr/local/decaf'
+if [ -d "java" ]; then
+    DECAF=$PWD
+fi
+
+echo $DECAF
+# set up class path for java/rhino
+CP=".:$DECAF/java/*:$DECAF/java/ext/*"
+
+# JVM Flags
+m='m'
+JVMFLAGS="-Xmx$FREEMEM$m"
+JVMFLAGS="$JVMFLAGS -Dfile.encoding=UTF-8"
+
+if [ "$1" = "awt" ]; then
+    shift
+elif [ "$1" != "debug" ]; then
+    JVMFLAGS="$JVMFLAGS -Djava.awt.headless=true"
+fi
+
+# these flags for rhino are not well documented
+# -debug makes rhino process exceptions properly (a bug)
+# -version 180 tells rhino to enable ECMASCRIPT 1.8
+RHINOFLAGS="-version 180 -O 9"
+#RHINOFLAGS="-version 180"
+
+# functions in rhino .jar file to call for shell or debugger
+RHINODEBUGGER="org.mozilla.javascript.tools.debugger.Main"
+RHINOSHELL="org.mozilla.javascript.tools.shell.Main"
+
+# command line options are:
+#  decaf (command shell)
+#  decaf script.js (run script)
+#  decaf debug script.js  (graphical debugger)
+#  decaf install (install to /usr/local/decaf)
+#  decaf uninstall (remove /usr/local/decaf)
+if [ "$1" = "debug" ]; then
+echo "DEBUG"
+	#shift
+	#echo java -cp $CP -Ddecaf=$DECAF $RHINODEBUGGER $RHINOFLAGS -f $DECAF/builtins/all.js $*
+	java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINODEBUGGER $RHINOFLAGS -f $DECAF/builtins/all.js $*
+elif [ "$1" = "install" ]; then
+    if [ ! -d "bin" ] || [ ! -d "builtins" ] || [ ! -d "examples" ] || [ ! -d "java" ]; then
+        echo "Usage: ./bin/decaf install"
+        echo "    Must be run from where you unpacked or cloned decaf"
+        exit 1;
+    fi
+    sudo rm -rf /usr/local/decaf
+	sudo mkdir -p /usr/local/decaf
+    sudo cp -rp . /usr/local/decaf
+    sudo cp bin/decaf /usr/local/bin
+elif [ "$1" = "uninstall" ]; then
+    sudo rm -rf /usr/local/decaf
+    sudo rm -f /usr/local/bin/decaf
+else
+#	echo java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
+	java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
+fi

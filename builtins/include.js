@@ -82,6 +82,7 @@
      * @type {Array}
      */
     include.path = [
+        'bower_components',
         'bower_components/decaf',
         './',
         './classic',

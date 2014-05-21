@@ -238,6 +238,7 @@
      */
     require.path = [
         'bower_components',
+        'bower_components/decaf',
         'languages',
         'modules',
         '/usr/local/decaf',

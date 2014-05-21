@@ -1,0 +1,11 @@
+{
+	"name": "decaf",
+	"version": "0.0.1",
+	"main" : "bin/decaf",
+	"ignore" : [
+	],
+	"dependencies" : {
+	},
+	devDependencies: {
+	}
+}

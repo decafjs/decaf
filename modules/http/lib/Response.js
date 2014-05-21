@@ -338,7 +338,7 @@ decaf.extend(Response.prototype, {
                 os.writeBytes(s, 0, s.length);
             }
         }
-//        os.flush();
+        os.flush();
     },
 
     /**

@@ -32,7 +32,7 @@ fi
 
 echo $DECAF
 # set up class path for java/rhino
-CP=".:$DECAF/java/*:$MODULES/java/*"
+CP=".:$DECAF/java/*:$MODULES/*/java/*"
 
 # JVM Flags
 m='m'

@@ -84,6 +84,8 @@
     include.path = [
         'bower_components',
         'bower_components/decaf',
+        'bower_components/decaf/classic',
+        'bower_components/decaf/modules',
         './',
         './classic',
         './modules',

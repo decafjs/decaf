@@ -23,11 +23,16 @@ FREEMEM=$((FREEMEM/2))
 DECAF='/usr/local/decaf'
 if [ -d "java" ]; then
     DECAF=$PWD
+    MODULES=$PWD
+fi
+if [ -d "bower_components/decaf" ]; then
+    DECAF="$PWD/bower_components/decaf"
+    MODULES="$PWD/bower_components"
 fi
 
 echo $DECAF
 # set up class path for java/rhino
-CP=".:$DECAF/java/*:$DECAF/java/ext/*"
+CP=".:$DECAF/java/*:$MODULES/java/*"
 
 # JVM Flags
 m='m'

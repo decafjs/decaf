@@ -27,7 +27,7 @@ if [ -d "java" ]; then
 fi
 if [ -d "bower_components/decaf" ]; then
     DECAF="$PWD/bower_components/decaf"
-    MODULES=`ls -1 $PWD/bower_components/*/java/*` | tr "\\n" ":"
+    MODULES=`ls -1 $PWD/bower_components/*/java/* | tr "\\n" ":"`
 fi
 
 echo $DECAF

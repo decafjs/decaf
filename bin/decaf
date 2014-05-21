@@ -27,12 +27,12 @@ if [ -d "java" ]; then
 fi
 if [ -d "bower_components/decaf" ]; then
     DECAF="$PWD/bower_components/decaf"
-    MODULES="$PWD/bower_components"
+    MODULES=`ls -1 "$PWD/bower_components/*/java/*"` | tr "\\n" ":"
 fi
 
 echo $DECAF
 # set up class path for java/rhino
-CP=".:$DECAF/java/*:$MODULES/*/java/*"
+CP=".:$MODULES/*/java/*"
 
 # JVM Flags
 m='m'

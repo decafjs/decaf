@@ -30,9 +30,8 @@ if [ -d "bower_components/decaf" ]; then
     MODULES=`ls -1 $PWD/bower_components/*/java/* | tr "\\n" ":"`
 fi
 
-echo $DECAF
 # set up class path for java/rhino
-CP=".:$MODULES/*/java/*"
+CP=".:./java/*:$MODULES/*/java/*"
 
 # JVM Flags
 m='m'
@@ -80,6 +79,6 @@ elif [ "$1" = "uninstall" ]; then
     sudo rm -rf /usr/local/decaf
     sudo rm -f /usr/local/bin/decaf
 else
-	#echo java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
+	echo java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
 	java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
 fi

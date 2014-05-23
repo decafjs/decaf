@@ -98,6 +98,20 @@
                     catch (e) {
                     }
                 }
+                tryPath = tryPath.replace(/bower.json$/, 'package.json');
+                if (fs.isFile(tryPath)) {
+                    try {
+                        pkg = JSON.parse(fs.readFile(tryPath));
+                        if (decaf.isString(pkg.main)) {
+                            tryPath = tryPath.replace(/package.json$/, pkg.main);
+                            if (fs.isFile(tryPath)) {
+                                return tryPath;
+                            }
+                        }
+                    }
+                    catch (e) {
+                    }
+                }
             }
             tryPath = fs.realpath(require.fsPath + path);
             if (tryPath) {
@@ -118,6 +132,20 @@
                             pkg = JSON.parse(fs.readFile(tryPath));
                             if (decaf.isString(pkg.main)) {
                                 tryPath = tryPath.replace(/bower.json$/, pkg.main);
+                                if (fs.isFile(tryPath)) {
+                                    return tryPath;
+                                }
+                            }
+                        }
+                        catch (e) {
+                        }
+                    }
+                    tryPath = tryPath.replace(/bower.json$/, 'package.json');
+                    if (fs.isFile(tryPath)) {
+                        try {
+                            pkg = JSON.parse(fs.readFile(tryPath));
+                            if (decaf.isString(pkg.main)) {
+                                tryPath = tryPath.replace(/package.json$/, pkg.main);
                                 if (fs.isFile(tryPath)) {
                                     return tryPath;
                                 }

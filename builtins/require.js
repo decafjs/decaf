@@ -66,7 +66,8 @@
 	}
 
     function locateFile(module) {
-        var extension;
+        var extension,
+            pkg;
 
         function tryFile(path) {
             var tryPath = fs.realpath(path);
@@ -83,12 +84,12 @@
                 if (fs.isFile(tryPath)) {
                     return tryPath;
                 }
-                tryPath = tryPath.replace(/index.js$/, 'package.json');
+                tryPath = tryPath.replace(/index.js$/, 'bower.json');
                 if (fs.isFile(tryPath)) {
                     try {
-                        var pkg = JSON.parse(fs.readFile(tryPath));
+                        pkg = JSON.parse(fs.readFile(tryPath));
                         if (decaf.isString(pkg.main)) {
-                            tryPath = tryPath.replace(/package.json$/, pkg.main);
+                            tryPath = tryPath.replace(/bower.json$/, pkg.main);
                             if (fs.isFile(tryPath)) {
                                 return tryPath;
                             }
@@ -111,12 +112,12 @@
                     if (fs.isFile(tryPath)) {
                         return tryPath;
                     }
-                    tryPath = tryPath.replace(/index.js$/, 'package.json');
+                    tryPath = tryPath.replace(/index.js$/, 'bower.json');
                     if (fs.isFile(tryPath)) {
                         try {
-                            var pkg = JSON.parse(fs.readFile(tryPath));
+                            pkg = JSON.parse(fs.readFile(tryPath));
                             if (decaf.isString(pkg.main)) {
-                                tryPath = tryPath.replace(/package.json$/, pkg.main);
+                                tryPath = tryPath.replace(/bower.json$/, pkg.main);
                                 if (fs.isFile(tryPath)) {
                                     return tryPath;
                                 }

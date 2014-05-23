@@ -83,20 +83,48 @@
                 if (fs.isFile(tryPath)) {
                     return tryPath;
                 }
+                tryPath = tryPath.replace(/index.js$/, 'package.json');
+                if (fs.isFile(tryPath)) {
+                    try {
+                        var pkg = JSON.parse(fs.readFile(tryPath));
+                        if (decaf.isString(pkg.main)) {
+                            tryPath = tryPath.replace(/package.json$/, pkg.main);
+                            if (fs.isFile(tryPath)) {
+                                return tryPath;
+                            }
+                        }
+                    }
+                    catch (e) {
+                    }
+                }
             }
             tryPath = fs.realpath(require.fsPath + path);
             if (tryPath) {
                 if (fs.isFile(tryPath)) {
                     return tryPath;
                 }
-                else if (fs.isDir(tryPath)) {
+                if (fs.isDir(tryPath)) {
                     if (!tryPath.endsWith('/')) {
                         tryPath += '/';
                     }
                     tryPath += 'index.js';
-                }
-                if (fs.isFile(tryPath)) {
-                    return tryPath;
+                    if (fs.isFile(tryPath)) {
+                        return tryPath;
+                    }
+                    tryPath = tryPath.replace(/index.js$/, 'package.json');
+                    if (fs.isFile(tryPath)) {
+                        try {
+                            var pkg = JSON.parse(fs.readFile(tryPath));
+                            if (decaf.isString(pkg.main)) {
+                                tryPath = tryPath.replace(/package.json$/, pkg.main);
+                                if (fs.isFile(tryPath)) {
+                                    return tryPath;
+                                }
+                            }
+                        }
+                        catch (e) {
+                        }
+                    }
                 }
             }
             return false;
@@ -197,23 +225,14 @@
         var script = [
             '(function() {',
             '   var module = global.require.getCached("' + modulePath + '");',
-//            '	var module = {',
-//            '		id: "' + module + '",',
-//            '		url: "' + modulePath + '",',
-//            '       exports: global.require.getCached("' + modulePath + '")',
-//            '	};',
             '   var exports = module.exports;',
             content,
             '	return module.exports;',
             '}())'
         ].join('\n');
         require.modulePath = modulePath;
-        var x = rhino.runScript(script, modulePath, 0);
-//        console.log('>>> ' + modulePath)
-//        console.dir(exports);
-//        console.dir(x);
-//        require.cache[modulePath].extend(exports);
-//        require.cache[modulePath].prototype = exports.prototype;
+
+        rhino.runScript(script, modulePath, 0, global);
 
         require.fsPath = require.dirStack.pop();
         require.modulePath = null;

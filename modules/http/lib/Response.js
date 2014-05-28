@@ -105,9 +105,11 @@ decaf.extend(Response.prototype, {
         var now = new Date().getTime() / 1000;
         var yesterday = now - 86400;
         this.cookies = this.cookies || {};
-        this.cookies[key] = {
-            expires: new Date(yesterday * 1000).toGMTString()
-        };
+        var cookie = this.cookies[key] || {};
+        cookie.path = cookie.path || '/';
+        cookie.expires = new Date(yesterday * 1000).toGMTString();
+
+        this.cookies[key] = cookie;
     },
 
 

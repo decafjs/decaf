@@ -34,7 +34,6 @@ global.__dirname = java.lang.System.getProperty('user.dir');
     builtin.include('process.js');
     builtin.include('rhino.js');
     builtin.include('console.js');
-    builtin.include('errors.js');
     builtin.include('print_r.js');
     builtin.include('fs.js');
     builtin.include('require.js');

@@ -263,13 +263,14 @@ This function is called by console.dir().
 
 ## Modules & require()
 
-Decaf comes with a handful of useful modules; these are in the repository in the modules/ directory.
-
-* [There are a number of modules already created for Decaf](https://github.com/decafjs).
-
 Modules are loaded via the global require() function.  The Decaf implementation of require() is CommonJS Modules 1.1 compliant, but also implements enough of NodeJS require() to load modules for NodeJS.  The Decaf implementation also will load modules installed via Bower.
 
 Please read the [guide to require() and modules](https://github.com/decafjs/decaf/wiki/require) on the wiki.
+
+Decaf comes with a handful of useful modules; these are in the repository in the modules/ directory.  There are wiki pages for each of these modules.
+
+* [There are a number of modules already created for Decaf](https://github.com/decafjs) that can be installed using Bower.
+
 
 # License
 Decaf is free to use under the MIT license.  See the LICENSE file in this repository.

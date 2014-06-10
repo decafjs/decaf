@@ -30,7 +30,7 @@
         if (fn.substr(0, 1) == '/' || fn.substr(0, 2) == './' || fn.substr(0, 3) == '../') {
             throw 'Could not locate include file ' + fn;
         }
-        var paths = include.path;
+        var paths = include.paths;
         for (var i = 0, len = paths.length; i < len; i++) {
             var path = paths[i];
             if (path.substr(path.length - 1, 1) != '/') {
@@ -81,7 +81,7 @@
      * @memberOf global.include
      * @type {Array}
      */
-    include.path = [
+    include.paths = [
         'bower_components',
         'bower_components/decaf',
         'bower_components/decaf/classic',

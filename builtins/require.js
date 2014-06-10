@@ -174,7 +174,7 @@
             }
         }
         else {
-            var paths = require.path;
+            var paths = require.paths;
             for (var i = 0, len = paths.length; i < len; i++) {
                 var path = paths[i];
                 if (path.substr(path.length - 1, 1) != '/') {
@@ -280,17 +280,17 @@
     require.dirStack = [];
     require.fsPath = '';
     require.cache = {};
+
     /**
      * @memberOf global.require
      * @type {Array}
      */
-    require.path = [
+    require.paths = [
         'bower_components',
         'bower_components/decaf/modules',
-        'languages',
+        'node_modules',
         'modules',
         '/usr/local/decaf',
-        '/usr/local/decaf/languages',
         '/usr/local/decaf/modules',
         './'
     ];
@@ -303,10 +303,10 @@
      *  used as JavaScript module source or an object which will be directly
      *  returned by `require`.
      *
-     *  For example, the following one-liner will enable `require()` to load XML
-     *  files as E4X modules:
+     *  For example, the following one-liner will enable `require()` to load .hbs
+     *  files as HoganJS templates:
      *
-     *     require.extensions['.xml'] = function(r) new XML(r.content);
+     *     require.extensions['.hbs'] = function(r) { return Hogan.compile(new File(r).readAll()); }
      *
      * @memberOf global.require
      */

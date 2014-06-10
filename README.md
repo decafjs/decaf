@@ -267,6 +267,8 @@ Decaf comes with a handful of useful modules; these are in the repository in the
 
 * [There are a number of modules already created for Decaf](https://github.com/decafjs).
 
+Modules are loaded via the global require() function.  The Decaf implementation of require() is CommonJS Modules 1.1 compliant, but also implements enough of NodeJS require() to load modules for NodeJS.  The Decaf implementation also will load modules installed via Bower.
+
 
 
 Please read the guide to require() and modules on the wiki.

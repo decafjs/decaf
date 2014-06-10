@@ -271,7 +271,7 @@ Modules are loaded via the global require() function.  The Decaf implementation 
 
 
 
-Please read the guide to require() and modules on the wiki.
+Please read the [guide to require() and modules](https://github.com/decafjs/decaf/wiki/require) on the wiki.
 
 # License
 Decaf is free to use under the MIT license.  See the LICENSE file in this repository.

@@ -180,7 +180,7 @@ function Request(is, maxUpload) {
         if (contentLength > maxUpload) {
             throw new Error('413 File upload exceeds ' + maxUpload + ' bytes');
         }
-        var post = String(new java.lang.String(is.read(contentLength), 'latin1')),
+        var post = String(new java.lang.String(is.read(contentLength), 'utf8')),
             mimeParts = [],
             contentType = (headers['content-type'] || '');
 

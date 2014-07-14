@@ -180,13 +180,16 @@ function Request(is, maxUpload) {
         if (contentLength > maxUpload) {
             throw new Error('413 File upload exceeds ' + maxUpload + ' bytes');
         }
-        var post = String(new java.lang.String(is.read(contentLength), 'utf8')),
-            mimeParts = [],
-            contentType = (headers['content-type'] || '');
+
+        var raw = is.read(contentLength),
+            contentType = (headers['content-type'] || ''),
+            post,
+            mimeParts = [];
 
 
         if (contentType.toLowerCase().indexOf('multipart/form-data') !== -1) {
             // handle multipart mime
+            post = String(new java.lang.String(raw, 'latin1'));
             var boundary = contentType.replace(/^.*?boundary=/i, '');
             mimeParts = post.split('--' + boundary);
             mimeParts.shift();
@@ -228,15 +231,18 @@ function Request(is, maxUpload) {
             });
         }
         else if (contentType.indexOf('application/x-www-form-urlencoded') !== -1) {
+            post = String(new java.lang.String(raw, 'utf8')),
             decaf.each(post.split('&'), function(part) {
                 part = part.split('=');
                 data[part[0]] = decodeURIComponent(part[1].replace(/\+/gm, ' '));
             });
         }
         else if (contentType.indexOf('application/json') !== -1) {
+            post = String(new java.lang.String(raw, 'utf8')),
             decaf.extend(data, JSON.parse(post));
         }
         else {
+            post = String(new java.lang.String(raw, 'latin1')),
             data.post = post;
         }
     }

@@ -371,7 +371,7 @@ decaf.extend(Response.prototype, {
             uri = base + uri;
         }
         this.headers['Location'] = uri;
-        this.end('');
+        this.end();
         this.stop();
     },
 

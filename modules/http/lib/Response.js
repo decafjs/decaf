@@ -374,10 +374,10 @@ decaf.extend(Response.prototype, {
             uri = base + uri;
         }
         me.headers['Location'] = uri;
-        os.writeln(me.proto + ' ' + me.status + ' ' + responseCodeText[me.status]);
-        os.writeln('Location: ' + uri);
-        os.flush();
-//        me.end();
+//        os.writeln(me.proto + ' ' + me.status + ' ' + responseCodeText[me.status]);
+//        os.writeln('Location: ' + uri);
+//        os.flush();
+        me.end();
         me.stop();
     },
 

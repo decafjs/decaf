@@ -360,7 +360,7 @@ decaf.extend(Response.prototype, {
      * @param {string} uri
      */
     redirect: function (uri) {
-        this.status = 303;
+        this.status = 302;
         var base;
         if (uri.substr(0, 7) !== 'http://' && uri.substr(0, 8) !== 'https"://') {
             base = 'http://';

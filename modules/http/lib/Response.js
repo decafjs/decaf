@@ -360,19 +360,25 @@ decaf.extend(Response.prototype, {
      * @param {string} uri
      */
     redirect: function (uri) {
-        this.status = 302;
+        var me = this,
+            os = me.os;
+
+        me.status = 303;
         var base;
         if (uri.substr(0, 7) !== 'http://' && uri.substr(0, 8) !== 'https"://') {
             base = 'http://';
-            base += this.req.host;
-            if (this.port !== 80) {
-                base += ':' + this.req.port;
+            base += me.req.host;
+            if (me.port !== 80) {
+                base += ':' + me.req.port;
             }
             uri = base + uri;
         }
-        this.headers['Location'] = uri;
-        this.end();
-        this.stop();
+        me.headers['Location'] = uri;
+        os.writeln(me.proto + ' ' + me.status + ' ' + responseCodeText[me.status]);
+        os.writeln('Location: ' + uri);
+        os.flush();
+//        me.end();
+        me.stop();
     },
 
     /**

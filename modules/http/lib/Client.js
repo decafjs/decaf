@@ -86,7 +86,7 @@ decaf.extend(Client.prototype, {
         var formData,
             contentType;
 
-        if (decaf.isString(form) {
+        if (decaf.isString(form)) {
             formData = form;
             contentType = 'application/json';
         }

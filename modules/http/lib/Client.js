@@ -25,7 +25,7 @@ var {URL, HttpUrlConnection} = java.net,
  * @param {string} url URL to connect to
  * @constructor
  */
-function Client(url) {
+function Client( url ) {
     this.conn = new URL(url).openConnection();
 }
 
@@ -34,7 +34,7 @@ function Client(url) {
  * @param conn
  * @returns {string}
  */
-function getResponseText(conn) {
+function getResponseText( conn ) {
     var rd = new BufferedReader(new InputStreamReader(conn.getInputStream())),
         response = [],
         line;
@@ -53,7 +53,7 @@ decaf.extend(Client.prototype, {
      * @param {boolean} state true to follow redirects (default is false)
      * @chainable
      */
-    setFollowRedirects: function(state) {
+    setFollowRedirects : function( state ) {
         this.conn.setInstanceFollowRedirects(state);
         return this;
     },
@@ -65,33 +65,46 @@ decaf.extend(Client.prototype, {
      * @param {string} value value of header to set
      * @chainable
      */
-    setHeader: function(key, value) {
+    setHeader : function( key, value ) {
         this.conn.setRequestProperty(key, value);
         return this;
     },
 
     /**
-     * Post a form to the connection
+     * Post a form or JSON to the connection
      *
      * The form data is a hash of name/value pairs; name is name of the form field, value is the value.
+     *
+     * If the form argument is a string, it is assumed to be a object serialized as a JSON .string
      *
      * The value returned is the client object.  It can be inspected for responseText, responseCode, etc.
      *
      * @param {object} form the form data
      * @chainable
      */
-    post: function(form) {
-        var formData = [];
-        decaf.each(form, function(value, key) {
-            formData.push(key + '=' + value);
-        });
-        formData = formData.join('&');
+    post : function( form ) {
+        var formData,
+            contentType;
+
+        if (decaf.isString(form) {
+            formData = form;
+            contentType = 'application/json';
+        }
+        else {
+            formData = [];
+            contentType = 'application/x-www-form-urlencoded';
+
+            decaf.each(form, function( value, key ) {
+                formData.push(key + '=' + value);
+            });
+            formData = formData.join('&');
+        }
 
         this.conn.setDoOutput(true);
         this.conn.setDoInput(true);
         this.conn.setUseCaches(false);
         this.conn.setRequestMethod('POST');
-        this.conn.setRequestProperty('Content-Type', 'application/x-www-form-urlencoded');
+        this.conn.setRequestProperty('Content-Type', contentType);
         this.conn.setRequestProperty('charset', 'utf-8');
         this.conn.setRequestProperty('Content-Length', '' + toJavaByteArray(formData).length);
 
@@ -115,7 +128,7 @@ decaf.extend(Client.prototype, {
      *
      * @chainable
      */
-    get: function() {
+    get : function() {
         this.conn.setRequestMethod('GET');
         this.responseText = getResponseText(this.conn);
         this.status = this.conn.getResponseCode();
@@ -127,5 +140,5 @@ decaf.extend(Client.prototype, {
 });
 
 decaf.extend(exports, {
-    Client: Client
+    Client : Client
 });

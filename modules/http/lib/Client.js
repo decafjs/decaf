@@ -83,7 +83,9 @@ decaf.extend(Client.prototype, {
      * @chainable
      */
     post : function( form ) {
-        var formData,
+        var me = this,
+            conn = me.conn,
+            formData,
             contentType;
 
         if (decaf.isString(form)) {
@@ -100,25 +102,31 @@ decaf.extend(Client.prototype, {
             formData = formData.join('&');
         }
 
-        this.conn.setDoOutput(true);
-        this.conn.setDoInput(true);
-        this.conn.setUseCaches(false);
-        this.conn.setRequestMethod('POST');
-        this.conn.setRequestProperty('Content-Type', contentType);
-        this.conn.setRequestProperty('charset', 'utf-8');
-        this.conn.setRequestProperty('Content-Length', '' + toJavaByteArray(formData).length);
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+        conn.setUseCaches(false);
+        conn.setRequestMethod('POST');
+        conn.setRequestProperty('Content-Type', contentType);
+        conn.setRequestProperty('charset', 'utf-8');
+        conn.setRequestProperty('Content-Length', '' + toJavaByteArray(formData).length);
 
-        var wr = new DataOutputStream(this.conn.getOutputStream());
+        var wr = new DataOutputStream(conn.getOutputStream());
         wr.writeBytes(formData);
         wr.flush();
         wr.close();
 
-        this.responseText = getResponseText(this.conn);
-        this.status = this.conn.getReponseCode();
-        this.responseMessage = this.conn.getResponseMessage();
-        this.conn.disconnect();
-        delete this.conn;
-        return this;
+        conn.disconnect();
+        me.responseText = getResponseText(conn);
+        try {
+            me.status = conn.getReponseCode();
+            console.dir(me.status);
+        }
+        catch (e) {
+            me.status = 200;
+        }
+        me.responseMessage = conn.getResponseMessage();
+        delete me.conn;
+        return me;
     },
 
     /**

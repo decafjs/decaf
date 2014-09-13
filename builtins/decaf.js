@@ -19,14 +19,10 @@ var decaf = {
         decaf.each(args, function (o) {
             for (var key in o) {
                 if (o.hasOwnProperty(key)) {
-                    var g = o.__lookupGetter__(key), s = o.__lookupSetter__(key);
+                    var desc = Object.getOwnPropertyDescriptor(o, key),
+                        g = desc.get, s = desc.set;
                     if (g || s) {
-                        if (g) {
-                            me.__defineGetter__(key, g);
-                        }
-                        if (s) {
-                            me.__defineSetter__(key, s);
-                        }
+                        Object.defineProperty(me, key, { get: g, set: s, enumerable: true });
                     }
                     else {
                         me[key] = o[key];

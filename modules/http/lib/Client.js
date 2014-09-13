@@ -35,10 +35,16 @@ function Client( url ) {
  * @returns {string}
  */
 function getResponseText( conn ) {
-    var rd = new BufferedReader(new InputStreamReader(conn.getInputStream())),
+    var rd,
         response = [],
         line;
 
+    try {
+        rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    }
+    catch (e) {
+        rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+    }
     while ((line = rd.readLine())) {
         response.push(String(line));
     }

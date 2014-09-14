@@ -1,4 +1,4 @@
-Decaf v0.0.3
+Decaf v0.0.4
 ============
 
 Decaf is a platform built on the [Rhino JavaScript runtime](http://en.wikipedia.org/wiki/Rhino_(JavaScript_engine)).  **++Decaf's API is fully synchronous++** - you write structured and procedural programs like you do in most any traditional programming language.  You can implement evented applications, but it is not required.

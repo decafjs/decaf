@@ -95,7 +95,7 @@ decaf>
 
 # Get Decaf
 
-## GitHub Repository
+## GitHub Repository 
 One option to get Decaf is to clone the GitHub repository. Something like:
 
 ```sh

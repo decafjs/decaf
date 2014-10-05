@@ -6,6 +6,8 @@
      */
     "use strict";
 
+    var args = global.arguments;
+
     /*
      * The guts of the command line interpreter
      *
@@ -45,9 +47,7 @@
     }
 
     var argv = [],
-        args = global.arguments,
         runShell = true;
-
     for (var i = 0, len = args.length; i < len; i++) {
         var arg = args[i];
         if (arg.endsWith('.js')) {

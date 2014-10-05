@@ -12,16 +12,16 @@
 
 (function() {
     var rhino = builtin.rhino,
-		File = java.io.File
-		FileInputStream = java.io.FileInputStream,
-		BufferedInputStream = java.io.BufferedInputStream,
-		ByteArrayOutputStream = java.io.ByteArrayOutputStream;
+        File = java.io.File
+        FileInputStream = java.io.FileInputStream,
+        BufferedInputStream = java.io.BufferedInputStream,
+        ByteArrayOutputStream = java.io.ByteArrayOutputStream;
 
     /**
      * @private
      */
     
-	// thanks to ringojs for this one
+    // thanks to ringojs for this one
     function resolveFile( path ) {
         var file = path instanceof File ? path : new File(String(path));
         return file.isAbsolute() ? file : file.getAbsoluteFile();
@@ -60,10 +60,10 @@
 
 
 
-	function realpath(path) {
-		var f = new File(path);
-		return String(f.getAbsolutePath().toString());
-	}
+    function realpath(path) {
+        var f = new File(path);
+        return String(f.getAbsolutePath().toString());
+    }
 
     function locateFile(module) {
         var extension,
@@ -160,8 +160,8 @@
         }
 
         var found;
-        if (module[0] == '/' || module.substr(0, 2) == './' || module.substr(0, 3) == '../') {
-			var relpath = module[0] == '/' ? module : realpath(require.fsPath + module);
+        if (module[0] === '/' || module.substr(0, 2) === './' || module.substr(0, 3) === '../' || module === '..') {
+            var relpath = module[0] === '/' ? module : realpath(require.fsPath + module);
             found = tryFile(relpath) || tryFile(relpath + '.js');
             if (found) {
                 return found;
@@ -201,7 +201,7 @@
         var extension = modulePath.indexOf('.') !== -1 ? modulePath.substr(modulePath.lastIndexOf('.')+1) : '';
 
         if (require.extensions[extension]) {
-            contents = require.extensions[extension](contents);
+            contents = require.extensions[extension](contents, modulePath);
         }
         return contents;
     }
@@ -212,7 +212,7 @@
      * @returns {*}
      */
     global.require = function(module) {
-        if (module.substr(0, 8) == 'builtin/' || module.substr(0, 8) === 'builtin.') {
+        if (module.substr(0, 8) === 'builtin/' || module.substr(0, 8) === 'builtin.') {
             return builtin[module.substr(8)];
         }
         var modulePath = locateFile(module);

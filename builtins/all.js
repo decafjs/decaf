@@ -15,6 +15,7 @@
 // ringo does:
 // Object.defineProperty(this, "global", { value: this });
 global = this;
+global.arguments = arguments;
 
 global.__dirname = java.lang.System.getProperty('user.dir');
 

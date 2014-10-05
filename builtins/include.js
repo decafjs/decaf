@@ -56,13 +56,13 @@
 
     function includeFile(fn) {
         fn = locateFile(fn);
-        var extension = fn.indexOf('.') !== -1 ? fn.substr(fn.lastIndexOf('.')+1) : '';
+        var contents = fs.readFile(fn),
+            extension = fn.indexOf('.') !== -1 ? fn.substr(fn.lastIndexOf('.')+1) : '';
 
         if (include.extensions[extension]) {
-            var ret = include.extensions[extension](fn);
+            var ret = include.extensions[extension](contents, fn);
             return ret;
         }
-        var contents = fs.readFile(fn);
         contents = contents.replace(/^#!/, '//');
         return builtin.rhino.runScript(contents, fn, 1, this);
     }

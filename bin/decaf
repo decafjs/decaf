@@ -46,6 +46,8 @@ echo "-----"
 if [ ! -z "$MODULES" ]; then
     echo "ADDING MODULES"
     CP="$CP:$MOUDLES/*/java/*"
+    echo $CP
+    echo "ADDED MODULES"
 fi
 
 if [ -d "modules" ]; then

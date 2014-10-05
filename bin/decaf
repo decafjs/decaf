@@ -41,7 +41,7 @@ fi
 CP="."
 
 echo $MODULES
-if [ "$MODULES" != "" ]; then
+if [ ! -z "$MODULES" ]; then
     CP="$CP:$MOUDLES/*/java/*"
 fi
 

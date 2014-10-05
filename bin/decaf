@@ -40,7 +40,7 @@ fi
 # set up class path for java/rhino
 CP="."
 
-if [ -d "$MODULES" ]; then
+if [ "$MODULES" != "" ]; then
     CP="$CP:$MOUDLES/*/java/*"
 fi
 

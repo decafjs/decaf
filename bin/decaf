@@ -50,6 +50,8 @@ fi
 
 if [ -d "java" ]; then
     CP="$CP:./java/*"
+elif [ -d "bower_components/decaf/java" ]; then
+    CP="$CP:bower_components/decaf/java/*"
 elif [ -d "/usr/local/decaf/java" ]; then
     CP="$CP:/usr/local/decaf/java/*"
 fi

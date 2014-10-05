@@ -47,12 +47,16 @@ var sharedGlobal = 0;
 
 function main() {
     new Thread(function() {
-        Thread.sleep(1);
-        console.log('sharedGlobal = ' + sharedGlobal);
+    	while (1) {
+	    Thread.sleep(1);
+            console.log('sharedGlobal = ' + sharedGlobal);
+        }
     }).start();
     new Thread(function() {
-        Thread.sleep(1);
-        sharedGlobal++;
+        while (1) {
+            Thread.sleep(1);
+            sharedGlobal++;
+        }
     }).start();
 }
 ```
@@ -91,7 +95,7 @@ decaf>
 
 # Get Decaf
 
-## GitHub Repository
+## GitHub Repository 
 One option to get Decaf is to clone the GitHub repository. Something like:
 
 ```sh

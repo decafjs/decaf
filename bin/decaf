@@ -40,14 +40,9 @@ fi
 # set up class path for java/rhino
 CP="."
 
-echo $MODULES
-echo "-----"
 
 if [ ! -z "$MODULES" ]; then
-    echo "ADDING MODULES"
-    CP="$CP:$MOUDLES/*/java/*"
-    echo $CP
-    echo "ADDED MODULES"
+    CP="$CP:$MODULES/*/java/*"
 fi
 
 if [ -d "modules" ]; then

@@ -41,7 +41,10 @@ fi
 CP="."
 
 echo $MODULES
+echo "-----"
+
 if [ ! -z "$MODULES" ]; then
+    echo "ADDING MODULES"
     CP="$CP:$MOUDLES/*/java/*"
 fi
 

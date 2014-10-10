@@ -12,7 +12,7 @@
 
 (function() {
     var rhino = builtin.rhino,
-        File = java.io.File
+        File = java.io.File,
         FileInputStream = java.io.FileInputStream,
         BufferedInputStream = java.io.BufferedInputStream,
         ByteArrayOutputStream = java.io.ByteArrayOutputStream;
@@ -20,8 +20,8 @@
     /**
      * @private
      */
-    
-    // thanks to ringojs for this one
+
+        // thanks to ringojs for this one
     function resolveFile( path ) {
         var file = path instanceof File ? path : new File(String(path));
         return file.isAbsolute() ? file : file.getAbsoluteFile();
@@ -50,7 +50,7 @@
                 buf = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024),
                 count;
 
-            while ( (count = stream.read(buf)) > -1 ) {
+            while ((count = stream.read(buf)) > -1) {
                 body.write(buf, 0, count);
             }
             stream.close();
@@ -58,18 +58,16 @@
         }
     };
 
-
-
-    function realpath(path) {
+    function realpath( path ) {
         var f = new File(path);
         return String(f.getAbsolutePath().toString());
     }
 
-    function locateFile(module) {
+    function locateFile( module ) {
         var extension,
             pkg;
 
-        function tryFile(path) {
+        function tryFile( path ) {
             var tryPath = fs.realpath(path);
             if (tryPath) {
                 if (fs.isFile(tryPath)) {
@@ -196,9 +194,9 @@
         throw new Error('Could not locate require file ' + module);
     }
 
-    function loadFile(modulePath) {
+    function loadFile( modulePath ) {
         var contents = fs.readFile(modulePath);
-        var extension = modulePath.indexOf('.') !== -1 ? modulePath.substr(modulePath.lastIndexOf('.')+1) : '';
+        var extension = modulePath.indexOf('.') !== -1 ? modulePath.substr(modulePath.lastIndexOf('.') + 1) : '';
 
         if (require.extensions[extension]) {
             contents = require.extensions[extension](contents, modulePath);
@@ -211,7 +209,7 @@
      * @param module
      * @returns {*}
      */
-    global.require = function(module) {
+    global.require = function( module ) {
         if (module.substr(0, 8) === 'builtin/' || module.substr(0, 8) === 'builtin.') {
             return builtin[module.substr(8)];
         }
@@ -224,8 +222,6 @@
         var fsPath = modulePath.split('/');
         fsPath.pop();
         require.fsPath = fsPath.join('/') + '/';
-
-
 
         // works
 //        var exports = require.cache[modulePath] = {};
@@ -246,9 +242,10 @@
 //        require.cache[modulePath] = rhino.runScript(script, modulePath, 0);
 
         var exports = require.cache[modulePath] = {
-            id: module,
-            url: modulePath,
-            exports: {}
+            id      : module,
+            url     : modulePath,
+            content : content,
+            exports : {}
         };
 
         var script = [
@@ -256,7 +253,7 @@
             '   var module = global.require.getCached("' + modulePath + '");',
             '   var exports = module.exports;',
             content,
-            '	return module.exports;',
+            '   return module.exports;',
             '}())'
         ].join('\n');
         require.modulePath = modulePath;
@@ -268,11 +265,20 @@
         return require.cache[modulePath].exports;
     };
 
-    require.getCached = function(path) {
+    require.getCached = function( path ) {
         return require.cache[path];
     };
 
-    require.isRequiredFile = function(fn) {
+    require.getContent = function(path) {
+        var modulePath = locateFile(module);
+        require(modulePath);
+        if (!require.cache[modulePath]) {
+            throw new Error("Can't get content for " + module + ' (' + modulePath + ')');
+        }
+        return require.cache[modulePath];
+    };
+
+    require.isRequiredFile = function( fn ) {
         return require.modulePath === fn || (require.cache[fn] ? true : false);
     };
 

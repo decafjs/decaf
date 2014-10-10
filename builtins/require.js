@@ -269,7 +269,7 @@
         return require.cache[path];
     };
 
-    require.getContent = function(path) {
+    require.getContent = function(module) {
         var modulePath = locateFile(module);
         require(modulePath);
         if (!require.cache[modulePath]) {

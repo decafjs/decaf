@@ -173,10 +173,9 @@ function Request(is, maxUpload) {
     this.cookies = cookies;
 
     // process POST data
-    var contentLength = headers['content-length'];
+    var contentLength = parseInt(headers['content-length'] || '0',10);
 
     if (contentLength) {
-        contentLength = parseInt(headers['content-length'] || '0', 10);
         if (contentLength > maxUpload) {
             throw new Error('413 File upload exceeds ' + maxUpload + ' bytes');
         }

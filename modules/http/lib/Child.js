@@ -41,7 +41,7 @@
             if (request.headers['upgrade'].toLowerCase() !== 'websocket') {
                 return false;
             }
-            var parts = request.url.split('/');
+            var parts = request.uri.split('/');
             if (webSockets[parts[0]]) {
                 var ws = new WebSocket(request, response);
                 webSockets[parts[0]](ws);    // socket connect

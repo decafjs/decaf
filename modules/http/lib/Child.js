@@ -41,10 +41,11 @@
             if (request.headers['upgrade'].toLowerCase() !== 'websocket') {
                 return false;
             }
-            var parts = request.uri.split('/');
-            if (webSockets[parts[0]]) {
+            var parts = request.uri.split('/'),
+                part = parts[0] || parts[1];
+            if (webSockets[part]) {
                 var ws = new WebSocket(request, response);
-                webSockets[parts[0]](ws);    // socket connect
+                webSockets[part](ws);    // socket connect
                 ws.run();                       // handle the socket until close, etc.
             }
             return false;

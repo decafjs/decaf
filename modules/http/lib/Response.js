@@ -9,46 +9,46 @@ var mimeTypes = require('mimetypes').mimeTypes,
  * Hash containing HTTP status codes and the messages associated with them.
  */
 var responseCodeText = {
-    100: 'Continue',
-    101: 'Switching Protocols',
-    200: 'OK',
-    201: 'Created',
-    202: 'Accepted',
-    203: 'Non-Authoritative Information',
-    204: 'No Content',
-    205: 'Reset Content',
-    206: 'Partial Content',
-    300: 'Multiple Choices',
-    301: 'Moved Permanently',
-    302: 'Found',
-    303: 'See Other',
-    304: 'Not Modified',
-    305: 'Use Proxy',
-    307: 'Temporary Redirect',
-    400: 'Bad Request',
-    401: 'Unauthorized',
-    402: 'Payment Required', // note RFC says reserved for future use
-    403: 'Forbidden',
-    404: 'Not Found',
-    405: 'Method Not Allowed',
-    406: 'Not Acceptable',
-    407: 'Proxy Authentication Required',
-    408: 'Request Timeout',
-    409: 'Conflict',
-    410: 'Gone',
-    411: 'Length Required',
-    412: 'Precondition Failed',
-    413: 'Request Entity Too Large',
-    414: 'Request-URI Too Long',
-    415: 'Unsupported Media Type',
-    416: 'Request Range Not Satisfiable',
-    417: 'Expectation Failed',
-    500: 'Internal Server Error',
-    501: 'Not Implemented',
-    502: 'Bad Gateway',
-    503: 'Service Unavailable',
-    504: 'Gateway Timeout',
-    505: 'HTTP Version Not SUpported'
+    100 : 'Continue',
+    101 : 'Switching Protocols',
+    200 : 'OK',
+    201 : 'Created',
+    202 : 'Accepted',
+    203 : 'Non-Authoritative Information',
+    204 : 'No Content',
+    205 : 'Reset Content',
+    206 : 'Partial Content',
+    300 : 'Multiple Choices',
+    301 : 'Moved Permanently',
+    302 : 'Found',
+    303 : 'See Other',
+    304 : 'Not Modified',
+    305 : 'Use Proxy',
+    307 : 'Temporary Redirect',
+    400 : 'Bad Request',
+    401 : 'Unauthorized',
+    402 : 'Payment Required', // note RFC says reserved for future use
+    403 : 'Forbidden',
+    404 : 'Not Found',
+    405 : 'Method Not Allowed',
+    406 : 'Not Acceptable',
+    407 : 'Proxy Authentication Required',
+    408 : 'Request Timeout',
+    409 : 'Conflict',
+    410 : 'Gone',
+    411 : 'Length Required',
+    412 : 'Precondition Failed',
+    413 : 'Request Entity Too Large',
+    414 : 'Request-URI Too Long',
+    415 : 'Unsupported Media Type',
+    416 : 'Request Range Not Satisfiable',
+    417 : 'Expectation Failed',
+    500 : 'Internal Server Error',
+    501 : 'Not Implemented',
+    502 : 'Bad Gateway',
+    503 : 'Service Unavailable',
+    504 : 'Gateway Timeout',
+    505 : 'HTTP Version Not SUpported'
 };
 
 /**
@@ -60,9 +60,9 @@ var responseCodeText = {
  * @param {string} proto 'GET' or 'POST' etc.
  * @constructor
  */
-function Response(os, req) {
+function Response( os, req ) {
     this.os = os;
-	this.req = req;
+    this.req = req;
     this.headersSent = false;
     this.status = 200;
     this.contentLength = 0;
@@ -75,14 +75,14 @@ decaf.extend(Response.prototype, {
     /**
      *
      */
-    destroy: function () {
+    destroy : function() {
 //            this.os.flush();
         this.os.destroy();
     },
 
-    setCookie: function (key, value, expires, path, domain) {
+    setCookie : function( key, value, expires, path, domain ) {
         var cookie = {
-            value: value
+            value : value
         };
         if (expires) {
             expires = toString.apply(expires) === '[object Date]' ? expires.toGMTString() : expires;
@@ -101,7 +101,7 @@ decaf.extend(Response.prototype, {
         this.cookies[key] = cookie;
     },
 
-    unsetCookie: function (key) {
+    unsetCookie : function( key ) {
         var now = new Date().getTime() / 1000;
         var yesterday = now - 86400;
         this.cookies = this.cookies || {};
@@ -112,14 +112,13 @@ decaf.extend(Response.prototype, {
         this.cookies[key] = cookie;
     },
 
-
     /**
      * Set response status and headers.
      *
      * @param {int} status HTTP status, e.g. 200 (for OK), 404 (not found), etc.
      * @param {object} headers hash containing headers to be added to the response headers.
      */
-    writeHead: function (status, headers) {
+    writeHead : function( status, headers ) {
         var me = this;
 
         decaf.extend(this.headers, headers);
@@ -147,25 +146,25 @@ decaf.extend(Response.prototype, {
      * @param {int} status - optional HTTP status code (e.g. 200, 404, etc.)
      * @param {string|object|array|number} body - optional thing to be sent as the response
      */
-    send: function (status, body) {
+    send : function( status, body ) {
         if (typeof status === 'number') {
             if (body === undefined) {
-                this.writeHead(status, { 'Content-Type': 'text/html'});
+                this.writeHead(status, { 'Content-Type' : 'text/html'});
                 this.end(responseCodeText[status] || ('Unknown status ' + status));
                 return;
             }
         }
         else if (body === undefined) {
             body = status;
-			status = this.status || 200;
+            status = this.status || 200;
         }
 
         if (typeof body === 'string') {
-            this.writeHead(status, { 'Content-Type': 'text/html '});
+            this.writeHead(status, { 'Content-Type' : 'text/html '});
             this.end(body);
         }
         else {
-            this.writeHead(status, { 'Content-Type': 'application/json'});
+            this.writeHead(status, { 'Content-Type' : 'application/json'});
             this.end(JSON.stringify(body));
         }
     },
@@ -176,7 +175,7 @@ decaf.extend(Response.prototype, {
      * @param {string} filename name of file to send
      * @param {boolean} modifiedSince false to disable 304 if-modified-since processing
      */
-    sendFile: function (filename, modifiedSince) {
+    sendFile : function( filename, modifiedSince ) {
         var os = this.os,
             headers = this.headers,
             extension = filename.indexOf('.') !== -1 ? filename.substr(filename.lastIndexOf('.') + 1) : '',
@@ -240,7 +239,7 @@ decaf.extend(Response.prototype, {
      * @param {int} lastModified timestamp byte array last modified
      * @param {string|int} modifiedSince if-modified-since request header value
      */
-    sendBytes: function (bytes, mimeType, lastModified, modifiedSince) {
+    sendBytes : function( bytes, mimeType, lastModified, modifiedSince ) {
         var os = this.os,
             headers = this.headers,
             size = bytes.length;
@@ -280,7 +279,7 @@ decaf.extend(Response.prototype, {
     /**
      * Send response headers to the client.
      */
-    sendHeaders: function () {
+    sendHeaders : function() {
         var me = this,
             os = me.os,
             headers = me.headers;
@@ -293,7 +292,7 @@ decaf.extend(Response.prototype, {
             }
         }
         if (me.cookies && !me.headers['Set-Cookie']) {
-            decaf.each(me.cookies, function (cookie, key) {
+            decaf.each(me.cookies, function( cookie, key ) {
                 var out = 'Set-Cookie: ' + key + '=' + encodeURIComponent(cookie.value);
                 if (cookie.expires) {
                     out += '; Expires=' + cookie.expires;
@@ -315,7 +314,7 @@ decaf.extend(Response.prototype, {
      *
      * @param {string} s body of response
      */
-    end: function (s, gzip) {
+    end : function( s, gzip ) {
         var os = this.os,
             headers = this.headers;
 
@@ -350,7 +349,7 @@ decaf.extend(Response.prototype, {
      *
      * You can call this from within nested methods to terminate/complete the request.
      */
-    stop: function () {
+    stop : function() {
         throw 'RES.STOP';
     },
 
@@ -359,7 +358,7 @@ decaf.extend(Response.prototype, {
      *
      * @param {string} uri
      */
-    redirect: function (uri) {
+    redirect : function( uri ) {
         var me = this,
             os = me.os;
 
@@ -384,12 +383,12 @@ decaf.extend(Response.prototype, {
     /**
      * Flush the response output stream.
      */
-    flush: function () {
+    flush : function() {
         this.os.flush();
     }
 });
 
 decaf.extend(exports, {
-    responseCodeText: responseCodeText,
-    Response        : Response
+    responseCodeText : responseCodeText,
+    Response         : Response
 });

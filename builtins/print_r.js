@@ -76,7 +76,7 @@
         if (isString(o)) {
             return '(string) ' + (o.length ? o : '(empty)');
         }
-        if (isNaN(o) && typeof o === 'number') {
+        if (typeof o === 'number' && isNaN(o)) {
             return '(NaN)';
         }
         if (isNumber(o)) {

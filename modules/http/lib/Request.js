@@ -237,12 +237,14 @@ function Request(is, maxUpload) {
             });
         }
         else if (contentType.indexOf('application/json') !== -1) {
-            post = String(new java.lang.String(raw, 'utf8')),
-            decaf.extend(data, JSON.parse(post));
+            post = String(new java.lang.String(raw, 'utf8'));
+            this.post = JSON.parse(post);
+            data.extend(data, req.post);
         }
         else {
             post = String(new java.lang.String(raw, 'latin1')),
             data.post = post;
+            this.post = post;
         }
     }
 

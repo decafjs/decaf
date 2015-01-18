@@ -1,6 +1,11 @@
 Decaf v0.0.4
 ============
 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=bzkRVzciAZg
+" target="_blank"><img src="http://img.youtube.com/vi/bzkRVzciAZg/0.jpg" 
+alt="Smackdown" width="240" height="180" border="10" /></a>
+
+
 Decaf is a platform built on the [Rhino JavaScript runtime](http://en.wikipedia.org/wiki/Rhino_(JavaScript_engine)).  **++Decaf's API is fully synchronous++** - you write structured and procedural programs like you do in most any traditional programming language.  You can implement evented applications, but it is not required.
 
 Rhino is an open source JavaScript engine, developed entirely in Java, and managed by the Mozilla Foundation.  It runs on runtimes for Java 6, Java 7, and Java 8.  Under the hood, your JavaScript is compiled to Java byte codes and run within the JVM.  The JVM then optimizes the byte codes using its JIT technology.

@@ -76,8 +76,12 @@ decaf.extend(Response.prototype, {
      *
      */
     destroy : function() {
-//            this.os.flush();
-        this.os.destroy();
+        var me = this;
+        if (me.chunked) {
+            me.write('0');
+            me.flush();
+        }
+        me.os.destroy();
     },
 
     setCookie : function( key, value, expires, path, domain ) {
@@ -337,6 +341,7 @@ decaf.extend(Response.prototype, {
         if (!me.headersSent) {
             me.setHeader('Transfer-Encoding', 'Chunked');
             me.sendHeaders();
+            me.chunked = true;
         }
         os.writeln(parseInt(s.length, 16));
         os.writeln(s);

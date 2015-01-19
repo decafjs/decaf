@@ -345,7 +345,7 @@ decaf.extend(Response.prototype, {
             me.sendHeaders();
             me.chunked = true;
         }
-        os.writeln(s,length.toString(16));
+        os.writeln(s.length.toString(16));
         os.writeln(s);
         os.flush();
     },

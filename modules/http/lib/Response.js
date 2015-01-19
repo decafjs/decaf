@@ -340,6 +340,7 @@ decaf.extend(Response.prototype, {
         }
         os.writeln(parseInt(s.length, 16));
         os.writeln(s);
+        os.flush();
     },
 
     /**

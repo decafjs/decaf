@@ -230,11 +230,16 @@ function Request(is, maxUpload) {
             });
         }
         else if (contentType.indexOf('application/x-www-form-urlencoded') !== -1) {
-            post = String(new java.lang.String(raw, 'utf8')),
-            decaf.each(post.split('&'), function(part) {
-                part = part.split('=');
-                data[part[0]] = decodeURIComponent(part[1].replace(/\+/gm, ' '));
-            });
+            post = String(new java.lang.String(raw, 'utf8'));
+            if (post.indexOf('&') !== -1 && post.indexOf('=') !== -1) {
+                decaf.each(post.split('&'), function(part) {
+                    part = part.split('=');
+                    data[part[0]] = decodeURIComponent(part[1].replace(/\+/gm, ' '));
+                });
+            }
+            else {
+                data.post = post;
+            }
         }
         else if (contentType.indexOf('application/json') !== -1) {
             post = String(new java.lang.String(raw, 'utf8'));

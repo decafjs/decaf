@@ -84,6 +84,7 @@ decaf.extend(Response.prototype, {
             os.writeln('');
             me.flush();
         }
+        me.chunked = false;
     },
 
     setCookie : function (key, value, expires, path, domain) {

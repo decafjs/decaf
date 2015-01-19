@@ -48,7 +48,6 @@
                 webSockets[part](ws);    // socket connect
                 ws.run();                       // handle the socket until close, etc.
             }
-            response.destroy();
             return false;
         }
         else if (connection === 'keep-alive') {
@@ -58,13 +57,12 @@
         else {
             headers['Connection'] = 'close';
             keepAlive = false;
-            response.destroy();
         }
         if (fn.call(this, request, response) === false) {
             headers['Connection'] = 'close';
             keepAlive = false;
-            response.destroy();
         }
+        response.destroy();
         return keepAlive;
     }
 

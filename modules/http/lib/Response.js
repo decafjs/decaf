@@ -78,7 +78,7 @@ decaf.extend(Response.prototype, {
     destroy : function () {
         var me = this,
             os = me.os;
-        
+
         if (me.chunked) {
             os.writeln('0');
             os.writeln('');
@@ -345,7 +345,7 @@ decaf.extend(Response.prototype, {
             me.sendHeaders();
             me.chunked = true;
         }
-        os.writeln(parseInt(s.length, 16));
+        os.writeln(s,length.toString(16));
         os.writeln(s);
         os.flush();
     },

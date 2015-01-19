@@ -48,7 +48,7 @@ var responseCodeText = {
     502 : 'Bad Gateway',
     503 : 'Service Unavailable',
     504 : 'Gateway Timeout',
-    505 : 'HTTP Version Not SUpported'
+    505 : 'HTTP Version Not Supported'
 };
 
 /**
@@ -57,7 +57,7 @@ var responseCodeText = {
  * Response instances are typically automatically created by http.Child
  *
  * @param {OutputStream} os OutputStream to send response to
- * @param {string} proto 'GET' or 'POST' etc.
+ * @param {Request} req http request object
  * @constructor
  */
 function Response( os, req ) {
@@ -284,6 +284,9 @@ decaf.extend(Response.prototype, {
             os = me.os,
             headers = me.headers;
 
+        if (me.headersSent) {
+            return;
+        }
         os.writeln(me.proto + ' ' + me.status + ' ' + responseCodeText[me.status]);
         os.writeln('Date: ' + new Date().toGMTString());
         for (var key in headers) {
@@ -307,6 +310,19 @@ decaf.extend(Response.prototype, {
             });
         }
         os.writeln('');
+        me.headersSent = true;
+    },
+
+    write: function(s) {
+        var me = this,
+            os = me.os;
+
+        if (!me.headersSent) {
+            me.setHeader('Transfer-Encoding', 'Chunked')
+            me.sendHeaders();
+        }
+        os.writeln(parseInt(s.length, 16));
+        os.writeln(s);
     },
 
     /**

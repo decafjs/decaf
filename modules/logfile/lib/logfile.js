@@ -11,7 +11,7 @@
 /*global require, sync */
 "use strict";
 
-var fs = require('fs'),
+var File = require('File'),
     atExit = require('builtin.atExit'),
     {Thread} = require('Threads'),
     {sleep} = require('process');
@@ -30,6 +30,7 @@ function LogFile(filename, flushFrequency, unlink) {
     me.filename = filename;
     me.flushFrequency = flushFrequency || 5;
     me.messages = [];
+    me.file = new File(me.filename);
 
     /**
      * Print a string, followed by a newline to the log file.
@@ -52,7 +53,8 @@ function LogFile(filename, flushFrequency, unlink) {
      * @chainable
      */
     me.flush = sync(function () {
-        fs.appendFile(me.filename, me.messages.join(''));
+        me.file.writeFile(me.messages.join(''), true);
+        //fs.appendFile(me.filename, me.messages.join(''));
         me.messages = [];
         return me;
     });
@@ -64,7 +66,8 @@ function LogFile(filename, flushFrequency, unlink) {
         }
         switch (me.state) {
             case 'destroy':
-                fs.unlink(me.filename);
+                me.file.remove();
+                //fs.unlink(me.filename);
                 break;
         }
         me.state = 'stopped';

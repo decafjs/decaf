@@ -313,12 +313,29 @@ decaf.extend(Response.prototype, {
         me.headersSent = true;
     },
 
+    /**
+     * Set response header
+     * @param {string} key name of header
+     * @param {string} value value of header
+     */
+    setHeader: function(key, value) {
+        this.headers[key] = value;
+    },
+
+    /**
+     * Write string to response.
+     *
+     * If headers aren't sent, this will send headers with Transfer-Encoding: chunked.  The write() and each
+     * successive one will be sent as a chunk.
+     *
+     * @param {string} s string to write
+     */
     write: function(s) {
         var me = this,
             os = me.os;
 
         if (!me.headersSent) {
-            me.setHeader('Transfer-Encoding', 'Chunked')
+            me.setHeader('Transfer-Encoding', 'Chunked');
             me.sendHeaders();
         }
         os.writeln(parseInt(s.length, 16));

@@ -34,7 +34,6 @@
 
     /**
      * @module builtin.rhino
-     * @private
      * @type {{getScope: Function, releaseScope: Function, runScript: Function, createScope: Function}}
      */
     builtin.rhino = {

@@ -62,6 +62,7 @@
             headers['Connection'] = 'close';
             keepAlive = false;
         }
+        response.destroy();
         return keepAlive;
     }
 

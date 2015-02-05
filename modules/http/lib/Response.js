@@ -3,7 +3,7 @@
 "use strict";
 
 var mimeTypes = require('mimetypes').mimeTypes,
-    GZIP = require('GZIP').GZIP;
+    GZIP      = require('GZIP').GZIP;
 
 /**
  * Hash containing HTTP status codes and the messages associated with them.
@@ -48,7 +48,7 @@ var responseCodeText = {
     502 : 'Bad Gateway',
     503 : 'Service Unavailable',
     504 : 'Gateway Timeout',
-    505 : 'HTTP Version Not SUpported'
+    505 : 'HTTP Version Not Supported'
 };
 
 /**
@@ -57,10 +57,10 @@ var responseCodeText = {
  * Response instances are typically automatically created by http.Child
  *
  * @param {OutputStream} os OutputStream to send response to
- * @param {string} proto 'GET' or 'POST' etc.
+ * @param {Request} req http request object
  * @constructor
  */
-function Response( os, req ) {
+function Response(os, req) {
     this.os = os;
     this.req = req;
     this.headersSent = false;
@@ -75,12 +75,19 @@ decaf.extend(Response.prototype, {
     /**
      *
      */
-    destroy : function() {
-//            this.os.flush();
-        this.os.destroy();
+    destroy : function () {
+        var me = this,
+            os = me.os;
+
+        if (me.chunked) {
+            os.writeln('0');
+            os.writeln('');
+            me.flush();
+        }
+        me.chunked = false;
     },
 
-    setCookie : function( key, value, expires, path, domain ) {
+    setCookie : function (key, value, expires, path, domain) {
         var cookie = {
             value : value
         };
@@ -101,7 +108,7 @@ decaf.extend(Response.prototype, {
         this.cookies[key] = cookie;
     },
 
-    unsetCookie : function( key ) {
+    unsetCookie : function (key) {
         var now = new Date().getTime() / 1000;
         var yesterday = now - 86400;
         this.cookies = this.cookies || {};
@@ -118,7 +125,7 @@ decaf.extend(Response.prototype, {
      * @param {int} status HTTP status, e.g. 200 (for OK), 404 (not found), etc.
      * @param {object} headers hash containing headers to be added to the response headers.
      */
-    writeHead : function( status, headers ) {
+    writeHead : function (status, headers) {
         var me = this;
 
         decaf.extend(this.headers, headers);
@@ -146,10 +153,10 @@ decaf.extend(Response.prototype, {
      * @param {int} status - optional HTTP status code (e.g. 200, 404, etc.)
      * @param {string|object|array|number} body - optional thing to be sent as the response
      */
-    send : function( status, body ) {
+    send : function (status, body) {
         if (typeof status === 'number') {
             if (body === undefined) {
-                this.writeHead(status, { 'Content-Type' : 'text/html'});
+                this.writeHead(status, {'Content-Type' : 'text/html'});
                 this.end(responseCodeText[status] || ('Unknown status ' + status));
                 return;
             }
@@ -160,11 +167,11 @@ decaf.extend(Response.prototype, {
         }
 
         if (typeof body === 'string') {
-            this.writeHead(status, { 'Content-Type' : 'text/html '});
+            this.writeHead(status, {'Content-Type' : 'text/html '});
             this.end(body);
         }
         else {
-            this.writeHead(status, { 'Content-Type' : 'application/json'});
+            this.writeHead(status, {'Content-Type' : 'application/json'});
             this.end(JSON.stringify(body));
         }
     },
@@ -175,7 +182,7 @@ decaf.extend(Response.prototype, {
      * @param {string} filename name of file to send
      * @param {boolean} modifiedSince false to disable 304 if-modified-since processing
      */
-    sendFile : function( filename, modifiedSince ) {
+    sendFile : function (filename, modifiedSince) {
         var os = this.os,
             headers = this.headers,
             extension = filename.indexOf('.') !== -1 ? filename.substr(filename.lastIndexOf('.') + 1) : '',
@@ -239,7 +246,7 @@ decaf.extend(Response.prototype, {
      * @param {int} lastModified timestamp byte array last modified
      * @param {string|int} modifiedSince if-modified-since request header value
      */
-    sendBytes : function( bytes, mimeType, lastModified, modifiedSince ) {
+    sendBytes : function (bytes, mimeType, lastModified, modifiedSince) {
         var os = this.os,
             headers = this.headers,
             size = bytes.length;
@@ -279,11 +286,14 @@ decaf.extend(Response.prototype, {
     /**
      * Send response headers to the client.
      */
-    sendHeaders : function() {
+    sendHeaders : function () {
         var me = this,
             os = me.os,
             headers = me.headers;
 
+        if (me.headersSent) {
+            return;
+        }
         os.writeln(me.proto + ' ' + me.status + ' ' + responseCodeText[me.status]);
         os.writeln('Date: ' + new Date().toGMTString());
         for (var key in headers) {
@@ -292,7 +302,7 @@ decaf.extend(Response.prototype, {
             }
         }
         if (me.cookies && !me.headers['Set-Cookie']) {
-            decaf.each(me.cookies, function( cookie, key ) {
+            decaf.each(me.cookies, function (cookie, key) {
                 var out = 'Set-Cookie: ' + key + '=' + encodeURIComponent(cookie.value);
                 if (cookie.expires) {
                     out += '; Expires=' + cookie.expires;
@@ -307,6 +317,38 @@ decaf.extend(Response.prototype, {
             });
         }
         os.writeln('');
+        me.headersSent = true;
+    },
+
+    /**
+     * Set response header
+     * @param {string} key name of header
+     * @param {string} value value of header
+     */
+    setHeader : function (key, value) {
+        this.headers[key] = value;
+    },
+
+    /**
+     * Write string to response.
+     *
+     * If headers aren't sent, this will send headers with Transfer-Encoding: chunked.  The write() and each
+     * successive one will be sent as a chunk.
+     *
+     * @param {string} s string to write
+     */
+    write : function (s) {
+        var me = this,
+            os = me.os;
+
+        if (!me.headersSent) {
+            me.setHeader('Transfer-Encoding', 'Chunked');
+            me.sendHeaders();
+            me.chunked = true;
+        }
+        os.writeln(s.length.toString(16));
+        os.writeln(s);
+        os.flush();
     },
 
     /**
@@ -314,7 +356,7 @@ decaf.extend(Response.prototype, {
      *
      * @param {string} s body of response
      */
-    end : function( s, gzip ) {
+    end : function (s, gzip) {
         var os = this.os,
             headers = this.headers;
 
@@ -349,7 +391,7 @@ decaf.extend(Response.prototype, {
      *
      * You can call this from within nested methods to terminate/complete the request.
      */
-    stop : function() {
+    stop : function () {
         throw 'RES.STOP';
     },
 
@@ -358,7 +400,7 @@ decaf.extend(Response.prototype, {
      *
      * @param {string} uri
      */
-    redirect : function( uri ) {
+    redirect : function (uri) {
         var me = this,
             os = me.os;
 
@@ -383,7 +425,7 @@ decaf.extend(Response.prototype, {
     /**
      * Flush the response output stream.
      */
-    flush : function() {
+    flush : function () {
         this.os.flush();
     }
 });

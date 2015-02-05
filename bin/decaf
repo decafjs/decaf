@@ -36,6 +36,12 @@ if [ -d "modules" ]; then
         MODULES="$LOCAL_MODULES:$MODULES"
     fi
 fi
+if [ -d "/usr/local/decaf/modules" ]; then
+    LOCAL_MODULES=`find /usr/local/decaf/modules -name "*.jar"` | tr "\\n" ":"
+    if [ "${#LOCAL_MODULES}" -gt 0 ]; then
+        MODULES="$LOCAL_MODULES:$MODULES"
+    fi
+fi
 
 # set up class path for java/rhino
 CP="."
@@ -105,6 +111,6 @@ elif [ "$1" = "uninstall" ]; then
     sudo rm -rf /usr/local/decaf
     sudo rm -f /usr/local/bin/decaf
 else
-#	echo java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
+	echo java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
 	java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
 fi

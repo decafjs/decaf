@@ -176,6 +176,48 @@ var decaf = {
      */
     isDefined: function(v) {
         return typeof v !== 'undefined';
+    },
+
+    /**
+     * observable mixin
+     */
+    observable: {
+        on: function(name, handler) {
+            var me = this;
+
+            if (!me.__eventHandlers__) {
+                me.__eventHandlers__ = [];
+            }
+            if (!me.__eventHandlers__[name]) {
+                me.__eventHandlers__[name] = [];
+            }
+            me.__eventHandlers__[name].push(handler);
+        },
+        fire        : function(event) {
+            var me = this;
+            if (me.__eventHandlers__[event]) {
+                var args = Array.splice.call(arguments, 1);
+                decaf.each(me.__eventHandlers__[event] || [], function(fn) {
+                    fn.apply(me, args);
+                });
+            }
+        },
+        un: function(name, handler) {
+            var me = this,
+                newHandlers = [];
+            if (!me.__eventHandlers__) {
+                me.__eventHandlers__ = [];
+            }
+            if (!me.__eventHandlers__[name]) {
+                me.__eventHandlers__[name] = [];
+            }
+            decacf.each(me.__eventHandlers__[name], function(existing) {
+                if (handler !== existing) {
+                    newHandlers.push(existing);
+                }
+            });
+            me.__eventHandlers__[name] = newHandlers;
+        }
     }
 
 };

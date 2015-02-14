@@ -60,9 +60,6 @@ decaf.extend(OutputStream.prototype, {
     writeBytes: function (bytes, offset, length) {
         var os = this.socket.getOutputStream();
         var written = os.write(bytes, offset, length);
-        if (os.checkError()) {
-            throw 'EOF';
-        }
         return written;
     },
 

@@ -29,7 +29,12 @@ decaf.extend(OutputStream.prototype, {
      * @param s
      */
     writeln: function (s) {
-        this.os.print(s + '\r\n');
+        var os = this.os;
+
+        os.print(s + '\r\n');
+        if (os.checkError()) {
+            throw 'EOF';
+        }
     },
 
     /**
@@ -37,7 +42,12 @@ decaf.extend(OutputStream.prototype, {
      * @param s
      */
     write: function (s) {
-        this.os.print(s);
+        var os = this.os;
+
+        os.print(s);
+        if (os.checkError()) {
+            throw 'EOF';
+        }
     },
 
     /**
@@ -50,6 +60,9 @@ decaf.extend(OutputStream.prototype, {
     writeBytes: function (bytes, offset, length) {
         var os = this.socket.getOutputStream();
         var written = os.write(bytes, offset, length);
+        if (os.checkError()) {
+            throw 'EOF';
+        }
         return written;
     },
 
@@ -57,7 +70,12 @@ decaf.extend(OutputStream.prototype, {
      *
      */
     flush: function () {
-        this.os.flush();
+        var os = this.os;
+
+        os.flush();
+        if (os.checkError()) {
+            throw 'EOF';
+        }
     }
 });
 

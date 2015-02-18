@@ -1,17 +1,16 @@
 #!/bin/bash
 
 # determine OS and other useful information
-#if [ "$OSTYPE" = "darwin12" ] || [ "$OSTYPE" = "darwin13" ]; then
 if [[ $OSTYPE = darwin* ]]; then
-	OS="OSX"
-	CPUS=`sysctl -n hw.ncpu`
-	FREEMEM="$(( $(vm_stat | awk '/free/ {gsub(/\./, "", $3); print $3}') * 4096 / 1048576))"
+    OS="OSX"
+    CPUS=`sysctl -n hw.ncpu`
+    FREEMEM="$(( $(vm_stat | awk '/free/ {gsub(/\./, "", $3); print $3}') * 4096 / 1048576))"
 else
-	OS="LINUX"
-	CPUS=`grep vendor_id /proc/cpuinfo | wc -l`
-	FREEMEM=`grep -i memfree /proc/meminfo | sed -e 's/MemFree:[ ]*//' | sed -e 's/ kB//'`
-	n=$((FREEMEM / 1024))
-	FREEMEM=$n
+    OS="LINUX"
+    CPUS=`grep vendor_id /proc/cpuinfo | wc -l`
+    FREEMEM=`grep -i memfree /proc/meminfo | sed -e 's/MemFree:[ ]*//' | sed -e 's/ kB//'`
+    n=$((FREEMEM / 1024))
+    FREEMEM=$n
 fi
 FREEMEM=$((FREEMEM/2))
 
@@ -43,9 +42,13 @@ if [ -d "/usr/local/decaf/modules" ]; then
     fi
 fi
 
+# On Linux, MySQL JDBC driver needs to be manually loaded
+if [[ $OSTYPE == "linux-gnu" ]]; then
+    MODULES="/usr/share/java/mysql-connector-java.jar:$MODULES"
+fi
+
 # set up class path for java/rhino
 CP="."
-
 
 if [ ! -z "$MODULES" ]; then
     CP="$CP:$MODULES/*/java/*"
@@ -62,8 +65,6 @@ elif [ -d "bower_components/decaf/java" ]; then
 elif [ -d "/usr/local/decaf/java" ]; then
     CP="$CP:/usr/local/decaf/java/*"
 fi
-
-#CP=".:./java/*:$MODULES/*/java/*:modules/*/java/*"
 
 # JVM Flags
 m='m'
@@ -94,9 +95,7 @@ RHINOSHELL="org.mozilla.javascript.tools.shell.Main"
 #  decaf uninstall (remove /usr/local/decaf)
 if [ "$1" = "debug" ]; then
 echo "DEBUG"
-	#shift
-	#echo java -cp $CP -Ddecaf=$DECAF $RHINODEBUGGER $RHINOFLAGS -f $DECAF/builtins/all.js $*
-	java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINODEBUGGER $RHINOFLAGS -f $DECAF/builtins/all.js $*
+    java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINODEBUGGER $RHINOFLAGS -f $DECAF/builtins/all.js $*
 elif [ "$1" = "install" ]; then
     if [ ! -d "bin" ] || [ ! -d "builtins" ] || [ ! -d "examples" ] || [ ! -d "java" ]; then
         echo "Usage: ./bin/decaf install"
@@ -104,13 +103,12 @@ elif [ "$1" = "install" ]; then
         exit 1;
     fi
     sudo rm -rf /usr/local/decaf
-	sudo mkdir -p /usr/local/decaf
+    sudo mkdir -p /usr/local/decaf
     sudo cp -rp . /usr/local/decaf
     sudo cp bin/decaf /usr/local/bin
 elif [ "$1" = "uninstall" ]; then
     sudo rm -rf /usr/local/decaf
     sudo rm -f /usr/local/bin/decaf
 else
-#	echo java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
-	java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
+    java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
 fi

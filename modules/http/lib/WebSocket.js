@@ -407,7 +407,7 @@ decaf.extend(WebSocket.prototype, {
                     case 0x2:       // binary frame
                         break;
                     case 0x8:       // close
-                        break;
+                        return false;
                     case 0x9:       // ping
                         this.pong();
                         break;

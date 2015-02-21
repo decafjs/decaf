@@ -8,6 +8,5 @@
 
 var Client = require('http').Client;
 
-debugger;
 var client = new Client('http://google.com').get();
 console.dir(client, 1);

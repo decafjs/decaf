@@ -129,7 +129,7 @@
 						continue;
 					}
                     else {
-                        console.log(e);
+                        console.exception(e);
                     }
                     keepAlive = false;
                 }

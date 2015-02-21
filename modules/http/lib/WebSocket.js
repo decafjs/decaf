@@ -4,7 +4,7 @@
  * @fileoverview WebSocket implementation
  */
 
-/*global require, java, sync */
+/*global require, java, sync, exports */
 var GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11",
     {Thread} = require('Threads'),
     {sha1, base64_encode, uuid} = require('support');
@@ -39,6 +39,8 @@ var webSockets = {};
  * @constructor
  */
 function WebSocket(req, res) {
+    var me = this;
+
     res.status = 101;
     decaf.extend(res.headers, {
         'Upgrade'              : 'websocket',
@@ -48,64 +50,28 @@ function WebSocket(req, res) {
     res.sendHeaders();
     res.flush();
 
-    this.req = req;
-    this.res = res;
+    me.req = req;
+    me.res = res;
 
-    this.handlers = {};
-    this.uuid = uuid();
+    me.uuid = uuid();
 
     // this assures only one thread at a time can be in a WebSocket's
-    // sendMessage method.
-    this.sendMessage = sync(function (s) {
-        this.rawSendMessage(s);
+    // send method.
+    me.send = sync(function (s) {
+        me.rawSendMessage(s);
+    }, me);
+    me.ping = sync(function () {
+        me.rawSendPing();
     }, this);
-    this.ping = sync(function () {
-        this.rawSendPing();
-    }, this);
-    this.pong = sync(function () {
-        this.rawSendPong();
-    }, this);
+    me.pong = sync(function () {
+        me.rawSendPong();
+    }, me);
+    me.onmessage = me.onclose = function() {};
 }
 
+decaf.extend(WebSocket.prototype, decaf.observable);
+
 decaf.extend(WebSocket.prototype, {
-    /**
-     * Register a handler to be called when an event is fired on this socket.
-     *
-     * There is one defined event currently, "message" that allows applications
-     * to have an event handler called when a message is received over the Socket.
-     *
-     * Applications can listen on any arbitrary events as well, since the eventName
-     * is any string, and there is a fireEvent() method that the applicaiton can call.
-     *
-     * For example, the application might listen for message events, and when a
-     * "quit chat room" message received, fire a "quit chat room" event.
-     *
-     * @param {string} eventName name of event
-     * @param {function} handler function to call when event is fired
-     */
-    on : function (eventName, handler) {
-        this.handlers[eventName] = this.handlers[eventName] || [];
-        this.handlers[eventName].push(handler);
-    },
-
-    /**
-     * Fire an event by name.
-     *
-     * THe data argument can be any arbitrary thing.  It is passed to the
-     * event handler untouched.
-     *
-     * @param {string} eventName name/kind of event to fire
-     * @param {object} data arbitrary data passed to event handlers
-     */
-    fireEvent : function (eventName, data) {
-        var handlers = this.handlers[eventName];
-        if (handlers) {
-            decaf.each(handlers, function (handler) {
-                handler(data);
-            });
-        }
-    },
-
     /**
      * Broadcast a message to all sockets with the specified path (ws URI)
      *
@@ -120,14 +86,15 @@ decaf.extend(WebSocket.prototype, {
         new Thread(function () {
             decaf.each(webSockets, function (ws) {
                 if (ws.uuid !== me.uuid && ws.req.uri === path) {
-                    ws.sendMessage(message);
+                    ws.send(message);
                 }
             });
         }).start();
     },
 
     run : function () {
-        var is = this.req.is,
+        var me = this,
+            is = this.req.is,
             message;
 
         is.socket.setSoTimeout(0);
@@ -135,11 +102,17 @@ decaf.extend(WebSocket.prototype, {
         webSockets[this.uuid] = this;
 
         // child thread blocks reading message
-        while ((message = this.getMessage(is)) !== false) {
-            this.fireEvent('message', message);
+        while ((message = me.getMessage(is)) !== false) {
+            me.onmessage(message);
+            me.fire('message', message);
         }
-        this.fireEvent('close');
-        delete webSockets[this.uuid];
+        try {
+            me.onclose();
+            me.fire('close');
+        }
+        finally {
+            delete webSockets[me.uuid];
+        }
     },
 
     rawSendMessage : function (s) {

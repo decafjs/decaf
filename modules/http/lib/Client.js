@@ -1,12 +1,4 @@
 /**
- * Created with JetBrains WebStorm.
- * User: mschwartz
- * Date: 7/24/13
- * Time: 10:01 AM
- * To change this template use File | Settings | File Templates.
- */
-
-/**
  * @private
  */
 var {URL, HttpUrlConnection} = java.net,

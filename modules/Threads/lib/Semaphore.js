@@ -14,21 +14,21 @@ var {TimeUnit} = java.util.concurrent,
     {ReentrantLock} = java.util.concurrent.locks;
 
 /**
+ * <p>A semaphore to enable control of access to critical sections of code or data structures.</p>
+ *
+ * <p>A semaphore is owned by the thread that last successfully obtained a lock on it and that has not unlocked it.</p>
+ *
  * @module Semaphore
- * A semaphore to enable control of access to critical sections of code or data structures.
  *
- * A semaphore is owned by the thread that last successfully obtained a lock on it and that has not unlocked it.
- *
- * @constructor
  */
+
+/** constructor */
 function Semaphore() {
     this.sem = new ReentrantLock();
 }
 
 decaf.extend(Semaphore.prototype, {
-    /**
-     * Lock the semaphore.  Blocks the caller until the lock is obtained.
-     */
+    /** Lock the semaphore.  Blocks the caller until the lock is obtained. */
     lock    : function() {
         this.sem.lock();
     },
@@ -36,7 +36,7 @@ decaf.extend(Semaphore.prototype, {
     /**
      * Try to acquire the lock, with optional timeout
      *
-     * @param timeout - optional timeout in ms
+     * @param {int} timeout - optional timeout in ms
      */
     tryLock : function(timeout) {
         return timeout ? this.sem.trylock(timeout, TimeUnit.MILLISECONDS) : this.sem.trylock();

@@ -69,7 +69,7 @@
 
     /**
      * @global
-     * @param {...} files files to include
+     * @param [...] files files to include
      */
     global.include = function() {
         var argLen = arguments.length;

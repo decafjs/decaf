@@ -14,28 +14,35 @@ var {TimeUnit} = java.util.concurrent,
     {ReentrantLock} = java.util.concurrent.locks;
 
 /**
- * <p>A semaphore to enable control of access to critical sections of code or data structures.</p>
+ * A semaphore to enable control of access to critical sections of code or data structures.
  *
- * <p>A semaphore is owned by the thread that last successfully obtained a lock on it and that has not unlocked it.</p>
+ * A semaphore is owned by the thread that last successfully obtained a lock on it and that has not unlocked it.
  *
- * @module Semaphore
- *
+ * @module Threads
  */
 
-/** constructor */
+/**
+ * @class Semaphore
+ * @constructor
+ */
 function Semaphore() {
     this.sem = new ReentrantLock();
 }
 
 decaf.extend(Semaphore.prototype, {
-    /** Lock the semaphore.  Blocks the caller until the lock is obtained. */
-    lock    : function() {
+    /**
+     * Lock the semaphore.  Blocks the caller until the lock is obtained.
+     *
+     * @method lock
+     */
+     lock    : function() {
         this.sem.lock();
     },
 
     /**
      * Try to acquire the lock, with optional timeout
      *
+     * @method trLock
      * @param {int} timeout - optional timeout in ms
      */
     tryLock : function(timeout) {
@@ -44,6 +51,8 @@ decaf.extend(Semaphore.prototype, {
 
     /**
      * Unlock the semaphore.
+     *
+     * @method unlock
      */
     unlock: function() {
         this.sem.unlock();
@@ -52,6 +61,7 @@ decaf.extend(Semaphore.prototype, {
     /**
      * Determine if current thread is owner of the lock on a Sempahore.
      *
+     * @method isMine
      * @returns {boolean} mine - true if current thread holds the lock on the Semaphore
      */
     isMine: function() {

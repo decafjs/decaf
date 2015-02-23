@@ -1,4 +1,7 @@
-/** @module builtin */
+/**
+ * @module builtin
+ * @submodule atexit
+ */
 
 /*!
  * Created with JetBrains WebStorm.
@@ -14,7 +17,7 @@
  * @fileoverview
  */
 /*global java, builtin */
-(function() {
+(function () {
     var exitFuncs = [],
         startFuncs = [];
 
@@ -22,63 +25,64 @@
         /**
          * Register function to be run at exit
          *
-         * @memberOf builtin
+         * @method atExit
          * @param func
          */
-        atExit : function(func) {
+        atExit : function ( func ) {
             exitFuncs.push(func);
         },
         /**
          * Register function to be run at exit
          *
-         * @memberOf builtin
+         * @method atexit
          * @param func
          */
-        atexit : function(func) {
+        atexit  : function ( func ) {
             exitFuncs.push(func);
         },
         /**
          * Register function to be run at startup
          *
-         * @memberOf builtin
+         * @method atStart
          * @param func
          */
-        atStart: function(func) {
+        atStart : function ( func ) {
             startFuncs.push(func);
         },
         /**
          * Register function to be run at startup
          *
-         * @memberOf builtin
+         * @method atStart
          * @param func
          */
-        atstart: function(func) {
+        atstart : function ( func ) {
             startFuncs.push(func);
         },
         /**
          * Execute all the startup functions
          *
-         * @memberOf builtin
+         * @method _main
          * @private
          */
-        _main: function() {
-            decaf.each(startFuncs, function(fn) {
+        _main   : function () {
+            decaf.each(startFuncs, function ( fn ) {
                 fn();
             });
         }
     });
 
-    java.lang.Runtime.getRuntime().addShutdownHook(java.lang.Thread(function() {
+    java.lang.Runtime.getRuntime().addShutdownHook(java.lang.Thread(function () {
         print('\nexiting');
         try {
-            decaf.each(exitFuncs, function(fn) {
+            decaf.each(exitFuncs, function ( fn ) {
                 try {
                     fn();
                 }
-                catch (e) {}
+                catch ( e ) {
+                }
             });
         }
-        catch (e) {
+        catch ( e ) {
 
         }
     }));

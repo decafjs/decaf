@@ -7,27 +7,42 @@
 
 // inspired by helma.File
 
-/** @module File */
+/**
+ * @module File
+ */
 
-/*global java */
+/*global java, module */
 "use strict";
 
 var JavaFile = java.io.File,
-    {BufferedReader, Writer, FileReader, PrintWriter, FileOutputStream, OutputStreamWriter, FileInputStream, InputStreamReader, ByteArrayOutputStream, BufferedInputStream} = java.io;
+    {BufferedReader, Writer, FileReader, PrintWriter, FileOutputStream, OutputStreamWriter,
+        FileInputStream, InputStreamReader, ByteArrayOutputStream, BufferedInputStream} = java.io;
 
 /**
  * Crate a new File object representing a path.
  *
- * @param {string} path
+ * @class File
  * @constructor
+ * @param {string} path that the File will represent, relative to where you started decaf, or absolute.
  */
 function File(path) {
+    /**
+     * java.io.File instance
+     *
+     * @private
+     * @property file
+     */
     if (arguments.length > 1) {
         this.file = new JavaFile(path, arguments[1]).getAbsoluteFile();
     }
     else {
         this.file = new JavaFile(path).getAbsoluteFile();
     }
+    /**
+     * Instance of a java reader or writer
+     *
+     * @private
+     */
     this.readerWriter = null;
 
     /**
@@ -56,11 +71,12 @@ decaf.extend(File, {
      *
      * NOTE: this is a static method.
      *
+     * @method createTempFile
      * @static
      * @param {string} prefix - The prefix string to be used in generating the file's name; must be at least three characters long
      * @param {string} suffix - The suffix string to be used in generating the file's name; may be null, in which case the suffix ".tmp" will be used
      * @param {string} directory - The directory in which the file is to be created, or null if the default temporary-file directory is to be used
-     * @returns {File}
+     * @return {File} File instance refering to the newly created temporary file
      */
     createTempFile : function (prefix, suffix, directory) {
         if (directory) {
@@ -79,6 +95,9 @@ decaf.extend(File, {
      * On UNIX systems the value of this field is ':'.
      *
      * On Microsoft Windows systems it is ';'.
+     *
+     * @property pathSeparator
+     * @type String
      */
     pathSeparator  : String(JavaFile.pathSeparator),
     /**
@@ -87,6 +106,9 @@ decaf.extend(File, {
      * This field is initialized to contain the first character of the value of the system property file.separator.
      *
      * On UNIX systems the value of this field is '/'; on Microsoft Windows systems it is '\'.
+     *
+     * @property separatorChar
+     * @type String
      */
     separatorChar  : String(JavaFile.separatorChar)
 });
@@ -95,7 +117,8 @@ decaf.extend(File.prototype, {
     /**
      * Tests whether the application can execute the file denoted by this abstract pathname.
      *
-     * @returns {boolean} true if file can be executed
+     * @method canExecute
+     * @return {boolean} true if file can be executed
      */
     canExecute : function () {
         return !!this.file.canExecute();
@@ -104,7 +127,8 @@ decaf.extend(File.prototype, {
     /**
      * Tests whether the application can read the file denoted by this abstract pathname.
      *
-     * @returns {boolean} true if the file can be read
+     * @method canRead
+     * @return {boolean} true if the file can be read
      */
     canRead : function () {
         return !!this.file.canRead();
@@ -113,7 +137,8 @@ decaf.extend(File.prototype, {
     /**
      * Tests whether the application can modify the file denoted by this abstract pathname.
      *
-     * @returns {boolean} true if the file can be written
+     * @method canWrite
+     * @return {boolean} true if the file can be written
      */
     canWrite : function () {
         return !!this.file.canRead();
@@ -122,8 +147,9 @@ decaf.extend(File.prototype, {
     /**
      * Compares two abstract pathnames lexicographically.
      *
+     * @method compareTo
      * @param {File} other file to compare to
-     * @returns {int} Zero if the argument is equal to this abstract pathname, a value less than zero if this abstract pathname is lexicographically less than the argument, or a value greater than zero if this abstract pathname is lexicographically greater than the argument
+     * @return {int} Zero if the argument is equal to this abstract pathname, a value less than zero if this abstract pathname is lexicographically less than the argument, or a value greater than zero if this abstract pathname is lexicographically greater than the argument
      */
     compareTo : function (other) {
         return this.file.compareTo(other.file);
@@ -132,7 +158,8 @@ decaf.extend(File.prototype, {
     /**
      * Atomically creates a new, empty file named by this abstract pathname if and only if a file with this name does not yet exist.
      *
-     * @returns {boolean} true if the named file does not exist and was successfully created; false if the named file already exists
+     * @method createNewFile
+     * @return {boolean} true if the named file does not exist and was successfully created; false if the named file already exists
      */
     createNewFile : function () {
         return !!this.file.createNewFile();
@@ -141,7 +168,8 @@ decaf.extend(File.prototype, {
     /**
      * Deletes the file or directory denoted by this abstract pathname. If this pathname denotes a directory, then the directory must be empty in order to be deleted.
      *
-     * @returns {boolean} true if and only if the file or directory is successfully deleted; false otherwise
+     * @method remove
+     * @return {boolean} true if and only if the file or directory is successfully deleted; false otherwise
      */
     remove : function () {
         return !!this.file['delete']();
@@ -152,6 +180,7 @@ decaf.extend(File.prototype, {
      *
      * Once deletion has been requested, it is not possible to cancel the request. This method should therefore be used with care.
      *
+     * @method deleteOnExit
      * @chainable
      */
     deleteOnExit : function () {
@@ -162,7 +191,8 @@ decaf.extend(File.prototype, {
     /**
      * Tests whether the file or directory denoted by this abstract pathname exists.
      *
-     * @returns {boolean} true if and only if the file or directory denoted by this abstract pathname exists; false otherwise
+     * @method exists
+     * @return {boolean} true if and only if the file or directory denoted by this abstract pathname exists; false otherwise
      */
     exists : function () {
         return !!this.file.exists();
@@ -173,7 +203,8 @@ decaf.extend(File.prototype, {
      *
      * If this abstract pathname is already absolute, then the pathname string is simply returned as if by the getPath() method. If this abstract pathname is the empty abstract pathname then the pathname string of the current user directory, which is named by the system property user.dir, is returned. Otherwise this pathname is resolved in a system-dependent way. On UNIX systems, a relative pathname is made absolute by resolving it against the current user directory. On Microsoft Windows systems, a relative pathname is made absolute by resolving it against the current directory of the drive named by the pathname, if any; if not, it is resolved against the current user directory.
      *
-     * @returns {string} The absolute abstract pathname denoting the same file or directory as this abstract pathname
+     * @method getAbsolutePath
+     * @return {string} The absolute abstract pathname denoting the same file or directory as this abstract pathname
      */
     getAbsolutePath : function () {
         return String(this.file.getAbsolutePath());
@@ -186,7 +217,8 @@ decaf.extend(File.prototype, {
      *
      * Every pathname that denotes an existing file or directory has a unique canonical form. Every pathname that denotes a nonexistent file or directory also has a unique canonical form. The canonical form of the pathname of a nonexistent file or directory may be different from the canonical form of the same pathname after the file or directory is created. Similarly, the canonical form of the pathname of an existing file or directory may be different from the canonical form of the same pathname after the file or directory is deleted.
      *
-     * @returns {string} The canonical pathname string denoting the same file or directory as this abstract pathname
+     * @method getCanonicalPath
+     * @return {string} The canonical pathname string denoting the same file or directory as this abstract pathname
      */
     getCanonicalPath : function () {
         return String(this.file.getCanonicalPath());
@@ -197,7 +229,8 @@ decaf.extend(File.prototype, {
      *
      * The returned number of unallocated bytes is a hint, but not a guarantee, that it is possible to use most or any of these bytes. The number of unallocated bytes is most likely to be accurate immediately after this call. It is likely to be made inaccurate by any external I/O operations including those made on the system outside of this virtual machine. This method makes no guarantee that write operations to this file system will succeed.
      *
-     * @returns {Number} The number of unallocated bytes on the partition 0L if the abstract pathname does not name a partition. This value will be less than or equal to the total file system size returned by getTotalSpace().
+     * @method getFreeSpace
+     * @return {Number} The number of unallocated bytes on the partition 0L if the abstract pathname does not name a partition. This value will be less than or equal to the total file system size returned by getTotalSpace().
      */
     getFreeSpace : function () {
         return this.file.getFreeSpace();
@@ -206,7 +239,8 @@ decaf.extend(File.prototype, {
     /**
      * Returns the name of the file or directory denoted by this abstract pathname. This is just the last name in the pathname's name sequence. If the pathname's name sequence is empty, then the empty string is returned.
      *
-     * @returns {string} The name of the file or directory denoted by this abstract pathname, or the empty string if this pathname's name sequence is empty
+     * @method getName
+     * @return {string} The name of the file or directory denoted by this abstract pathname, or the empty string if this pathname's name sequence is empty
      */
     getName : function () {
         return String(this.file.getName());
@@ -217,7 +251,8 @@ decaf.extend(File.prototype, {
      *
      * The parent of an abstract pathname consists of the pathname's prefix, if any, and each name in the pathname's name sequence except for the last. If the name sequence is empty then the pathname does not name a parent directory.
      *
-     * @returns {string} The pathname string of the parent directory named by this abstract pathname, or null if this pathname does not name a parent
+     * @method getParent
+     * @return {string} The pathname string of the parent directory named by this abstract pathname, or null if this pathname does not name a parent
      */
     getParent : function () {
         var p = this.file.getParent();
@@ -227,7 +262,8 @@ decaf.extend(File.prototype, {
     /**
      * Converts this abstract pathname into a pathname string. The resulting string uses the default name-separator character to separate the names in the name sequence.
      *
-     * @returns {Strring} The string form of this abstract pathname
+     * @method getPath
+     * @return {Strring} The string form of this abstract pathname
      */
     getPath : function () {
         return String(this.file.getPath());
@@ -236,7 +272,8 @@ decaf.extend(File.prototype, {
     /**
      * Returns the size of the partition named by this abstract pathname.
      *
-     * @returns {Number} The size, in bytes, of the partition or 0L if this abstract pathname does not name a partition
+     * @method getTotalSpace
+     * @return {Number} The size, in bytes, of the partition or 0L if this abstract pathname does not name a partition
      */
     getTotalSpace : function () {
         return this.file.getTotalSpace();
@@ -247,7 +284,8 @@ decaf.extend(File.prototype, {
      *
      * The returned number of available bytes is a hint, but not a guarantee, that it is possible to use most or any of these bytes. The number of unallocated bytes is most likely to be accurate immediately after this call. It is likely to be made inaccurate by any external I/O operations including those made on the system outside of this virtual machine. This method makes no guarantee that write operations to this file system will succeed.
      *
-     * @returns {Number} The number of available bytes on the partition or 0L if the abstract pathname does not name a partition. On systems where this information is not available, this method will be equivalent to a call to getFreeSpace().
+     * @method getUsableSpace
+     * @return {Number} The number of available bytes on the partition or 0L if the abstract pathname does not name a partition. On systems where this information is not available, this method will be equivalent to a call to getFreeSpace().
      */
     getUsableSpace : function () {
         return this.file.getUsableSpace();
@@ -256,7 +294,8 @@ decaf.extend(File.prototype, {
     /**
      * Tests whether this abstract pathname is absolute. The definition of absolute pathname is system dependent. On UNIX systems, a pathname is absolute if its prefix is "/". On Microsoft Windows systems, a pathname is absolute if its prefix is a drive specifier followed by "\\", or if its prefix is "\\\\".
      *
-     * @returns {boolean} true if this abstract pathname is absolute, false otherwise
+     * @method isAbsolute
+     * @return {boolean} true if this abstract pathname is absolute, false otherwise
      */
     isAbsolute : function () {
         return !!this.file.isAbsolute();
@@ -265,7 +304,8 @@ decaf.extend(File.prototype, {
     /**
      * Tests whether the file denoted by this abstract pathname is a directory.
      *
-     * @returns {boolean} true if and only if the file denoted by this abstract pathname exists and is a directory; false otherwise
+     * @method isDirectory
+     * @return {boolean} true if and only if the file denoted by this abstract pathname exists and is a directory; false otherwise
      */
     isDirectory : function () {
         return !!this.file.isDirectory();
@@ -274,7 +314,8 @@ decaf.extend(File.prototype, {
     /**
      * Tests whether the file denoted by this abstract pathname is a normal file. A file is normal if it is not a directory and, in addition, satisfies other system-dependent criteria. Any non-directory file created by a Java application is guaranteed to be a normal file.
      *
-     * @returns {boolean} true if and only if the file denoted by this abstract pathname exists and is a normal file; false otherwise
+     * @method isFile
+     * @return {boolean} true if and only if the file denoted by this abstract pathname exists and is a normal file; false otherwise
      */
     isFile : function () {
         return !!this.file.isFile();
@@ -283,7 +324,8 @@ decaf.extend(File.prototype, {
     /**
      * Tests whether the file named by this abstract pathname is a hidden file. The exact definition of hidden is system-dependent. On UNIX systems, a file is considered to be hidden if its name begins with a period character ('.'). On Microsoft Windows systems, a file is considered to be hidden if it has been marked as such in the filesystem.
      *
-     * @returns {boolean} true if and only if the file denoted by this abstract pathname is hidden according to the conventions of the underlying platform
+     * @method isHidden
+     * @return {boolean} true if and only if the file denoted by this abstract pathname is hidden according to the conventions of the underlying platform
      */
     isHidden : function () {
         return !!this.file.isHidden();
@@ -292,7 +334,8 @@ decaf.extend(File.prototype, {
     /**
      * Returns the time that the file denoted by this abstract pathname was last modified.
      *
-     * @returns {int} A long value representing the time the file was last modified, measured in milliseconds since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if an I/O error occurs
+     * @method lastModified
+     * @return {int} A long value representing the time the file was last modified, measured in milliseconds since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if an I/O error occurs
      */
     lastModified : function () {
         return this.file.lastModified();
@@ -301,7 +344,8 @@ decaf.extend(File.prototype, {
     /**
      * Returns the length of the file denoted by this abstract pathname. The return value is unspecified if this pathname denotes a directory.
      *
-     * @returns {int} The length, in bytes, of the file denoted by this abstract pathname, or 0L if the file does not exist. Some operating systems may return 0L for pathnames denoting system-dependent entities such as devices or pipes.
+     * @method size
+     * @return {int} The length, in bytes, of the file denoted by this abstract pathname, or 0L if the file does not exist. Some operating systems may return 0L for pathnames denoting system-dependent entities such as devices or pipes.
      */
     size : function () {
         return this.file['length']();
@@ -314,8 +358,9 @@ decaf.extend(File.prototype, {
      *
      * There is no guarantee that the name strings in the resulting array will appear in any specific order; they are not, in particular, guaranteed to appear in alphabetical order.
      *
+     * @method list
      * @param {regex} pattern - optional regex to match filenames against
-     * @returns {Array} An array of abstract pathnames denoting the files and directories in the directory denoted by this abstract pathname. The array will be empty if the directory is empty. Returns null if this abstract pathname does not denote a directory, or if an I/O error occurs.
+     * @return {Array} An array of abstract pathnames denoting the files and directories in the directory denoted by this abstract pathname. The array will be empty if the directory is empty. Returns null if this abstract pathname does not denote a directory, or if an I/O error occurs.
      */
     list : function (pattern) {
         var fileList = this.file.list(),
@@ -340,8 +385,9 @@ decaf.extend(File.prototype, {
      *
      * Optionally, creates the directory named by this abstract pathname, including any necessary but nonexistent parent directories. Note that if this operation fails it may have succeeded in creating some of the necessary parent directories.
      *
+     * @method makeDirectory
      * @param {Boolean} fullPath - if true, make all directories along path, if necessary
-     * @returns {Boolean} true if and only if the directory was created; false otherwise.
+     * @return {Boolean} true if and only if the directory was created; false otherwise.
      */
     makeDirectory : function (fullPath) {
         return fullPath ? this.file.mkdirs() : this.file.mkdir();
@@ -351,8 +397,9 @@ decaf.extend(File.prototype, {
      * Renames the file denoted by this abstract pathname.
      * Many aspects of the behavior of this method are inherently platform-dependent: The rename operation might not be able to move a file from one filesystem to another, it might not be atomic, and it might not succeed if a file with the destination abstract pathname already exists. The return value should always be checked to make sure that the rename operation was successful.
      *
+     * @method renameTo
      * @param {string} newPath The new abstract pathname for the file.
-     * @returns {Boolean} true if and only if the renaming succeeded; false otherwise.
+     * @return {Boolean} true if and only if the renaming succeeded; false otherwise.
      */
     renameTo : function (newPath) {
         if (typeof newPath === 'string') {
@@ -364,9 +411,10 @@ decaf.extend(File.prototype, {
     /**
      * Sets the owner's or everybody's execute permission for this abstract pathname.
      *
+     * @method setExecutable
      * @param {Boolean} executable - If true, sets the access permission to allow execute operations; if false to disallow execute operations
      * @param {Boolean} ownerOnly - If true, the execute permission applies only to the owner's execute permission; otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's execute permission from that of others, then the permission will apply to everybody, regardless of this value.
-     * @returns {Boolean} true if and only if the operation succeeded. The operation will fail if the user does not have permission to change the access permissions of this abstract pathname. If executable is false and the underlying file system does not implement an execute permission, then the operation will fail.
+     * @return {Boolean} true if and only if the operation succeeded. The operation will fail if the user does not have permission to change the access permissions of this abstract pathname. If executable is false and the underlying file system does not implement an execute permission, then the operation will fail.
      */
     setExecutable : function (executable, ownerOnly) {
         if (ownerOnly !== undefined) {
@@ -380,9 +428,10 @@ decaf.extend(File.prototype, {
     /**
      * Sets the owner's or everybody's read permission for this abstract pathname.
      *
+     * @method setReadable
      * @param {Boolean} readable - If true, sets the access permission to allow read operations; if false to disallow read operations
      * @param {Boolean} ownerOnly - If true, the read permission applies only to the owner's read permission; otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's read permission from that of others, then the permission will apply to everybody, regardless of this value.
-     * @returns {Boolean} true if and only if the operation succeeded. The operation will fail if the user does not have permission to change the access permissions of this abstract pathname. If readable is false and the underlying file system does not implement a read permission, then the operation will fail.
+     * @return {Boolean} true if and only if the operation succeeded. The operation will fail if the user does not have permission to change the access permissions of this abstract pathname. If readable is false and the underlying file system does not implement a read permission, then the operation will fail.
      */
     setReadable : function (readable, ownerOnly) {
         if (ownerOnly !== undefined) {
@@ -396,9 +445,10 @@ decaf.extend(File.prototype, {
     /**
      * Sets the owner's or everybody's write permission for this abstract pathname.
      *
+     * @method setWritable
      * @param {Boolean} writable - If true, sets the access permission to allow write operations; if false to disallow write operations
      * @param {Boolean} ownerOnly - If true, the write permission applies only to the owner's write permission; otherwise, it applies to everybody. If the underlying file system can not distinguish the owner's write permission from that of others, then the permission will apply to everybody, regardless of this value.
-     * @returns {Boolean} true if and only if the operation succeeded. The operation will fail if the user does not have permission to change the access permissions of this abstract pathname.
+     * @return {Boolean} true if and only if the operation succeeded. The operation will fail if the user does not have permission to change the access permissions of this abstract pathname.
      */
     setWritable : function (writable, ownerOnly) {
         if (ownerOnly !== undefined) {
@@ -413,8 +463,10 @@ decaf.extend(File.prototype, {
      * Sets the last-modified time of the file or directory named by this abstract pathname.
      *
      * All platforms support file-modification times to the nearest second, but some provide more precision. The argument will be truncated to fit the supported precision. If the operation succeeds and no intervening operations on the file take place, then the next invocation of the lastModified() method will return the (possibly truncated) time argument that was passed to this method.
+     *
+     * @method setLastModified
      * @param {int} timestampMs - The new last-modified time, measured in milliseconds since the epoch (00:00:00 GMT, January 1, 1970)
-     * @returns {Boolean} true if and only if the operation succeeded; false otherwise
+     * @return {Boolean} true if and only if the operation succeeded; false otherwise
      */
     setLastModified : function (timestampMs) {
         return this.file.setLastModified(timeStampMs);
@@ -423,7 +475,8 @@ decaf.extend(File.prototype, {
     /**
      * Marks the file or directory named by this abstract pathname so that only read operations are allowed. After invoking this method the file or directory is guaranteed not to change until it is either deleted or marked to allow write access. Whether or not a read-only file or directory may be deleted depends upon the underlying system.
      *
-     * @returns {Boolean} true if and only if the operation succeeded; false otherwise
+     * @method setReadOnly
+     * @return {Boolean} true if and only if the operation succeeded; false otherwise
      */
     setReadOnly : function () {
         return this.file.setReadOnly();
@@ -434,7 +487,8 @@ decaf.extend(File.prototype, {
     /**
      * Tests whether the File is currently open
      *
-     * @returns {Boolean} true if the File is open
+     * @method isOpened
+     * @return {Boolean} true if the File is open
      */
     isOpened : function () {
         return (this.readerWriter !== null);
@@ -448,6 +502,7 @@ decaf.extend(File.prototype, {
      *  charset - name of character set to use while reading or writing<br/>
      *  append - true to append, defaults to false
      *
+     * @method open
      * @param {Object} options - object as specified above.
      */
     open : function (options) {
@@ -480,7 +535,8 @@ decaf.extend(File.prototype, {
     /**
      * Read a line from the file
      *
-     * @returns {string} line read from the file, or null
+     * @method readln
+     * @return {string} line read from the file, or null
      */
     readln : function () {
         return this.readerWriter.readln();
@@ -489,7 +545,8 @@ decaf.extend(File.prototype, {
     /**
      * Write a string or array of bytes to the file.
      *
-     * @param {String|byte[]} what to write
+     * @method write
+     * @param {String|Array<byte>} the string or Java byte array to write
      */
     write : function (what) {
         if (what !== null) {
@@ -500,7 +557,8 @@ decaf.extend(File.prototype, {
     /**
      * Write a string or array of bytes, followed by a newline to the file.
      *
-     * @param {String|byte[]} what string to write.
+     * @method writeln
+     * @param {String|Array<byte>} the string or Java byte array
      */
     writeln : function (what) {
         this.write(what);
@@ -509,6 +567,8 @@ decaf.extend(File.prototype, {
 
     /**
      * Flush the file's output stream to disk.
+     *
+     * @method flush
      */
     flush : function () {
         this.readerWriter.flush();
@@ -516,6 +576,8 @@ decaf.extend(File.prototype, {
 
     /**
      * Close the file.
+     *
+     * @method close
      */
     close : function () {
         readerWriter.close();
@@ -525,7 +587,8 @@ decaf.extend(File.prototype, {
     /**
      * Read the file contents as a string.
      *
-     * @returns {string} Content of the file
+     * @method readAll
+     * @return {string} Content of the file
      */
     readAll : function () {
         var file = this.file,
@@ -544,10 +607,11 @@ decaf.extend(File.prototype, {
     /**
      * Write the file from a string.
      *
+     * @method writeFile
      * @param {string} s - string to write
      * @param {boolean} append - if true, string is appended to file
      * @param {string} encoding - optional file encoding (utf8, etc.)
-     * @returns {boolean} true if success
+     * @return {boolean} true if success
      */
     writeFile : function (s, append, encoding) {
         var os = new FileOutputStream(this.file, !!append);
@@ -559,6 +623,7 @@ decaf.extend(File.prototype, {
     /**
      * Recursively remove a directory
      *
+     * @method removeDirectory
      * @chainable
      */
     removeDirectory : function () {
@@ -583,8 +648,9 @@ decaf.extend(File.prototype, {
     /**
      * Recursively list a directory.
      *
+     * @ethod listRecursive
      * @param {regex} pattern - regex of names to match
-     * @returns {Array} array of filenames, including path (list method does not include path)
+     * @return {Array} array of filenames, including path (list method does not include path)
      */
     listRecursive : function (pattern) {
         var file = this.file,
@@ -612,8 +678,9 @@ decaf.extend(File.prototype, {
     },
 
     /**
-     * Phyiscally copy a file to a new file, or overwrite an existing file.
+     * Physically copy a file to a new file, or overwrite an existing file.
      *
+     * @method hardCopy
      * @param {string} dest - path to copy file to.
      */
     hardCopy : function (dest) {
@@ -642,6 +709,7 @@ decaf.extend(File.prototype, {
      * across file systems on some operating systems.  So we do a hard copy of the file
      * to the destination and remove the original.
      *
+     * @method move
      * @param {string} dest - destination where the file will be moved.
      */
     move : function (dest) {
@@ -656,7 +724,8 @@ decaf.extend(File.prototype, {
     /**
      * Read file contents in as a byte array.
      *
-     * @returns {byte[]} file contents as a java byte array
+     * @method toByteArray
+     * @return {Array<byte>} file contents as a java byte array
      */
     toByteArray : function () {
         var body = new ByteArrayOutputStream();
@@ -680,14 +749,14 @@ decaf.extend(File.prototype, {
     /**
      * Write file contents from a java byte array.
      *
-     * @param {byte[]} bytes - bytes to write to the file.
+     * @method fromByteArray
+     * @param {Array<byte>} bytes - bytes to write to the file.
      */
     fromByteArray : function (bytes) {
         var stream = new FileOutputStream(this.getAbsolutePath());
         stream.write(bytes);
         stream.close();
     }
-
 
 });
 

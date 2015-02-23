@@ -1,7 +1,3 @@
-/**
- * @fileoverview JavaScript Threads
- */
-
 /*global builtin */
 "use strict";
 var process = require('process');
@@ -21,11 +17,13 @@ function allocThreadId() {
 }
 
 /** @module Thread */
+
 /**
  * Create a new Thread
  *
  * Note: the thread isn't started, it is only created
  *
+ * @class Thread
  * @param {Function} fn - function to run as thread
  * @constructor
  */
@@ -47,29 +45,35 @@ function Thread(fn) {
 
 /**
  * Exit the currently running thread
+ *
+ * @method exit
  */
 Thread.exit = function() {
     // console.log('THREAD.EXIT');
     throw 'THREAD.EXIT';
 };
 
-/**
- * Get current Thread
- */
+/** @private */
 var mainThread = {
     on: function() {
         
     }
 };
 
+/**
+ * Get current Thread
+ *
+ * @method currentThread
+ */
 Thread.currentThread = function() {
     var t = java.lang.Thread.currentThread();
     return javaThreads[t.getId()] || mainThread;
 };
 
 /**
+ * Defer to other running threads for specified number of seconds.
  *
- * @memberOf Thread
+ * @method sleep
  * @param secs
  */
 Thread.sleep = function(secs) {
@@ -77,8 +81,9 @@ Thread.sleep = function(secs) {
 };
 
 /**
+ * Defer to other running threads for specified number of milliseconds
  *
- * @memberOf Thread
+ * @method usleep
  * @param usecs
  */
 Thread.usleep = function(usecs) {
@@ -87,8 +92,9 @@ Thread.usleep = function(usecs) {
 
 decaf.extend(Thread.prototype, {
     /**
+     * Add an event listener on the thread.
      *
-     * @memberOf Thread
+     * @method on
      * @param event
      * @param fn
      */
@@ -98,8 +104,9 @@ decaf.extend(Thread.prototype, {
     },
 
     /**
+     * Fire an event on the thread.
      *
-     * @memberOf Thread
+     * @metod fire
      * @param event
      */
     fire        : function(event) {
@@ -117,7 +124,8 @@ decaf.extend(Thread.prototype, {
 
     /**
      * Start the thread running
-     * @memberOf Thread
+     *
+     * @method start
      */
     start       : function() {
         var me = this;
@@ -126,7 +134,7 @@ decaf.extend(Thread.prototype, {
 
     /**
      * @private
-     * @memberOf Thread
+     * @method runHandler
      */
     runHandler  : function() {
         var me = this.scope,
@@ -149,9 +157,9 @@ decaf.extend(Thread.prototype, {
 
     /**
      *
-     * @memberOf Thread
-     * @param me
      * @private
+     * @method exitHandler
+     * @param me
      */
     exitHandler : function(me) {
         me.fire('exit');

@@ -6,7 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
-/** @module Condition */
+/**
+ * @module Threads
+ */
 
 // condition variables (untested)
 
@@ -14,46 +16,55 @@
 "use strict";
 
 /**
+ * A condition instance provides a mechanism for one thread to wait until the Condition is notified by another thread.
  *
+ * @class Conditional
  * @constructor
  */
 function Condition() {
     var me = this;
+
+    /** @private */
     me.variable = new java.lang.Object();
+
     /**
+     * Wait for a notify.
      *
-     * @type {*}
+     * @method wait
      */
-    this.wait = sync(function() {
+    this.wait = sync(function () {
         me.variable.wait();
     }, me.variable);
 
     /**
+     * Notify
      *
-     * @type {*}
+     * @method notify
      */
-    this.notify = sync(function() {
+    this.notify = sync(function () {
         me.variable.notify();
-    },me.variable);
+    }, me.variable);
+
     /**
+     * Notify all threads waiting on this Condition instance.
      *
-     * @type {*}
+     * @method notifyAll
      */
-    this.notifyAll = sync(function() {
+    this.notifyAll = sync(function () {
         me.variable.notifyAll();
-    },me.variable);
+    }, me.variable);
 }
 decaf.extend(Condition.prototype, {
     /**
      * Destroy condition variable
      *
-     * @memberOf Condition
+     * @method destroy
      */
-    destroy: function() {
+    destroy : function () {
         this.notifyAll();
     }
 });
 
 decaf.extend(exports, {
-    Condition: Condition
+    Condition : Condition
 });

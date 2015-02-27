@@ -246,7 +246,7 @@ decaf.extend(WebSocket.prototype, {
         }
     },
     close: function() {
-        this.is.is.eof = true;
+        this.req.is.eof = true;
     }
 
 });

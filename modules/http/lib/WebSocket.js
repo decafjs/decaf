@@ -109,10 +109,7 @@ decaf.extend(WebSocket.prototype, {
                     me.fire('message', message);
                 }
                 catch (e) {
-                    if (e === 'EOF') {
-                        throw e;
-                    }
-                    console.dir(e);
+                    console.exception(e);
                 }
             }
         }

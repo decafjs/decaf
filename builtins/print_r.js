@@ -6,7 +6,8 @@
  * Time: 5:04 PM
  */
 
-(function() {
+/*global toString */
+(function () {
 
     function isArray(a) {
         return toString.apply(a) === '[object Array]';
@@ -15,6 +16,7 @@
     function isObject(o) {
         return !!o && Object.prototype.toString.call(o) === '[object Object]';
     }
+
     function isError(e) {
         return !!e && Object.prototype.toString.call(e) === '[object Error]';
     }
@@ -89,7 +91,7 @@
             return '(boolean) ' + o;
         }
         if (isJava(o)) {
-            r.push('(' + toString.apply(o).replace(/\[object /, '').replace(/\]/, '') +')');
+            r.push('(' + toString.apply(o).replace(/\[object /, '').replace(/\]/, '') + ')');
             for (key in o) {
                 var value = o[key];
 //                r.push(sep + indent + '[' + key + '] ' + print_r(value, max, sep, l + 1));
@@ -104,7 +106,7 @@
                 body = body.replace(/\{.*\}/igm, '{ ... }');
             }
             r.push(body);
-            decaf.each(o, function(value, key) {
+            decaf.each(o, function (value, key) {
                 r.push(sep + indent + '[' + key + '] ' + print_r(value, max, sep, l + 1));
             });
             return r.join('\n');
@@ -112,7 +114,7 @@
         if (isArray(o)) {
             r.push('(array)');
 //            r.push('[');
-            decaf.each(o, function(value, index) {
+            decaf.each(o, function (value, index) {
                 r.push(sep + indent + '[' + index + '] ' + print_r(value, max, sep, l + 1));
             });
 //            r.push(indent + ']');
@@ -121,7 +123,7 @@
         if (isError(o)) {
             r.push('(error)');
 //            r.push('{');
-            decaf.each(o, function(value, index) {
+            decaf.each(o, function (value, index) {
                 r.push(sep + indent + '[' + index + '] ' + print_r(value, max, sep, l + 1));
             });
 //            r.push(indent + '}');
@@ -130,7 +132,7 @@
         if (isObject(o)) {
             r.push('(object)');
 //            r.push('{');
-            decaf.each(o, function(value, index) {
+            decaf.each(o, function (value, index) {
                 r.push(sep + indent + '[' + index + '] ' + print_r(value, max, sep, l + 1));
             });
 //            r.push(indent + '}');
@@ -152,7 +154,7 @@ if (false) {
      * @param {String} sep The separator to use between [default: a single space ' ']
      * @param {Number} l The current level deep (amount of recursion). Do not use this parameter: it's for the function's own use
      */
-    builtin.print_r = function(x, max, sep, l) {
+    builtin.print_r = function (x, max, sep, l) {
 
         l = l || 0;
         max = max || 10;
@@ -170,7 +172,8 @@ if (false) {
 
         if (x === null) {
             r += "(null)\n";
-        } else if (t == 'object') {
+        }
+        else if (t == 'object') {
 
             l++;
 
@@ -198,7 +201,8 @@ if (false) {
                 }
             }
 
-        } else {
+        }
+        else {
             if (t == 'string') {
                 if (x == '') {
                     x = '(empty)';
@@ -219,9 +223,7 @@ if (false) {
             }
             r += "\n";
         }
-
         return r;
-
     }
 
 

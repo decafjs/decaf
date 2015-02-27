@@ -66,7 +66,7 @@ function WebSocket(req, res) {
     me.pong = sync(function () {
         me.rawSendPong();
     }, me);
-    me.onmessage = me.onclose = function() {};
+    me.onmessage = me.onclose = function () {};
 }
 
 decaf.extend(WebSocket.prototype, decaf.observable);
@@ -81,7 +81,7 @@ decaf.extend(WebSocket.prototype, {
      * @param {string} path WebSocket path
      * @param {string} message message to send
      */
-    broadcast : function (path, message) {
+    broadcast      : function (path, message) {
         var me = this;
         new Thread(function () {
             decaf.each(webSockets, function (ws) {
@@ -91,8 +91,7 @@ decaf.extend(WebSocket.prototype, {
             });
         }).start();
     },
-
-    run : function () {
+    run            : function () {
         var me = this,
             is = this.req.is,
             message;
@@ -102,19 +101,31 @@ decaf.extend(WebSocket.prototype, {
         webSockets[this.uuid] = this;
 
         // child thread blocks reading message
-        while ((message = me.getMessage(is)) !== false) {
-            me.onmessage(message);
-            me.fire('message', message);
-        }
+
         try {
-            me.onclose();
-            me.fire('close');
+            while ((message = me.getMessage(is)) !== false) {
+                try {
+                    me.onmessage(message);
+                    me.fire('message', message);
+                }
+                catch (e) {
+                    if (e === 'EOF') {
+                        throw e;
+                    }
+                    console.dir(e);
+                }
+            }
         }
         finally {
-            delete webSockets[me.uuid];
+            try {
+                me.onclose();
+                me.fire('close');
+            }
+            finally {
+                delete webSockets[me.uuid];
+            }
         }
     },
-
     rawSendMessage : function (s) {
         var os = this.res.os.socket.getOutputStream(),
             len = s.length;
@@ -148,14 +159,12 @@ decaf.extend(WebSocket.prototype, {
         os.write(0x89);
         os.write(0);
     },
-
     rawSendPong : function () {
         var os = this.res.os.socket.getOutputStream();
         os.write(0x8a);
         os.write(0);
     },
-
-    getMessage : function (is) {
+    getMessage  : function (is) {
         function next() {
             return is.readByte();
         }
@@ -235,6 +244,9 @@ decaf.extend(WebSocket.prototype, {
 //                }
             return false;
         }
+    },
+    close: function() {
+        this.is.eof = true;
     }
 
 });

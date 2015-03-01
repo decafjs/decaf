@@ -12,11 +12,12 @@
 
 "use strict";
 
+/*global java, builtin */
 /**
  * Provide functionality to register functions to be run at start and exit of decaf.
- * @fileoverview
- */
-/*global java, builtin */
+ * @class builtin
+ * @module builtin
+ * /
 (function () {
     var exitFuncs = [],
         startFuncs = [];
@@ -26,7 +27,7 @@
          * Register function to be run at exit
          *
          * @method atExit
-         * @param func
+         * @param {Function} func - function to be run at exit
          */
         atExit : function ( func ) {
             exitFuncs.push(func);

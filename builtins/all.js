@@ -19,7 +19,7 @@
     /**
      * Arguments to program as an Arguments array.
      *
-     * @property arguments
+     * @property {Arguments} arguments
      */
     global.arguments = arguments;
 

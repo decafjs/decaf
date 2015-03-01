@@ -1,11 +1,15 @@
 {
-	"name": "decaf",
-	"version": "v0.0.4",
-	"main" : "bin/decaf",
-	"ignore" : [
-	],
-	"dependencies" : {
-	},
-	"devDependencies": {
-	}
+  "name"           : "decaf",
+  "version"        : "v0.0.4",
+  "main"           : "bin/decaf",
+  "ignore"         : [
+  ],
+  "dependencies"   : {
+  },
+  "devDependencies": {
+  },
+  "scrawl"         : [
+    "bulitins",
+    "modules"
+  ]
 }

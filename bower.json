@@ -9,7 +9,7 @@
   "devDependencies": {
   },
   "scrawl"         : [
-    "bulitins",
+    "builtins",
     "modules"
   ]
 }

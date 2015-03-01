@@ -17,7 +17,7 @@
  * Provide functionality to register functions to be run at start and exit of decaf.
  * @class builtin
  * @module builtin
- * /
+ */
 (function () {
     var exitFuncs = [],
         startFuncs = [];

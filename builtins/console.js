@@ -1,19 +1,30 @@
+/**
+ * # Builtin global console singleton.
+ *
+ * This class implements browser-like console singleton appropriate for server-side.
+ *
+ * The console object is globally available in any JavaScript code you write for DecafJS.
+ *
+ * @fileoverview
+ */
+/** @private */
 (function() {
     var {BufferedReader, InputStreamReader} = java.io,
         stdin = new BufferedReader(new InputStreamReader(java.lang.System.in));
 
-    /**
-     * Implement brower-like console singleton appropriate for server-side.
-     *
-     * @module builtin
-     * @class console
-     */
     global.console = {
         /**
+         * ## console.readLine() : String
+         *
          * Read a line from the console/terminal (stdin)
          *
-         * @method readLine
-         * @returns {string} - line read from terminal
+         * ### Arguments:
+         *
+         *   - None
+         *
+         * ###Returns:
+         *
+         *   - {String} the line read from the terminal
          */
         readLine: function() {
             var s = stdin.readLine();
@@ -24,6 +35,13 @@
         },
 
         /**
+         * ## console.log()
+         *
+         * Output one or more strings to the console.
+         *
+         * ### Arguments:
+         * - {String} ... - one or more strings to be printed on the console.
+         *
          * @method log
          * @param [...] - things to display on the console
          */
@@ -37,11 +55,17 @@
             }
         },
         /**
+         * ## console.dir()
+         *
          * Dump a JavaScript object to stdout.
          *
          * The dump recursively prints members of the object up to the specified depth.
          *
          * A best effort is made to dump wrapped Java objects as well.  This will show those objects' member variables and methods.
+         *
+         * ### Arguments:
+         * - {Mixed} o - the variable to be dumped
+         * - {int} n - optional maximum depth for recursion while dumping the object.  Defaults to 4.
          *
          * @method dir
          * @param {mixed} o - object to dump
@@ -52,7 +76,12 @@
             java.lang.System.out.println(builtin.print_r(o, n));
         },
         /**
+         * ## console.error()
+         *
          * Write strings to stderr
+         *
+         * ### Arguments:
+         * - {String} ... - one or more strings to be printed to stderr.
          *
          * @method error
          * @param [...] - things to display to stderr
@@ -67,7 +96,12 @@
             }
         },
         /**
+         * ## console.warn()
+         *
          * Write strings to stderr
+         *
+         * ### Arguments:
+         * - {String} ... - one or more strings to be printed to stderr.
          *
          * @method warn
          * @param [...] - things to display to stderr
@@ -82,7 +116,12 @@
             }
         },
         /**
+         * ## console.exception(e)
+         *
          * Dump a JavaScript or Rhino Exception/Error to stdout.
+         *
+         * ### Arguments:
+         * - {Error} e - the Error to be displayed on the console.
          *
          * @param {Error} e - the exception object to dump.
          */
@@ -110,6 +149,6 @@
             }
             this.error(text);
         }
-
+        /**@private */
     };
 }());

@@ -1,7 +1,13 @@
 /**
- * @fileoverview The builtin.fs object.  Low-level file system methods
+ * # Builtin (private) Filesystem methods.
+ *
+ * The builtin.fs object.  Low-level file system methods
+ *
+ * These methods should be considered private as they are used internally by require() and include().
+ * @fileoverview
  */
 
+/** @private */
 /*global builtin:true, java */
 (function() {
     "use strict";
@@ -25,6 +31,9 @@
      */
     builtin.fs = {
         /**
+         * ## builtin.fs.isFile(path) : boolean
+         *
+         * Test if the specified path is a file.
          *
          * @memberOf builtin.fs
          * @param path
@@ -35,6 +44,9 @@
             return file.isFile();
         },
         /**
+         * ## builtin.fs.isDir(path) : boolean
+         *
+         * Test if a path is a directory.
          *
          * @memberOf builtin.fs
          * @param path
@@ -45,6 +57,14 @@
             return file.isDirectory();
         },
         /**
+         * ## builtin.fs.realpath(path) : boolean
+         *
+         * Returns the canonical path that the argument path corresponds to.
+         * If the file or directory does not exist, false is returned.
+         *
+         * Example:
+         *
+         * ./foo/../bar -> bar
          *
          * @memberOf builtin.fs
          * @param path
@@ -55,6 +75,9 @@
             return file.exists() ? String(file.getCanonicalPath()) : false;
         },
         /**
+         * ## builtin.fs.readFile(path) : String
+         *
+         * Read a file into a string.
          *
          * @memberOf builtin.fs
          * @param path
@@ -73,6 +96,7 @@
             stream.close();
             return String(body.toString());
         }
+        /** @private */
     };
 
 }());

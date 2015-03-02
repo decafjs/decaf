@@ -1,5 +1,5 @@
-Decaf v0.0.4
-============
+Introducing DecafJS
+===================
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=bzkRVzciAZg
 " target="_blank"><img src="http://img.youtube.com/vi/bzkRVzciAZg/0.jpg" 

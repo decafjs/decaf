@@ -1,10 +1,37 @@
-/**
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 6/8/13
  * Time: 3:53 PM
  */
 
+/**
+ * Global include().
+ *
+ * A global variable (function) include() is present in all decafjs contexts.
+ *
+ * The purpose of include() is to provide a server side mechanism that is the equivalent of script tags on the client side.  That is,
+ * the JavaScript you load is loaded inline and executed.
+ *
+ * The function of include() is very different from that of require() (see require).  Every function defined in the scope of the included file will be present in the
+ * global scope of the decafjs application from that point forward.
+ *
+ * Like require(), include provides both an include.paths array and an include.extensions object.  The latter provides a hook for included text to be run through a preprocessor such as coffeescript.
+ *
+ * For example:
+ *
+ * ```javascript
+ * require.extensions['.coffee'] = function(filename) {
+ *   return coffee.compile(new File(filename).readAll());
+ * };
+ *
+ * var myCoffeeScriptModule = require('mymodule.coffee');
+ * // OR
+ * var myCoffeeScriptModule = require('mymodule'); // knows to try .coffee extension
+ * ```
+ */
+
+/** @private */
 /*global builtin, include: true */
 (function() {
     "use strict";
@@ -96,6 +123,7 @@
         '/usr/local/decaf/examples'
     ];
     /**
+     * @public
      * @memberOf global.include
      * @type {{}}
      */

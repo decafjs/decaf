@@ -1,14 +1,15 @@
-/** @module builtin */
-/**
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 6/7/13
  * Time: 5:04 PM
  */
 
+/** @private */
 /*global toString */
 (function () {
 
+    /** @private */
     function isArray(a) {
         return toString.apply(a) === '[object Array]';
     }
@@ -46,6 +47,28 @@
     }
 
     /**
+     * ## builtin.print_r(o, max, sep, l) : {string}
+     *
+     * This method is inspired by PHP's print_r() function.  It renders any arbitrarily complext JavaScript object as
+     * a human readable string.  This method is the core of console.dir() and other similar methods.
+     *
+     * This method recursively examines members of the specified object.  It is possible to have an infinite loop if
+     * a member of the object contains a reference to the object itself.  For this reason, a maximum recursion depth
+     * may be specified.
+     *
+     * This method knows how to handle instances of Java classes that are members of the object - in most cases.
+     *
+     * ### Arguments:
+     *
+     * - {Mixed} o - the object to render
+     * - {int} max - the maximum depth of recursion (optional, defaults to 4)
+     * - {char} sep - character to use for indentation (optional, defaults to ' ')
+     * - {int} l - current level of recursion (generally this is only passed by print_r itself as it recurses)
+     *
+     * ### Returns:
+     * - {String} - the formatted dump of the object.
+     *
+     * @method print_r
      * @memberOf builtin
      * @param o
      * @param max
@@ -138,15 +161,16 @@
 //            r.push(indent + '}');
             return r.join('\n');
         }
-        print(toString.apply(o))
+        print(toString.apply(o));
         return '-' + (typeof o) + ' ' + o;
     }
-
+/** @private */
     builtin.print_r = print_r;
 }());
 
+/** @private */
 if (false) {
-    /**
+    /*!
      * Concatenates the values of a variable into an easily readable string
      * by Matt Hackett [scriptnode.com]
      * @param {Object} x The variable to debug

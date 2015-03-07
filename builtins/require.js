@@ -1,49 +1,50 @@
 /**
+ * # require()
+ *
+ * CommonJS require 1.1 implementation
+ */
+
+/** @private */
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 6/7/13
  * Time: 5:05 PM
  */
-/*
- * CommonJS require 1.1 implementation
- */
 
 /*global require, builtin */
 
-(function() {
+(function () {
     var rhino = builtin.rhino,
         File = java.io.File,
         FileInputStream = java.io.FileInputStream,
         BufferedInputStream = java.io.BufferedInputStream,
         ByteArrayOutputStream = java.io.ByteArrayOutputStream;
 
-    /**
-     * @private
-     */
-
-        // thanks to ringojs for this one
-    function resolveFile( path ) {
+    /** @private */
+    // thanks to ringojs for this one
+    function resolveFile(path) {
         var file = path instanceof File ? path : new File(String(path));
         return file.isAbsolute() ? file : file.getAbsoluteFile();
     }
 
     var fs = {
-        isFile : function( path ) {
+        isFile : function (path) {
             var file = resolveFile(path);
             return file.isFile();
         },
 
-        isDir : function( path ) {
+        isDir : function (path) {
             var file = resolveFile(path);
             return file.isDirectory();
         },
 
-        realpath : function( path ) {
+        realpath : function (path) {
             var file = resolveFile(path);
             return file.exists() ? String(file.getCanonicalPath()) : false;
         },
 
-        readFile : function( path ) {
+        readFile : function (path) {
             var file = resolveFile(path),
                 body = new ByteArrayOutputStream(),
                 stream = new BufferedInputStream(new FileInputStream(file)),
@@ -58,16 +59,16 @@
         }
     };
 
-    function realpath( path ) {
+    function realpath(path) {
         var f = new File(path);
         return String(f.getAbsolutePath().toString());
     }
 
-    function locateFile( module ) {
+    function locateFile(module) {
         var extension,
             pkg;
 
-        function tryFile( path ) {
+        function tryFile(path) {
             var tryPath = fs.realpath(path);
             if (tryPath) {
                 if (fs.isFile(tryPath)) {
@@ -194,7 +195,7 @@
         throw new Error('Could not locate require file ' + module);
     }
 
-    function loadFile( modulePath ) {
+    function loadFile(modulePath) {
         var contents = fs.readFile(modulePath);
         var extension = modulePath.indexOf('.') !== -1 ? modulePath.substr(modulePath.lastIndexOf('.') + 1) : '';
 
@@ -205,11 +206,13 @@
     }
 
     /**
+     * ## require(module) : exports
+     *
      * @global
      * @param module
      * @returns {*}
      */
-    global.require = function( module ) {
+    global.require = function (module) {
         if (module.substr(0, 8) === 'builtin/' || module.substr(0, 8) === 'builtin.') {
             return builtin[module.substr(8)];
         }
@@ -265,29 +268,37 @@
         return require.cache[modulePath].exports;
     };
 
-    require.getCached = function( path ) {
+    /**
+     * ## require.getCached(path) : exports
+     *
+     * @param path
+     * @returns {*}
+     */
+    require.getCached = function (path) {
         return require.cache[path];
     };
 
-    require.getContent = function(module) {
-        var modulePath = locateFile(module);
-        require(modulePath);
-        if (!require.cache[modulePath]) {
-            throw new Error("Can't get content for " + module + ' (' + modulePath + ')');
-        }
-        return require.cache[modulePath];
-    };
-
-    require.isRequiredFile = function( fn ) {
+    /**
+     * ## require.isRequiredFile(fn) : Boolean
+     *
+     * See if the specified filename is a file that has been required.
+     *
+     * @param fn
+     * @returns {boolean}
+     */
+    require.isRequiredFile = function (fn) {
         return require.modulePath === fn || (require.cache[fn] ? true : false);
     };
 
+    /** @private */
     require.main = this;
     require.dirStack = [];
     require.fsPath = '';
     require.cache = {};
 
     /**
+     * ## require.paths
+     *
      * @memberOf global.require
      * @type {Array}
      */
@@ -302,20 +313,37 @@
     ];
 
     /**
+     * ## require.extensions
+     *
      *  An object used to extend the way [require][#require] loads modules.
      *
-     *  Use a file extension as key and a function as value. The function should
-     *  accept a `Resource` object as argument and return either a string to be
-     *  used as JavaScript module source or an object which will be directly
-     *  returned by `require`.
+     *  Use a file extension as key and a function as value. The function should accept a `Resource` object as argument and return either a string to be used as JavaScript module source or an object which will be directly returned by `require`.
      *
-     *  For example, the following one-liner will enable `require()` to load .hbs
-     *  files as HoganJS templates:
-     *
+     *  For example, the following one-liner will enable `require()` to load .hbs files as HoganJS templates:
+     * ```javascript
      *     require.extensions['.hbs'] = function(r) { return Hogan.compile(new File(r).readAll()); }
+     * ```
      *
      * @memberOf global.require
      */
     require.extensions = {};
+
+    /** @private */
+    /*!
+     * ## require.getContent(module) : exports
+     *
+     * @param module
+     * @returns {Mixed} exports
+     */
+    require.getContent = function (module) {
+        var modulePath = locateFile(module);
+        require(modulePath);
+        if (!require.cache[modulePath]) {
+            throw new Error("Can't get content for " + module + ' (' + modulePath + ')');
+        }
+        return require.cache[modulePath];
+    };
+    /** @ignore */
+
 
 }());

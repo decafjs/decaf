@@ -517,7 +517,7 @@
         ].join('\n');
         require.modulePath = modulePath;
 
-        rhino.runScript(script, modulePath, 4, global);                         // line 4 from script above
+        rhino.runScript(script, modulePath, 1, global);                         // line 4 from script above
 
         require.fsPath = require.dirStack.pop();
         require.modulePath = null;

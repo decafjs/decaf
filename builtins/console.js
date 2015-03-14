@@ -55,7 +55,7 @@
             }
         },
         /**
-         * ## console.dir()
+         * ## console.dir(o, depth)
          *
          * Dump a JavaScript object to stdout.
          *
@@ -74,6 +74,34 @@
         dir: function(o, n) {
             n = n || 4;
             java.lang.System.out.println(builtin.print_r(o, n));
+        },
+        /**
+         * ## console.format(fmt, o)
+         *
+         * Interpolate an object into the format string and output to the console.
+         *
+         * This method is derived from String.prototype.supplant as described by Douglas Crockford here:
+         * - http://javascript.crockford.com/remedial.html
+         *
+         * ### Example:
+         *
+         * ```javascxript
+         * param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
+         * console.format("{media}logo.gif", param);
+         * ```
+         * prints "http://media.valvion.com/logo.gif".
+         *
+         * @param fmt
+         * @param o
+         */
+        format: function(fmt, o) {
+            java.lang.System.out.println(fmt.replace(
+                /\{([^{}]*)\}/g,
+                function (a, b) {
+                    var r = o[b];
+                    return typeof r === 'string' || typeof r === 'number' ? r : a;
+                }
+            ));
         },
         /**
          * ## console.error()

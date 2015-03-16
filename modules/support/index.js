@@ -12,5 +12,6 @@ module.exports = {
     sha1          : require('lib/sha1'),
     utf8_encode   : require('lib/utf8_encode'),
     randomString  : require('lib/randomString'),
-    base64_encode : require('lib/base64_encode')
+    base64_encode : require('lib/base64_encode'),
+    BCrypt        : require('lib/bcrypt').BCrypt
 };

@@ -1,18 +1,35 @@
+/**
+ * @module builtin
+ * @submodule shell
+ */
+
+/**
+ * # Application bootstrap
+ *
+ * Any .js files specified on the command line are loaded:
+ *
+ * - If at least one .js file is present, the main() function specified is called, if defined by the application.
+ * - If no .js files are present, the REPL is run.
+ *
+ * The REPL uses jline to provide command line history and editing.
+ *
+ */
+
+/** @private */
 /*global global, Packages, include, require, builtin */
 (function () {
-    /**
-     * @module builtin
-     * @submodule shell
-     */
     "use strict";
 
     var args = global.arguments;
 
-    /*
-     * The guts of the command line interpreter
+    /**
+     * # shellMain()
      *
-     * @param none
-     * @function
+     * The guts of the command line interpreter.  This is the REPL.
+     *
+     * The REPL uses jline to provide command line history and editing.
+     *
+     * @private
      */
     function shellMain() {
         var rhino = require('builtin/rhino');
@@ -73,4 +90,3 @@
     }
 
 }());
-

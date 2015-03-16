@@ -8,7 +8,7 @@
  * @fileoverview
  */
 /** @private */
-(function() {
+(function () {
     var {BufferedReader, InputStreamReader} = java.io,
         stdin = new BufferedReader(new InputStreamReader(java.lang.System.in));
 
@@ -26,14 +26,13 @@
          *
          *   - {String} the line read from the terminal
          */
-        readLine: function() {
+        readLine  : function () {
             var s = stdin.readLine();
             if (s) {
                 return String(s);
             }
             return null;
         },
-
         /**
          * ## console.log()
          *
@@ -45,8 +44,8 @@
          * @method log
          * @param [...] - things to display on the console
          */
-        log: function() {
-            for (var i=0,len=arguments.length; i<len; i++) {
+        log       : function () {
+            for (var i = 0, len = arguments.length; i < len; i++) {
                 var arg = arguments[i];
                 if (arg === undefined) {
                     arg = 'undefined';
@@ -71,7 +70,7 @@
          * @param {mixed} o - object to dump
          * @param {int} n - depth (default 4)
          */
-        dir: function(o, n) {
+        dir       : function (o, n) {
             n = n || 4;
             java.lang.System.out.println(builtin.print_r(o, n));
         },
@@ -94,7 +93,8 @@
          * @param fmt
          * @param o
          */
-        format: function(fmt, o) {
+        format    : function (fmt, o) {
+            o = o || {};
             java.lang.System.out.println(fmt.replace(
                 /\{([^{}]*)\}/g,
                 function (a, b) {
@@ -114,8 +114,8 @@
          * @method error
          * @param [...] - things to display to stderr
          */
-        error: function() {
-            for (var i=0,len=arguments.length; i<len; i++) {
+        error     : function () {
+            for (var i = 0, len = arguments.length; i < len; i++) {
                 var arg = arguments[i];
                 if (arg === undefined) {
                     arg = 'undefined';
@@ -134,8 +134,8 @@
          * @method warn
          * @param [...] - things to display to stderr
          */
-        warn: function() {
-            for (var i=0,len=arguments.length; i<len; i++) {
+        warn      : function () {
+            for (var i = 0, len = arguments.length; i < len; i++) {
                 var arg = arguments[i];
                 if (arg === undefined) {
                     arg = 'undefined';
@@ -153,7 +153,7 @@
          *
          * @param {Error} e - the exception object to dump.
          */
-        exception: function(e) {
+        exception : function (e) {
             var text = '';
             text += '**** EXCEPTION ****\n';
             if (e instanceof org.mozilla.javascript.RhinoException) {

@@ -123,6 +123,8 @@ function d(o, depth) {
             load(prefix + 'builtins/' + file);
         }
     };
+    builtin.include('assert.js');
+    builtin.include('unit.js');
     builtin.include('decaf.js');
     builtin.include('extensions.js');
     builtin.include('atexit.js');

@@ -1,9 +1,10 @@
-/*global builtin */
+/*global builtin, java */
+
 "use strict";
 var process = require('process');
 
-var threads = {},
-    javaThreads = {},
+var threads      = {},
+    javaThreads  = {},
     nextThreadId = 0;
 
 function allocThreadId() {
@@ -48,15 +49,15 @@ function Thread(fn) {
  *
  * @method exit
  */
-Thread.exit = function() {
+Thread.exit = function () {
     // console.log('THREAD.EXIT');
     throw 'THREAD.EXIT';
 };
 
 /** @private */
 var mainThread = {
-    on: function() {
-        
+    on : function () {
+
     }
 };
 
@@ -65,7 +66,7 @@ var mainThread = {
  *
  * @method currentThread
  */
-Thread.currentThread = function() {
+Thread.currentThread = function () {
     var t = java.lang.Thread.currentThread();
     return javaThreads[t.getId()] || mainThread;
 };
@@ -76,7 +77,7 @@ Thread.currentThread = function() {
  * @method sleep
  * @param secs
  */
-Thread.sleep = function(secs) {
+Thread.sleep = function (secs) {
     process.sleep(secs);
 };
 
@@ -86,8 +87,12 @@ Thread.sleep = function(secs) {
  * @method usleep
  * @param usecs
  */
-Thread.usleep = function(usecs) {
+Thread.usleep = function (usecs) {
     process.usleep(usecs);
+};
+
+Thread.interrupted = function () {
+    return java.lang.Thread.interrupted();
 };
 
 decaf.extend(Thread.prototype, {
@@ -98,45 +103,48 @@ decaf.extend(Thread.prototype, {
      * @param event
      * @param fn
      */
-    on          : function(event, fn) {
+    on          : function (event, fn) {
         this.listeners[event] = this.listeners[event] || [];
         this.listeners[event].push(fn);
     },
-
     /**
      * Fire an event on the thread.
      *
      * @metod fire
      * @param event
      */
-    fire        : function(event) {
+    fire        : function (event) {
         var me = this;
         if (me.listeners[event]) {
             var args = [];
             for (var i = 1, len = arguments.length; i < len; i++) {
                 args.push(arguments[i]);
             }
-            decaf.each(me.listeners[event], function(fn) {
+            decaf.each(me.listeners[event], function (fn) {
                 fn.apply(me, args);
             });
         }
     },
-
     /**
      * Start the thread running
      *
      * @method start
      */
-    start       : function() {
+    start       : function () {
         var me = this;
-        new java.lang.Thread(new java.lang.Runnable({ run : me.runHandler, scope : me})).start();
+        me.thread = new java.lang.Thread(new java.lang.Runnable({run : me.runHandler, scope : me})).start();
     },
-
+    /**
+     * Interrupt the thread
+     */
+    interrupt   : function () {
+        this.thread.interrupt();
+    },
     /**
      * @private
      * @method runHandler
      */
-    runHandler  : function() {
+    runHandler  : function () {
         var me = this.scope,
             t = java.lang.Thread.currentThread();
 
@@ -154,14 +162,13 @@ decaf.extend(Thread.prototype, {
             me.exitHandler(me);
         }
     },
-
     /**
      *
      * @private
      * @method exitHandler
      * @param me
      */
-    exitHandler : function(me) {
+    exitHandler : function (me) {
         me.fire('exit');
         if (me.lockCount) {
             // unlock any mutexes

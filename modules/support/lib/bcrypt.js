@@ -2,7 +2,8 @@
  * Created by alexandrulazar on 3/16/15.
  */
 
-var randomString = require("randomString");
+var Thread = require('Threads').Thread,
+    randomString = require("randomString");
 
 var BCrypt = function () {
 
@@ -608,7 +609,7 @@ var BCrypt = function () {
         if (!callback) {
             throw "No callback function was given."
         }
-        process.nextTick(function () {
+        new Thread(function () {
             var result = null,
                 error = null;
             try {
@@ -617,7 +618,7 @@ var BCrypt = function () {
                 error = err;
             }
             callback(error, result);
-        });
+        }).start();
     }
 
     function hashSync(data, salt, progress) {
@@ -643,7 +644,7 @@ var BCrypt = function () {
         if (!callback) {
             throw "No callback function was given."
         }
-        process.nextTick(function () {
+        new Thread(function () {
             var result = null,
                 error = null;
             try {
@@ -652,7 +653,7 @@ var BCrypt = function () {
                 error = err;
             }
             callback(error, result);
-        });
+        }).start();
     }
 
     function compareSync(data, encrypted) {
@@ -701,7 +702,7 @@ var BCrypt = function () {
         if (!callback) {
             throw "No callback function was given."
         }
-        process.nextTick(function () {
+        new Thread(function () {
             var result = null,
                 error = null;
             try {
@@ -710,7 +711,7 @@ var BCrypt = function () {
                 error = err;
             }
             callback(error, result);
-        });
+        }).start();
     }
 
     function getRounds(encrypted) {

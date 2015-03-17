@@ -67,9 +67,12 @@ elif [ -d "/usr/local/decaf/java" ]; then
 fi
 
 # JVM Flags
-m='m'
-JVMFLAGS="-Xmx$FREEMEM$m"
-JVMFLAGS="$JVMFLAGS -Dfile.encoding=UTF-8"
+if [[ -z $JVM_MEMORY ]]; then
+  m='m'
+  JVM_MEMORY="-Xmx$FREEMEM$m"
+fi
+
+JVMFLAGS="$JVM_MEMORY -Dfile.encoding=UTF-8"
 
 if [ "$1" = "awt" ]; then
     shift

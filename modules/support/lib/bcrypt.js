@@ -244,8 +244,7 @@ var BCrypt = function () {
         49, 50, 51, 52, 53, -1, -1, -1, -1, -1];
 
     function getByte(c) {
-        var ret = 0,
-            b;
+        var b;
         try {
             b = c.charCodeAt(0);
         } catch (err) {
@@ -447,7 +446,6 @@ var BCrypt = function () {
 
     function crypt_raw(password, salt, log_rounds, progress) {
         var rounds,
-            j,
             one_percent,
             cdata = bf_crypt_ciphertext.slice(),
             clen  = cdata.length,
@@ -543,7 +541,7 @@ var BCrypt = function () {
         real_salt = salt.substring(off + 3, off + 25);
         password = password + (minor >= 'a' ? "\000" : "");
 
-        buf = new Buffer(password);
+        buf = decaf.toJavaByteArray(password);
         for ( r = 0; r < buf.length; r++) {
             passwordb.push(buf[r]);
         }
@@ -661,20 +659,24 @@ var BCrypt = function () {
          data - [REQUIRED] - data to compare.
          encrypted - [REQUIRED] - data to be compared to.
          */
+        var encrypted_length,
+            hash_data,
+            hash_data_length,
+            same;
+
 
         if (typeof data != "string" || typeof encrypted != "string") {
             throw "Incorrect arguments";
         }
 
-        var encrypted_length = encrypted.length;
+        encrypted_length = encrypted.length;
 
         if (encrypted_length != 60) {
             return false;
         }
 
-        var same = true;
-        var hash_data = hashSync(data, encrypted.substr(0, encrypted_length - 31));
-        var hash_data_length = hash_data.length;
+        hash_data = hashSync(data, encrypted.substr(0, encrypted_length - 31));
+        hash_data_length = hash_data.length;
 
         same = hash_data_length == encrypted_length;
 

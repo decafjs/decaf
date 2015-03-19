@@ -12,7 +12,7 @@ Rhino is an open source JavaScript engine, developed entirely in Java, and manag
 
 Rhino has been worked on since the 1990s, is stable, has a built-in debugger with GUI, has [built-in capability to interface to the entire Java ecosphere from JavaScript](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino/Scripting_Java), and since it runs on the JVM you get native Threads for your JavaScript.
 
-**Decaf is also fully portable to any platform that has at least a Java 6 implementation.**
+*Decaf is also fully portable to any platform that has at least a Java 6 implementation.*
 
 One of the goals of Decaf is to write everything in JavaScript.  Decaf itself is a shell script that launches your JavaScript application in the Rhino environment extended with the core Decaf API.  Decaf does include two .jar files: Rhino and JLine; JLine is used by the REPL mode to provide command line history.
 

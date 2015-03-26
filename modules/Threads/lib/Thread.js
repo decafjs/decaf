@@ -1,21 +1,35 @@
 /*global builtin, java */
 
+/*global exports */
 "use strict";
 var process = require('process');
 
 var threads      = {},
     javaThreads  = {},
+    threadCount  = 0,
     nextThreadId = 0;
 
-function allocThreadId() {
-    while (true) {
-        ++nextThreadId;
-        nextThreadId %= 65536;
-        if (!threads[nextThreadId]) {
-            return nextThreadId;
-        }
+var addThread = sync(function(threadId, thread) {
+    threads[threadId] = thread;
+    threadCount++;
+}, threads);
+
+var removeThread = sync(function(threadId) {
+    if (threads[threadId]) {
+        delete threads[threadId];
+        threadCount--;
     }
-}
+}, threads);
+
+//function allocThreadId() {
+//    while (true) {
+//        ++nextThreadId;
+//        nextThreadId %= 65536;
+//        if (!threads[nextThreadId]) {
+//            return nextThreadId;
+//        }
+//    }
+//}
 
 /** @module Thread */
 
@@ -34,14 +48,14 @@ function Thread(fn) {
         args.push(arguments[i]);
     }
     decaf.extend(this, {
+        //threadId  : allocThreadId(),
         fn        : fn,
         args      : args,
         lockCount : 0,
         listeners : {},
-        data      : {},
-        threadId  : allocThreadId()
+        data      : {}
     });
-    threads[this.threadId] = this;
+    //threads[this.threadId] = this;
 }
 
 /**
@@ -68,7 +82,11 @@ var mainThread = {
  */
 Thread.currentThread = function () {
     var t = java.lang.Thread.currentThread();
-    return javaThreads[t.getId()] || mainThread;
+    return threads[t] || mainThread;
+};
+
+Thread.threadCount = function() {
+    return threadCount;
 };
 
 /**
@@ -148,8 +166,9 @@ decaf.extend(Thread.prototype, {
         var me = this.scope,
             t = java.lang.Thread.currentThread();
 
-        me.javaThreadId = t.getId();
-        javaThreads[me.javaThreadId] = me;
+        addThread(t, me);
+        //me.javaThreadId = t.getId();
+        //javaThreads[me.javaThreadId] = me;
         try {
             me.fn.apply(me, me.args);
         }
@@ -173,9 +192,14 @@ decaf.extend(Thread.prototype, {
         if (me.lockCount) {
             // unlock any mutexes
         }
-        delete javaThreads[me.javaThreadId];
-        delete threads[me.threadId];
+        removeThread(me);
+        //delete javaThreads[me.javaThreadId];
+        //delete threads[me.threadId];
     }
+});
+
+builtin.onIdle(function() {
+    return threadCount != 0;
 });
 
 exports.Thread = Thread;

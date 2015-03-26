@@ -9,7 +9,7 @@
 (function() {
     "use strict";
 
-    var {createServer} = require('./lib/Server');
+    var createServer = require('./lib/Server').createServer;
 
     decaf.extend(exports, {
         createServer: createServer,

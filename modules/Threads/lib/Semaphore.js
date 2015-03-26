@@ -10,8 +10,8 @@
 
 "use strict";
 
-var {TimeUnit} = java.util.concurrent,
-    {ReentrantLock} = java.util.concurrent.locks;
+var TimeUnit      = java.util.concurrent.TimeUnit,
+    ReentrantLock = java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A semaphore to enable control of access to critical sections of code or data structures.
@@ -35,7 +35,7 @@ decaf.extend(Semaphore.prototype, {
      *
      * @method lock
      */
-     lock    : function() {
+    lock : function () {
         this.sem.lock();
     },
 
@@ -45,7 +45,7 @@ decaf.extend(Semaphore.prototype, {
      * @method trLock
      * @param {int} timeout - optional timeout in ms
      */
-    tryLock : function(timeout) {
+    tryLock : function (timeout) {
         return timeout ? this.sem.trylock(timeout, TimeUnit.MILLISECONDS) : this.sem.trylock();
     },
 
@@ -54,7 +54,7 @@ decaf.extend(Semaphore.prototype, {
      *
      * @method unlock
      */
-    unlock: function() {
+    unlock : function () {
         this.sem.unlock();
     },
 
@@ -64,12 +64,12 @@ decaf.extend(Semaphore.prototype, {
      * @method isMine
      * @returns {boolean} mine - true if current thread holds the lock on the Semaphore
      */
-    isMine: function() {
+    isMine : function () {
         return this.sem.isHeldByCurrentThread();
     }
 
 });
 
 decaf.extend(exports, {
-    Semaphore: Semaphore
+    Semaphore : Semaphore
 });

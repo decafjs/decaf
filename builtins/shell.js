@@ -69,7 +69,15 @@
         var arg = args[i];
         if (arg.endsWith('.js')) {
             if (runShell) {
-                include(arg);
+                try {
+                    console.log('include ' + arg)
+                    include(arg);
+                }
+                catch (e) {
+                    console.exception(e);
+                    builtin.process.exit(1);
+                    //throw e;
+                }
                 runShell = false;
             }
             else {
@@ -87,6 +95,19 @@
     }
     else if (runShell) {
         shellMain();
+    }
+
+    if (!runShell) {
+        try {
+            throw new Error('foo');
+        }
+        catch (e) {
+            console.dir(e);
+            console.dir(e.stack);
+        }
+        while (builtin._idle()) {
+            java.lang.Thread.sleep(1);
+        }
     }
 
 }());

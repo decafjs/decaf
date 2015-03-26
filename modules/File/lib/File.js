@@ -15,8 +15,19 @@
 "use strict";
 
 var JavaFile = java.io.File,
-    {BufferedReader, Writer, FileReader, PrintWriter, FileOutputStream, OutputStreamWriter,
-        FileInputStream, InputStreamReader, ByteArrayOutputStream, BufferedInputStream} = java.io;
+    BufferedReader = java.io.BufferedReader,
+    Writer = java.io.Writer,
+    FileReader = java.io.FileReader,
+    PrintWriter = java.io.PrintWriter,
+    FileOutputStream = java.io.FileOutputStream,
+    OutputStreamWriter = java.io.OutputStreamWriter,
+    FileInputStream = java.io.FileInputStream,
+    InputStreamReader = java.io.InputStreamReader,
+    ByteArrayOutputStream = java.io.ByteArrayOutputStream,
+    BufferedInputStream = java.io.BufferedInputStream;
+
+    //{BufferedReader, Writer, FileReader, PrintWriter, FileOutputStream, OutputStreamWriter,
+    //    FileInputStream, InputStreamReader, ByteArrayOutputStream, BufferedInputStream} = java.io;
 
 /**
  * Crate a new File object representing a path.

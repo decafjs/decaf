@@ -206,11 +206,18 @@ function Request(is, maxUpload) {
                     if (len === 0) {
                         break;
                     }
-                    var [ mimeKey, mimeValue ] = line.split(': ');
+                    var mimeparts = line.split(': '),
+                        mimeKey = mimeparts[0],
+                        mimeValue = mimeparts[1];
+
+                    //var [ mimeKey, mimeValue ] = line.split(': ');
                     switch (mimeKey.toLowerCase()) {
                         case 'content-disposition':
                             decaf.each(mimeValue.split(/;\s*/), function(disposition) {
-                                var [ key, value ] = disposition.split('=');
+                                var parts = disposition.split('='),
+                                    key = parts[0],
+                                    value = parts[1];
+                                //var [ key, value ] = disposition.split('=');
                                 if (value !== undefined) {
                                     mimePart[key.toLowerCase()] = value.replace(/"/g, '');
                                 }

@@ -86,7 +86,7 @@
         readFile: function(path) {
             var file = resolveFile(path),
                 body = new ByteArrayOutputStream(),
-                stream = new BufferedInputStream(FileInputStream(file)),
+                stream = new BufferedInputStream(new FileInputStream(file)),
                 buf = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024),
                 count;
 

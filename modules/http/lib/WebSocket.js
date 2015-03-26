@@ -6,8 +6,11 @@
 
 /*global require, java, sync, exports */
 var GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11",
-    {Thread} = require('Threads'),
-    {sha1, base64_encode, uuid} = require('support');
+    Thread = require('Threads').Thread,
+    support = require('support'),
+    sha1 = support.sha1,
+    base64_encode = support.base64_encode,
+    uuid = support.uuid;
 
 
 function makeAccept(key) {

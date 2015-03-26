@@ -100,7 +100,7 @@ builtin.applyExtensions = function ( scope ) {
         asText   : function () {
             var e = this;
             var text = '';
-            if ( e instanceof org.mozilla.javascript.RhinoException ) {
+            if ( !NASHORN && e instanceof org.mozilla.javascript.RhinoException ) {
                 text += e.details() + '\n';
             }
             else {

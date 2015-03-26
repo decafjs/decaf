@@ -100,7 +100,7 @@ decaf.extend(Socket.prototype, {
      * @returns {number}
      */
     listen: function (port, listenAddress, backlog) {
-        this.socket = new ServerSocket(port, backlog, new InetAddress.getByName(listenAddress));
+        this.socket = new ServerSocket(port, backlog, InetAddress.getByName(listenAddress));
         this.socket.setReuseAddress(true);
         this.port = port;
         return 0;

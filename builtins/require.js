@@ -507,18 +507,31 @@
             exports : {}
         };
 
-        var script = [
-            '(function() {',                                                    // line 1
-            '   var module = global.require.getCached("' + modulePath + '");',  // line 2
-            '   var exports = module.exports;',                                 // line 3
-            content,                                                            // line 4
-            '   return module.exports;',
-            '}())'
-        ].join('\n');
-        require.modulePath = modulePath;
 
-        rhino.runScript(script, modulePath, 1, global);                         // line 4 from script above
+        if (false) {
 
+            var fn = new Function('module', 'exports', content + ';\nreturn module.exports;');
+            require.modulePath = modulePath;
+            try {
+                fn(exports, exports.exports);
+            }
+            catch (e) {
+                console.exception(e);
+            }
+        }
+        else {
+            var script = [
+                '(function() {',                                                    // line 1
+                '   var module = global.require.getCached("' + modulePath + '");',  // line 2
+                '   var exports = module.exports;',                                 // line 3
+                content,                                                            // line 4
+                '   return module.exports;',
+                '}())'
+            ].join('\n');
+            require.modulePath = modulePath;
+
+            rhino.runScript(script, modulePath, 1, global);                         // line 4 from script above
+        }
         require.fsPath = require.dirStack.pop();
         require.modulePath = null;
         return require.cache[modulePath].exports;

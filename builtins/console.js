@@ -9,7 +9,8 @@
  */
 /** @private */
 (function () {
-    var {BufferedReader, InputStreamReader} = java.io,
+    var BufferedReader = java.io.BufferedReader,
+        InputStreamReader = java.io.InputStreamReader,
         stdin = new BufferedReader(new InputStreamReader(java.lang.System.in));
 
     global.console = {
@@ -154,12 +155,18 @@
          * @param {Error} e - the exception object to dump.
          */
         exception : function (e) {
+            try {
+                throw new Error('');
+            }
+            catch (ee) {
+                console.log(ee.stack);
+            }
             var text = '';
             text += '**** EXCEPTION ****\n';
-            if (e instanceof org.mozilla.javascript.RhinoException) {
+            if (!NASHORN && e instanceof org.mozilla.javascript.RhinoException) {
                 text += e.details() + '\n';
             }
-            else {
+            else if (!NASHORN) {
                 text += e.toString() + '\n';
             }
             if (typeof e.getScriptStackTrace === 'function') {

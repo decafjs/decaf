@@ -26,7 +26,8 @@
 /*global java, builtin */
 (function () {
     var exitFuncs = [],
-        startFuncs = [];
+        startFuncs = [],
+        idleFuncs = [];
 
     decaf.extend(builtin, {
         /**
@@ -37,7 +38,7 @@
          * @method atExit
          * @param {Function} func - function to be run at exit
          */
-        atExit : function ( func ) {
+        atExit  : function (func) {
             exitFuncs.push(func);
         },
         /**
@@ -50,7 +51,7 @@
          * @method atexit
          * @param func
          */
-        atexit  : function ( func ) {
+        atexit  : function (func) {
             exitFuncs.push(func);
         },
         /**
@@ -61,7 +62,7 @@
          * @method atStart
          * @param func
          */
-        atStart : function ( func ) {
+        atStart : function (func) {
             startFuncs.push(func);
         },
         /**
@@ -74,9 +75,15 @@
          * @method atStart
          * @param func
          */
-        atstart : function ( func ) {
+        atstart : function (func) {
             startFuncs.push(func);
         },
+
+        onIdle : function( func ) {
+            idleFuncs.push(func);
+        },
+
+
         /**
          * Execute all the startup functions
          *
@@ -84,24 +91,51 @@
          * @private
          */
         _main   : function () {
-            decaf.each(startFuncs, function ( fn ) {
+            decaf.each(startFuncs, function (fn) {
                 fn();
             });
+        },
+
+        _idle : function() {
+            var ret = false;
+            decaf.each(idleFuncs, function(fn) {
+                ret = fn();
+                if (!ret) {
+                    return false;
+                }
+            });
+            return ret;
         }
     });
 
-    java.lang.Runtime.getRuntime().addShutdownHook(java.lang.Thread(function () {
+    //java.lang.Runtime.getRuntime().addShutdownHook(java.lang.Thread(function () {
+    //    print('\nexiting');
+    //    try {
+    //        decaf.each(exitFuncs, function (fn) {
+    //            try {
+    //                fn();
+    //            }
+    //            catch (e) {
+    //            }
+    //        });
+    //    }
+    //    catch (e) {
+    //
+    //    }
+    //}));
+
+    java.lang.Runtime.getRuntime().addShutdownHook(new java.lang.Thread(function () {
         print('\nexiting');
         try {
-            decaf.each(exitFuncs, function ( fn ) {
+            d.each(exitFuncs, function (fn) {
                 try {
                     fn();
                 }
-                catch ( e ) {
+                catch (e) {
                 }
             });
         }
-        catch ( e ) {
+        catch (e) {
 
         }
     }));

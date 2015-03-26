@@ -1,0 +1,107 @@
+html, body {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 11px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.breakpoints {
+    width: .8em;
+}
+
+.breakpoint {
+    color: #822;
+}
+
+.CodeMirror {
+    border: 1px solid #aaa;
+    height: 100%
+}
+
+.CodeMirror-activeLine {
+    background: blue;
+    color: white;
+}
+
+/* remove padding and scrolling from elements that contain an Accordion OR a content-div */
+.ui-layout-center, /* has content-div */
+.ui-layout-west, /* has Accordion */
+.ui-layout-east, /* has content-div ... */
+.ui-layout-south, /* has content-div ... */
+.ui-layout-east .ui-layout-content {
+    /*content-div has Accordion */
+    padding: 0;
+    overflow: hidden;
+}
+
+.ui-widget-content {
+    /*used as the ui-layout-content class */
+    padding: 1ex;
+    overflow: auto;
+}
+
+div.console {
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 25px;
+}
+
+div.console div.jquery-console-inner {
+    width: 100%;
+    height: 100%;
+    background: #333;
+    padding-left: 10px;
+    /*margin-bottom: 30px;*/
+    overflow: auto;
+    color: lightgray;
+}
+
+div.console div.jquery-console-prompt-box {
+    color: #fff;
+    font-family: monospace;
+}
+
+div.console div.jquery-console-focus span.jquery-console-cursor {
+    background: #fefefe;
+    color: #333;
+    font-weight: bold
+}
+
+div.console div.jquery-console-message-error {
+    color: #ef0505;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: 0.1em;
+}
+
+div.console div.jquery-console-message-value {
+    color: #1ad027;
+    font-family: monospace;
+    padding: 0.1em;
+}
+
+div.console div.jquery-console-message-type {
+    color: #52666f;
+    font-family: monospace;
+    padding: 0.1em;
+}
+
+div.console span.jquery-console-prompt-label {
+    font-weight: bold
+}
+
+div.console div.jquery-console-welcome {
+    color: #52afff;
+}
+
+.jquery-console-message {
+    color: lightgrey;
+}
+.jquery-console-message-success {
+    color: lawngreen;
+}

@@ -3,7 +3,7 @@
  */
 /*global java, module */
 
-var {BCrypt} = Packages.org.mindrot.jbcrypt;
+var BCrypt = Packages.org.mindrot.jbcrypt.BCrypt;
 
 /**
  * Usage:

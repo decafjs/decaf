@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1035.0" prefWidth="1133.0000999999975" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <BorderPane prefHeight="811.0" prefWidth="1034.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <bottom>
+        <ToolBar>
+          <items>
+            <Label fx:id="message">
+              <font>
+                <Font name="Arial" size="10.0" />
+              </font>
+            </Label>
+            <Button fx:id="input" mnemonicParsing="false">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true" smooth="false">
+                  <image>
+                    <Image url="@images/input.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="evaluate" defaultButton="true" mnemonicParsing="false">
+              <graphic>
+                <ImageView mouseTransparent="true" pickOnBounds="true" preserveRatio="true" smooth="false">
+                  <image>
+                    <Image url="@images/eval.png" preserveRatio="false" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+          </items>
+        </ToolBar>
+      </bottom>
+      <center>
+        <SplitPane dividerPositions="0.5" focusTraversable="true" prefHeight="160.0" prefWidth="200.0">
+          <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+              <children>
+                <SplitPane dividerPositions="0.7022411953041622, 0.9509071504802561" focusTraversable="true" orientation="VERTICAL" prefHeight="1057.0" prefWidth="563.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                    <AnchorPane prefHeight="592.0">
+                      <children>
+                        <TabPane fx:id="editors" prefHeight="693.0" prefWidth="561.0" style="-fx-background-color: #FFFFFF;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane fx:id="console" />
+                    <AnchorPane id="console" prefHeight="423.0" prefWidth="561.0">
+                      <children>
+                        <TextArea fx:id="inputtext" prefWidth="200.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                  </items>
+                </SplitPane>
+              </children>
+            </AnchorPane>
+            <AnchorPane fx:id="stacks" />
+          </items>
+        </SplitPane>
+      </center>
+      <top>
+        <ToolBar>
+          <items>
+            <Button fx:id="open" contentDisplay="GRAPHIC_ONLY" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/open.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="close" contentDisplay="GRAPHIC_ONLY" disable="true" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/close.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Separator prefHeight="7.0" prefWidth="75.0" visible="false" />
+            <Button fx:id="attach" contentDisplay="GRAPHIC_ONLY" disable="true" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/attach.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="debug" contentDisplay="GRAPHIC_ONLY" disable="true" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/debug.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="continue" contentDisplay="GRAPHIC_ONLY" disable="true" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/continue.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="pause" contentDisplay="GRAPHIC_ONLY" disable="true" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/pause.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="stop" contentDisplay="GRAPHIC_ONLY" disable="true" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/stop.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="stepover" contentDisplay="GRAPHIC_ONLY" disable="true" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/stepover.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="stepin" contentDisplay="GRAPHIC_ONLY" disable="true" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/stepin.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="stepout" contentDisplay="GRAPHIC_ONLY" disable="true" focusTraversable="false" mnemonicParsing="false">
+              <graphic>
+                <ImageView>
+                  <image>
+                    <Image url="@images/stepout.png" preserveRatio="true" smooth="false" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+          </items>
+        </ToolBar>
+      </top>
+    </BorderPane>
+  </children>
+</AnchorPane>

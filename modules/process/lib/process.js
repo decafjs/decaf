@@ -12,9 +12,16 @@
 
 /*global builtin, java, Iterator */
 "use strict";
-var {Runtime, System, Thread} = java.lang,
-    {UnixSystem} = Packages.com.sun.security.auth.module,
-    {BufferedReader, InputStreamReader} = java.io;
+
+var Runtime = java.lang.Runtime,
+    System = java.lang.System,
+    Thread = java.lang.Thread,
+    UnixSystem = Packages.com.sun.security.auth.module.UnixSystem,
+    BufferedReader = java.io.BufferedReader,
+    InputStreamReader = java.io.InputStreamReader;
+//var {Runtime, System, Thread} = java.lang,
+//    {UnixSystem} = Packages.com.sun.security.auth.module,
+//    {BufferedReader, InputStreamReader} = java.io;
 
 var unixSystem = new UnixSystem(),
     _env = System.getenv(),
@@ -23,12 +30,31 @@ var unixSystem = new UnixSystem(),
     properties = {},
     i;
 
-for (i in Iterator(_env.keySet().iterator())) {
-    env[i] = String(_env.get(i));
-}
+//console.dir(_env.keySet().iterator().hasNext);
+//exit(0)
 
-for (i in Iterator(_properties.keySet().iterator())) {
-    properties[i] = String(_properties.get(i));
+if (NASHORN) {
+    (function() {
+        var iterator = _env.keySet().iterator();
+        while (iterator.hasNext()) {
+            i = iterator.next();
+            env[i] = String(_env.get(i));
+        }
+        iterator = _properties.keySet().iterator();
+        while (iterator.hasNext()) {
+            i = iterator.next();
+            properties[i] = String(_properties.get(i));
+        }
+    }());
+}
+else {
+    for (i in Iterator(_env.keySet().iterator())) {
+        env[i] = String(_env.get(i));
+    }
+
+    for (i in Iterator(_properties.keySet().iterator())) {
+        properties[i] = String(_properties.get(i));
+    }
 }
 
 env.OS = properties['os.name'].toUpperCase();

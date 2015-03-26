@@ -40,6 +40,8 @@
      */
     global = that;
 
+    global.NASHORN = typeof importPackage === 'undefined';
+
     /**
      * ## global.arguments
      *
@@ -60,6 +62,13 @@
 /** @private */
 }(this, arguments));
 
+if (NASHORN) {
+    java.lang.System.out.println('NASHORN');
+    load('nashorn:mozilla_compat.js');
+}
+else {
+    java.lang.System.out.println('RHINO');
+}
 /**
  * ## print(s)
  *
@@ -123,15 +132,20 @@ function d(o, depth) {
             load(prefix + 'builtins/' + file);
         }
     };
+    builtin.include('decaf.js');
+    builtin.include('print_r.js');
+    builtin.include('console.js');
     builtin.include('assert.js');
     builtin.include('unit.js');
-    builtin.include('decaf.js');
     builtin.include('extensions.js');
     builtin.include('atexit.js');
     builtin.include('process.js');
-    builtin.include('rhino.js');
-    builtin.include('console.js');
-    builtin.include('print_r.js');
+    if (NASHORN) {
+        builtin.include('nashorn.js');
+    }
+    else {
+        builtin.include('rhino.js');
+    }
     builtin.include('fs.js');
     builtin.include('require.js');
     builtin.include('include.js');
@@ -146,4 +160,21 @@ function d(o, depth) {
  * If there is no .js file on the command line, it enters an interactive REPL mode where it reads JavaScript from the console and executes it.
  *
  */
-include('builtins/shell.js');
+if (NASHORN && arguments[0] === 'debug') {
+    arguments.shift();
+    try {
+        include('builtins/dcon');
+    }
+    catch (e) {
+        console.exception(e);
+        exit(1)
+    }
+    //include('builtins/shell.js');
+}
+else {
+    include('builtins/shell.js');
+}
+//load('builtins/shell.js');
+
+console.log('debugger')
+debugger

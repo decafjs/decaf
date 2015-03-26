@@ -1,8 +1,14 @@
+/*global java */
 /**
  * @private
  */
-var {URL, HttpUrlConnection} = java.net,
-    {BufferedReader, InputStreamReader, DataOutputStream} = java.io,
+var URL = java.net.URL,
+    HttpUrlConnection = java.net.HttpUrlConnection,
+    BufferedReader = java.io.BufferedReader,
+    InputStreamReader = java.io.InputStreamReader,
+    DataOutputStream = java.io.DataOutputStream,
+    //{URL, HttpUrlConnection} = java.net,
+    //{BufferedReader, InputStreamReader, DataOutputStream} = java.io,
     toJavaByteArray = decaf.toJavaByteArray;
 
 /**

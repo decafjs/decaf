@@ -1,4 +1,32 @@
 #!/bin/bash
 
-jjs -cp java/* ./builtins/all.js -- "$@"
 
+DIR=$(dirname "$0")
+source "$DIR/decaf-common.sh"
+
+command -v jjs >/dev/null 2>&1 || {
+    echo ""
+    echo "jjs is required to run decafn8."
+    echo ""
+    echo "It is included in Java 8, but not copied to /usr/bin/jjs on OS X."
+    echo "It may be found in a directory path something like this:"
+    echo ""
+    echo "      Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin/jjs"
+    echo ""
+    echo "You should create a softlink to that jjs in your /usr/bin directory:"
+    echo ""
+    echo "      sudo ln Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin/jjs /usr/bin/jjs"
+    echo ""
+    echo "Note the jdk version in that path, yours may be different."
+    echo ""
+    exit 1;
+}
+
+#if [ "$1" = "debug" ]; then
+#    echo "DEBUG"
+#    echo jjs -Ddecaf=$DECAF -cp $CP -scripting -fx $DECAF/builtins/all.js -- "$@"
+#    jjs -Ddecaf=$DECAF -cp $CP -scripting -fx $DECAF/builtins/all.js -- "$@"
+#else
+    echo jjs -Ddecaf=$DECAF -Ddecaf.classpath=$CP -cp $CP $DECAF/builtins/all.js -- "$@"
+    jjs -Ddecaf=$DECAF -Ddecaf.classpath=$CP -cp $CP $DECAF/builtins/all.js -- "$@"
+#fi

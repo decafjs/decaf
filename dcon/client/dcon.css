@@ -105,3 +105,20 @@ div.console div.jquery-console-welcome {
 .jquery-console-message-success {
     color: lawngreen;
 }
+
+select {
+    height: 22px;
+    /*margin-top: 5px;*/
+    padding: 0;
+    font-size: 13px;
+    line-height: 18px;
+}
+button.go-button {
+    height: 22px;
+    margin: 0;
+    /*margin-top: 4px;*/
+    padding: 0;
+    /*margin-top: 5px;*/
+    font-size: 13px;
+    line-height: 18px;
+}

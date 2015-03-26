@@ -98,13 +98,6 @@
     }
 
     if (!runShell) {
-        try {
-            throw new Error('foo');
-        }
-        catch (e) {
-            console.dir(e);
-            console.dir(e.stack);
-        }
         while (builtin._idle()) {
             java.lang.Thread.sleep(1);
         }

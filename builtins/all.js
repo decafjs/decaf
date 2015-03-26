@@ -80,9 +80,9 @@ else {
  * @method print
  * @param {string} s - string to print
  */
-function print(s) {
-    console.log(s);
-}
+//function print(s) {
+//    console.log(s);
+//}
 
 /**
  * ## dump(o)
@@ -124,7 +124,7 @@ function d(o, depth) {
 
 (function() {
     "use strict";
-
+print('loading builtins')
     var prefix = java.lang.System.getProperty('decaf') + '/';
     global.builtin = {
         decaf: prefix,
@@ -160,10 +160,11 @@ function d(o, depth) {
  * If there is no .js file on the command line, it enters an interactive REPL mode where it reads JavaScript from the console and executes it.
  *
  */
+//BREAKPOINT
 if (NASHORN && arguments[0] === 'debug') {
     arguments.shift();
     try {
-        include('builtins/dcon');
+        include('dcon/dcon');
     }
     catch (e) {
         console.exception(e);
@@ -174,7 +175,10 @@ if (NASHORN && arguments[0] === 'debug') {
 else {
     include('builtins/shell.js');
 }
-//load('builtins/shell.js');
 
-console.log('debugger')
-debugger
+//load('builtins/shell.js');
+console.log('breakpoint')
+//function breakpoint() {
+//    console.log('breakpoint')
+//}
+

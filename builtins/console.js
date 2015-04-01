@@ -155,12 +155,12 @@
          * @param {Error} e - the exception object to dump.
          */
         exception : function (e) {
-            try {
-                throw new Error('');
-            }
-            catch (ee) {
-                console.log(ee.stack);
-            }
+            //try {
+            //    throw new Error('');
+            //}
+            //catch (ee) {
+            //    console.log(ee.stack);
+            //}
             var text = '';
             text += '**** EXCEPTION ****\n';
             if (!NASHORN && e instanceof org.mozilla.javascript.RhinoException) {

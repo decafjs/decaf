@@ -73,9 +73,9 @@ if [ -d "java" ]; then
 #    CP="$CP:./java/*.jar:./java/ext/rhino-1.7R5-20130223-1.jar"
 elif [ -d "bower_components/decaf/java" ]; then
     if [ "$RHINO" = "true" ]; then
-        CP="$CP:bower_components/decaf/java/*.jar::bower_components/decaf/java/rhino/*.jar:bower_components/decaf/java/ext/*.jar"
+        CP="$CP:bower_components/decaf/java/*.jarbower_components/decaf/java/rhino/*.jar:bower_components/decaf/java/ext/*.jar"
     else
-        CP="$CP:bower_components/decaf/java/*.jar::bower_components/decaf/java/rhino/*.jar:bower_components/decaf/java/ext/*.jar"
+        CP="$CP:bower_components/decaf/java/*.jar:bower_components/decaf/java/rhino/*.jar:bower_components/decaf/java/ext/*.jar"
     fi
 elif [ -d "/usr/local/decaf/java" ]; then
     if [ "$RHINO" = "true" ]; then

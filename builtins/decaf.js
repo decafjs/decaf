@@ -403,6 +403,9 @@ var decaf = {
          */
         fire : function ( event ) {
             var me = this;
+            if ( !me.__eventHandlers__ ) {
+                me.__eventHandlers__ = [];
+            }
             if ( me.__eventHandlers__[ event ] ) {
                 var args = Array.prototype.splice.call(arguments, 1);
                 decaf.each(me.__eventHandlers__[ event ] || [], function ( fn ) {

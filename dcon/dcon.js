@@ -33,10 +33,12 @@ var scripts     = [
         'lib/codemirror-5.1/mode/javascript/javascript.js',
         'Target.js',
         'Sources.js',
+        'Layout.js',
         'client.js'
     ],
     stylesheets = [
         'lib/codemirror-5.1/lib/codemirror.css',
+        'lib/codemirror-5.1/theme/solarized.css',
         //'lib/jquery-ui.css',
         'lib/layout-default.min.css',
         'dcon.css'
@@ -73,20 +75,22 @@ com.sun.javafx.application.LauncherImpl.launchApplication((Java.extend(javafx.ap
 
                 decaf.each(scripts, function ( filename ) {
                     try {
-                        js.push(new File(clientPath + filename).readAll());
+                        js.push('<!-- ' + clientPath + filename +' -->\n<script type="text/javascript">\n' + new File(clientPath + filename).readAll() + '</script>\n');
                     }
                     catch ( e ) {
                         console.dir(e);
                     }
                 });
                 decaf.each(stylesheets, function ( filename ) {
-                    css.push(new File(clientPath + filename).readAll());
+                    css.push('<!-- ' + clientPath + filename + '-->\n<style type="text/css">\n' + new File(clientPath + filename).readAll() + '</style>\n');
+                    //css.push(new File(clientPath + filename).readAll());
                 });
                 var content = new File(DECAF + '/dcon/client/dcon.html').readAll();
-                content = content.replace('</head>', '<style type="text/css">' + css.join('\n') + '\n</style>\n</head>');
-                content = content.replace('</body>', '<script type="text/javascript">' + js.join('\n') + '\n</script>\n</body>');
+                content = content.split('==scripts==');
+                content = content[0] + js.join('\n') + content[1];
+                content = content.split('==styles==');
+                content = content[0] + css.join('\n') + content[1];
                 new File('/tmp/x.html').writeFile(content);
-                //console.log(content);
 
                 stage.setTitle('DCON Kills Bugs Dead!');
                 var root = new BorderPane();
@@ -143,6 +147,7 @@ com.sun.javafx.application.LauncherImpl.launchApplication((Java.extend(javafx.ap
                                 target.clearBreakpoint(message.filename, message.lineNumber);
                                 break;
                             case 'eval':
+                                console.log('eval')
                                 target.evaluate(message.expr);
                                 break;
                         }

@@ -20,19 +20,21 @@
             var me = this;
 
             editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+                mode            : 'javascript',
                 lineNumbers     : true,
-                gutters         : [ "CodeMirror-linenumbers", "breakpoints" ],
+                gutters         : ["CodeMirror-linenumbers", "breakpoints"],
                 styleActiveLine : true,
-                readOnly        : 'nocursor'
+                readOnly        : 'nocursor',
+                theme           : 'solarized light'
             });
-            editor.on("gutterClick", function ( cm, n ) {
+            editor.on("gutterClick", function (cm, n) {
                 console.dir({
-                    gutterClick: cm,
-                    n: n,
-                    source: Sources.source
+                    gutterClick : cm,
+                    n           : n,
+                    source      : Sources.source
                 });
-                var me,
-                    info = cm.lineInfo(n),
+                var info = cm.lineInfo(n),
+                    line = info.line+ 1,
                     source = Sources.source;
 
                 console.dir({
@@ -40,14 +42,19 @@
                     source    : source,
                     locations : source.locations
                 });
-                if ( source && source.locations && source.locations[ info.line + 1 ] ) {
-                    if ( info.gutterMarkers ) {
-                        Target.clearBreakpoint(source.name, info.line+1);
+                if (source && source.locations && source.locations[line]) {
+                    if (source.breakpoints[line]) {
+
+                    //if (info.gutterMarkers) {
+                        delete source.breakpoints[line];
+                        Target.clearBreakpoint(source.name, line);
                     }
                     else {
-                        Target.setBreakpoint(source.name, info.line+1);
+                        source.breakpoints[line] = 'set';
+                        Target.setBreakpoint(source.name, line);
                     }
                     cm.setGutterMarker(n, "breakpoints", info.gutterMarkers ? null : makeMarker());
+                    ui.updateBreakpoints();
                 }
             });
         },
@@ -60,18 +67,23 @@
         enable   : function () {
             this.disabled = false;
         },
-        load     : function ( source, lineNumber ) {
-            var me = this;
-            console.dir({
-                load       : source,
-                lineNumber : lineNumber
+        load     : function (source, lineNumber) {
+            if (Sources.source !== source) {
+                Sources.source = source;
+                editor.setValue(source.chars);
+                $('#filename').html(source.name);
+            }
+            console.dir(source.breakpoints);
+            $.each(source.breakpoints, function(line, state) {
+                console.dir({ line: line, state: state });
+                if (state === 'set') {
+                    var info = editor.lineInfo(line-1);
+                    console.dir({ info: info })
+                    editor.setGutterMarker(line-1, "breakpoints", info.gutterMarkers ? null : makeMarker());
+                }
             });
-            Sources.source = source;
-            editor.setValue(source.chars);
-            editor.scrollIntoView({ line : lineNumber, ch : 1 }, 10);
-            editor.setCursor({ line : lineNumber - 1, ch : 1 });
-            $('#filename').html(source.name);
-            console.dir(me);
+            editor.scrollIntoView({line : lineNumber, ch : 1}, 100);
+            editor.setCursor({line : lineNumber - 1, ch : 1});
         }
     };
 }());

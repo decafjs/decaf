@@ -15,7 +15,7 @@
     }
 
     function isObject(o) {
-        return !!o && Object.prototype.toString.call(o) === '[object Object]';
+        return !!o && Object.prototype.toString.call(o) === '[object Object]'; //  || typeof o === 'object';
     }
 
     function isError(e) {
@@ -161,8 +161,15 @@
 //            r.push(indent + '}');
             return r.join('\n');
         }
-        print(toString.apply(o));
-        return '-' + (typeof o) + ' ' + o;
+        //if (typeof o === 'object') {
+            r.push('(jobject)' + o);
+            for (var key in o) {
+                r.push(sep + indent + '[' + key + ']' + print_r(o[key], max, sep, l + 1));
+            }
+        return r.join('\n');
+        //}
+        //print(toString.apply(o));
+        //return '-' + (typeof o) + ' ' + o;
     }
 /** @private */
     builtin.print_r = print_r;

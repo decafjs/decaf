@@ -112,9 +112,11 @@ function dump(o, depth) {
  * @param {object} o - object to dump
  * @param {int} depth - how deep to recurse dumping object
  */
-function d(o, depth) {
+ d = NASHORN ? function(o, depth) {
+     console.log(builtin.print_r(o, depth || 4, ' ', 0));
+ } : function(o, depth) {
     return builtin.print_r(o, depth || 4, ' ', 0);
-}
+};
 
 /**
  *  ## global.builtins
@@ -124,7 +126,6 @@ function d(o, depth) {
 
 (function() {
     "use strict";
-print('loading builtins')
     var prefix = java.lang.System.getProperty('decaf') + '/';
     global.builtin = {
         decaf: prefix,
@@ -161,6 +162,7 @@ print('loading builtins')
  *
  */
 //BREAKPOINT
+debugger;
 if (NASHORN && arguments[0] === 'debug') {
     arguments.shift();
     try {

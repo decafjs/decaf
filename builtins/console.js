@@ -72,7 +72,7 @@
          * @param {int} n - depth (default 4)
          */
         dir       : function (o, n) {
-            n = n || 4;
+            n = n || 8;
             java.lang.System.out.println(builtin.print_r(o, n));
         },
         /**

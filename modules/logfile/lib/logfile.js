@@ -13,8 +13,8 @@
 
 var File = require('File'),
     atExit = require('builtin.atExit'),
-    {Thread} = require('Threads'),
-    {sleep} = require('process');
+    Thread = require('Threads').Thread,
+    sleep = require('process').sleep;
 
 /**
  * Create a new LogFile and thread to manage it.

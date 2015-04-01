@@ -54,6 +54,6 @@ elif [ "$1" = "uninstall" ]; then
     sudo rm -rf /usr/local/decaf
     sudo rm -f /usr/local/bin/decaf
 else
-    echo java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
+#    echo java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
     java -server $JVMFLAGS -cp $CP -Ddecaf=$DECAF $RHINOSHELL -debug $RHINOFLAGS $DECAF/builtins/all.js $*
 fi

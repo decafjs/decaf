@@ -72,15 +72,25 @@ if [ -d "java" ]; then
     fi
 #    CP="$CP:./java/*.jar:./java/ext/rhino-1.7R5-20130223-1.jar"
 elif [ -d "bower_components/decaf/java" ]; then
+    DECAF_JAVA=`ls -1 bower_components/decaf/java/*.jar | tr "\\n" ":"` # | sed 's!\:$!!'
+    DECAF_JAVA=${DECAF_JAVA%:}
+    CP="$CP:$DECAF_JAVA"
     if [ "$RHINO" = "true" ]; then
-        CP="$CP:bower_components/decaf/java/*.jar:bower_components/decaf/java/rhino/*.jar:bower_components/decaf/java/ext/*.jar"
+        DECAF_JAVA=`ls -1 bower_components/decaf/java/rhino/*.jar | tr "\\n" ":"`
+        CP="$CP:$DECAF_JAVA"
     else
-        CP="$CP:bower_components/decaf/java/*.jar:bower_components/decaf/java/rhino/*.jar:bower_components/decaf/java/ext/*.jar"
+        DECAF_JAVA=`ls -1 bower_components/decaf/java/nashorn/*.jar | tr "\\n" ":"`
+        CP="$CP:$DECAF_JAVA"
     fi
 elif [ -d "/usr/local/decaf/java" ]; then
+    DECAF_JAVA=`ls -1 /usr/local/decaf/java/*.jar | tr "\\n" ":"` # | sed 's!\:$!!'
+    DECAF_JAVA=${DECAF_JAVA%:}
+    CP="$CP:$DECAF_JAVA"
     if [ "$RHINO" = "true" ]; then
-        CP="$CP:/usr/local/decaf/java/*.jar::/usr/local/decaf/java/rhino/*.jar:/usr/local/decaf/java/ext/*.jar"
+        DECAF_JAVA=`ls -1 /usr/local/decaf/java/rhino/*.jar | tr "\\n" ":"`
+        CP="$CP:$DECAF_JAVA"
     else
-        CP="$CP:/usr/local/decaf/java/*.jar::/usr/local/decaf/java/rhino/*.jar:/usr/local/decaf/java/ext/*.jar"
+        DECAF_JAVA=`ls -1 /usr/local/decaf/java/nashorn/*.jar | tr "\\n" ":"`
+        CP="$CP:$DECAF_JAVA"
     fi
 fi

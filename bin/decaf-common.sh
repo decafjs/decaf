@@ -49,13 +49,11 @@ fi
 # set up class path for java/rhino
 CP="."
 
-#if [ ! -z "$MODULES" ]; then
-#echo 1
-#    CP="$CP:$MODULES/*/java/*.jar"
-#fi
+if [ ! -z "$MODULES" ]; then
+    CP="$CP:$MODULES/*/java/*.jar"
+fi
 #
 #if [ -d "modules" ]; then
-#echo 2
 #    CP="$CP:modules/*/java/*.jar"
 #fi
 

@@ -271,15 +271,17 @@ decaf.extend(Response.prototype, {
         this.sendHeaders();
         this.flush();
 
-        var remaining = size,
-            offset = 0,
-            actual;
+        os.writeBytes(bytes, 0, size);
 
-        while (remaining > 0) {
-            actual = os.writeBytes(bytes, offset, remaining);
-            offset += actual;
-            remaining -= actual;
-        }
+        //var remaining = size,
+        //    offset = 0,
+        //    actual;
+        //
+        //while (remaining > 0) {
+        //    actual = os.writeBytes(bytes, offset, remaining);
+        //    offset += actual;
+        //    remaining -= actual;
+        //}
         os.flush();
     },
 

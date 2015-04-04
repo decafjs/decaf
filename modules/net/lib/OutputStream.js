@@ -55,12 +55,11 @@ decaf.extend(OutputStream.prototype, {
      * @param bytes
      * @param offset
      * @param length
-     * @returns {*}
      */
     writeBytes: function (bytes, offset, length) {
+        // NOTE OutputStream.write() returns void
         var os = this.socket.getOutputStream();
-        var written = os.write(bytes, offset, length);
-        return written;
+        os.write(bytes, offset, length);
     },
 
     /**

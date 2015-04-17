@@ -254,7 +254,7 @@ function Request(is, maxUpload) {
             decaf.extend(data, this.post);
         }
         else {
-            post = String(new java.lang.String(raw, 'latin1')),
+            post = String(new java.lang.String(raw, 'latin1'));
             data.post = post;
             this.post = post;
         }

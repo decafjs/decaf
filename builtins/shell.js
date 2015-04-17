@@ -65,12 +65,14 @@
 
     var argv = [],
         runShell = true;
+    console.dir({args: args[0], length: args.length})
+
     for (var i = 0, len = args.length; i < len; i++) {
         var arg = args[i];
         if (arg.endsWith('.js')) {
             if (runShell) {
                 try {
-                    //console.log('include ' + arg)
+                    console.log('include ' + arg)
                     include(arg);
                 }
                 catch (e) {
@@ -88,6 +90,9 @@
             argv.push(arg);
         }
     }
+
+    console.log('debugger')
+    debugger
 
     builtin._main();
     if (global.main) {

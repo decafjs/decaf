@@ -175,7 +175,12 @@ if (NASHORN && arguments[0] === 'debug') {
     //include('builtins/shell.js');
 }
 else {
-    include('builtins/shell.js');
+    if (arguments[0] === 'dcon') {
+        include('builtins/dcon/dcon.js');
+    }
+    else {
+        include('builtins/shell.js');
+    }
 }
 
 //load('builtins/shell.js');

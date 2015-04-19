@@ -23,7 +23,7 @@
  * var condition = new Condition();
  * condition.wait();
  * console.log('condition was notified');
- * 
+ *
  * // in some other thread:
  * condition.notify();
  * ```
@@ -38,13 +38,15 @@ function Condition() {
     me.variable = new java.lang.Object();
 
     /**
+     * @method wait
      * Wait for a notify.
-     *
+     */
     this.wait = sync(function () {
         me.variable.wait();
     }, me.variable);
 
     /**
+     * @method notify
      * Notify listeners on this Condition instance.
      */
     this.notify = sync(function () {
@@ -52,6 +54,7 @@ function Condition() {
     }, me.variable);
 
     /**
+     * @method notifyAll
      * Notify all threads waiting on this Condition instance.
      */
     this.notifyAll = sync(function () {

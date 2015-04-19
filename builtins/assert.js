@@ -7,6 +7,23 @@
  * @singleton
  *
  * Expression verification.
+ *
+ * ## Example:
+ * ```sh
+ * $ ./bin/decaf
+ * decaf> assert(1 === 1)
+ * true
+ * decaf> assert(1 === 1, 'false', 'true')
+ * true
+ * at unknown:1
+ * true
+ * decaf> assert(1 === 0)
+ * Assertion failed
+ * at unknown:1
+ *
+ * exiting
+ * $
+ * ```
  */
 /*global global */
 
@@ -26,22 +43,6 @@
      * - if assert.exit is set to false, then assert() returns false and does not exit
      * - the method assert.message(message) may be replaced by one that does application specific logic
      *
-     * ## Example:
-     * ```sh
-     * $ ./bin/decaf
-     * decaf> assert(1 === 1)
-     * true
-     * decaf> assert(1 === 1, 'false', 'true')
-     * true
-     * at unknown:1
-     * true
-     * decaf> assert(1 === 0)
-     * Assertion failed
-     * at unknown:1
-     *
-     * exiting
-     * $
-     * ```
      * @param {Boolean} value the value to test
      * @param {String} falseMessage the optional string to be printed instead of 'Assertion failed'
      * @param {String} trueMessage the optional string to be printed if the assertion is successful (true)

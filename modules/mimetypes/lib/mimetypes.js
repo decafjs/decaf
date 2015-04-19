@@ -1,18 +1,17 @@
 /**
- * @module mimetypes
- * @filedescription mimetypes
+ * @class mimetypes
  *
  * ### Synopsis
  *
- * var mimeTypes = require('MimeTypes');
+ * var mimeTypes = require('mimetypes').mimeTypes;
  *
  * ### Description
  *
- * MimeTypes is a hash/object.  The key in the object is file extension, the value is MIME type (e.g. HTTP content-type value).
+ * mimeTypes is a hash/object.  The key in the object is file extension, the value is MIME type (e.g. HTTP content-type value).
  *
  * The system mime.types file is loaded, if it can be found.  For Linux, the file is expected to exist in /etc/mime.types.  For OSX, it's expected in /Private/etc/apache2/mime.types.
  *
- * ### Throws
+ * @throws
  * This module throws an error at require() time if the mime.types file cannot be found.
  */
 
@@ -39,7 +38,7 @@ if (!filename) {
 
 /**
  * Array of mime types - key is file extension, value is content-type
- * @type {{}}
+ * @type {Object}
  */
 var mimeTypes = {};
 var lines = new File(filename).readAll().split(/\n/); // fs.readFile(filename).split(/\n/);

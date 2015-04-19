@@ -3,16 +3,25 @@
  */
 /*global java, module */
 
-var BCrypt = Packages.org.mindrot.jbcrypt.BCrypt;
-
 /**
- * Usage:
+ * @class support
+ * @singleton
+ */
+/**
+ * @method BCrypt
+ * @static
  *
- * var hashed = BCrypt.hashpw("moduscreate", BCrypt.gensalt());
+ * BCrypt encrtoption methods
  *
- * if (BCrypt.checkpw("moduscreate", hashed)){
- *   // it matches
- * }
- * */
+ *     @example
+ *     var hashed = BCrypt.hashpw("moduscreate", BCrypt.gensalt());
+ *
+ *     if (BCrypt.checkpw("moduscreate", hashed)){
+ *       // it matches
+ *     }
+ *
+ */
+
+var BCrypt = Packages.org.mindrot.jbcrypt.BCrypt;
 
 module.exports.BCrypt = BCrypt;

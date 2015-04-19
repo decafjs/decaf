@@ -31,16 +31,39 @@ var removeThread = sync(function(threadId) {
 //    }
 //}
 
-/** @module Thread */
+/**
+ * @class Threads.Thread
+ * Threads implementation for DecafJS JavaScript programs.
+ *
+ * This class provides a JavaScript friendly wrapper around native JVM Threads.
+ */
 
 /**
+ * @class Threads.Thread
+ * @constructor
  * Create a new Thread
  *
  * Note: the thread isn't started, it is only created
  *
- * @class Thread
- * @param {Function} fn - function to run as thread
+ * Any additional parameters to this function are passed as arguments to the function within the new thread context.
+ *
+ * For example:
+ *
+ * ```javascript
+ * var Thread = require('Threads').Thread;
+ *
+ * new Thread(
+ *   function(a,b) {
+ *     console.log(a);
+ *     console.log(b);
+ * }, 1, 2).start();
+ * // prints:
+ * // 1
+ * // 2
+ * ```
  * @constructor
+ * @param {Function} fn - function to run as thread
+ * @param [Arguments] Zero or more arguments to be passed to fn
  */
 function Thread(fn) {
     var args = [];
@@ -62,6 +85,7 @@ function Thread(fn) {
  * Exit the currently running thread
  *
  * @method exit
+ * @static
  */
 Thread.exit = function () {
     // console.log('THREAD.EXIT');
@@ -78,13 +102,19 @@ var mainThread = {
 /**
  * Get current Thread
  *
- * @method currentThread
+ * @static
  */
 Thread.currentThread = function () {
     var t = java.lang.Thread.currentThread();
     return threads[t] || mainThread;
 };
 
+/**
+ * Get the number of active threads.
+ *
+ * @static
+ * @returns {number}  number of threads
+ */
 Thread.threadCount = function() {
     return threadCount;
 };
@@ -92,23 +122,29 @@ Thread.threadCount = function() {
 /**
  * Defer to other running threads for specified number of seconds.
  *
- * @method sleep
- * @param secs
+ * @static
+ * @param {Number}  seconds to sleep
  */
-Thread.sleep = function (secs) {
-    process.sleep(secs);
+Thread.sleep = function (seconds) {
+    process.sleep(seconds);
 };
 
 /**
  * Defer to other running threads for specified number of milliseconds
  *
- * @method usleep
- * @param usecs
+ * @static
+ * @param {Number}  milliseconds to sleep
  */
-Thread.usleep = function (usecs) {
-    process.usleep(usecs);
+Thread.usleep = function (milliseconds) {
+    process.usleep(milliseconds);
 };
 
+/**
+ * Test to see if current thread has been interrupted.
+ *
+ * @static
+ * @returns {Boolean} true if thread has been interrupted
+ */
 Thread.interrupted = function () {
     return java.lang.Thread.interrupted();
 };

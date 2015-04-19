@@ -20,7 +20,7 @@ var File = require('File'),
  * Create a new LogFile and thread to manage it.
  *
  * @param {string} filename - name/path of logfile on disk
- * @param {int} flushFrequency - how often, in seconds, to flush logfile to disk
+ * @param {Number} flushFrequency - how often, in seconds, to flush logfile to disk
  * @param {boolean} unlink - true to remove the file on exit.
  * @constructor
  */

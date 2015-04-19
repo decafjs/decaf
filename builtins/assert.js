@@ -2,18 +2,19 @@
  * Created by mschwartz on 3/14/15.
  */
 
+/**
+ * @class assert
+ * @singleton
+ *
+ * Expression verification.
+ */
 /*global global */
 
 
-/**
- *
- */
-
-/** @private */
 (function () {
 
     /**
-     * # assert(bool, falseMessage, trueMessage) : Boolean
+     * @static
      *
      * Assert that the bool value is true.
      *
@@ -41,12 +42,12 @@
      * exiting
      * $
      * ```
-     * @param bool
-     * @param falseMessage
-     * @param trueMessage
+     * @param {Boolean} value the value to test
+     * @param {String} falseMessage the optional string to be printed instead of 'Assertion failed'
+     * @param {String} trueMessage the optional string to be printed if the assertion is successful (true)
      */
-    function assert(bool, falseMessage, trueMessage) {
-        if (bool) {
+    function assert(value, falseMessage, trueMessage) {
+        if (value) {
             if (trueMessage) {
                 assert.message(trueMessage);
             }
@@ -68,10 +69,8 @@
     global.assert = assert;
 
     /**
-     * # assert.message(message)
-     *
+     * @member assert
      * Print the message parameter along with the line and file where assert() was called
-     *
      * @param message
      */
     assert.message = function (message) {
@@ -87,8 +86,8 @@
     };
 
     /**
-     * # {Boolean} assert.exit
-     *
+     * @property
+     * @member assert
      * The setting of this member determines if the program exits when an assert() fails.
      *
      * A program may want to set this to false

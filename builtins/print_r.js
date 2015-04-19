@@ -61,9 +61,9 @@
      * ### Arguments:
      *
      * - {Mixed} o - the object to render
-     * - {int} max - the maximum depth of recursion (optional, defaults to 4)
+     * - {Number} max - the maximum depth of recursion (optional, defaults to 4)
      * - {char} sep - character to use for indentation (optional, defaults to ' ')
-     * - {int} l - current level of recursion (generally this is only passed by print_r itself as it recurses)
+     * - {Number} l - current level of recursion (generally this is only passed by print_r itself as it recurses)
      *
      * ### Returns:
      * - {String} - the formatted dump of the object.

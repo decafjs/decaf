@@ -1,7 +1,4 @@
 /*global java */
-/**
- * @private
- */
 var URL = java.net.URL,
     HttpUrlConnection = java.net.HttpUrlConnection,
     BufferedReader = java.io.BufferedReader,
@@ -12,16 +9,20 @@ var URL = java.net.URL,
     toJavaByteArray = decaf.toJavaByteArray;
 
 /**
- * Construct a HTTP Client
+ * @class http.Client
+ * A class for connection to remote servers via http protocol.
  *
  * After the GET/POST operation is complete, you can inspect these members of the Client object:
  *
- * {string} status - HTTP status (e.g. 200, 404, etc.)
- * {string} responseMessage - HTTP response message (e.g. OK, NOT FOUND, etc.)
- * {string} responseText - the text of the HTTP response from the server (typically the HTML or JSON it sent us)
+ * + {string} status - HTTP status (e.g. 200, 404, etc.)
+ * + {string} responseMessage - HTTP response message (e.g. OK, NOT FOUND, etc.)
+ * + {string} responseText - the text of the HTTP response from the server (typically the HTML or JSON it sent us)
+ *
+
+ * @constructor
+ * Construct a HTTP Client
  *
  * @param {string} url URL to connect to
- * @constructor
  */
 function Client( url ) {
     this.conn = new URL(url).openConnection();

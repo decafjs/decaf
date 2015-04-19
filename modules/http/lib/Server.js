@@ -1,7 +1,3 @@
-/**
- * @module http
- * @submodule Server
- */
 /*global require, java, io */
 "use strict";
 
@@ -13,9 +9,25 @@ var Child = require('Child').Child,
     process = require('process');
 
 /**
- * @constructor
+ * @class http.Server
+ * A class for serving http requests.
  *
- * @param fn
+ * ## Example:
+ *
+ * ```javascript
+ * var http = require('http');
+ *
+ *  http.createServer(function(req, res) {
+ *     res.writeHead(200, { 'Content-Type': 'text/plain'});
+ *     res.end('Hello World\n');
+ * }).listen(1337, '127.0.0.1', 50);
+ * console.log('Server running at http://127.0.0.1:1337/');
+ ```
+ * @constructor
+ * @private
+ * Create an instance of an http server.  The specified function is passed a Request and Response as arguments for each request.
+ *
+ * @param {Function} fn  function to call for each request
  */
 function Server(fn) {
     this.fn = fn;
@@ -23,8 +35,6 @@ function Server(fn) {
 }
 decaf.extend(Server.prototype, {
     /**
-     * @memberOf http.Server
-     * @method listen
      * @param port
      * @param bindAddress
      * @param numChildren
@@ -46,8 +56,6 @@ decaf.extend(Server.prototype, {
         return this;
     },
     /**
-     * @memberOf http.Server
-     * @method webSocket
      * @param path
      * @param onConnect
      * @return {*}
@@ -60,6 +68,7 @@ decaf.extend(Server.prototype, {
 
 /**
  * @method createServer
+ * @static
  *
  * @param {Function} fn function to handle requests
  * @return {Server}

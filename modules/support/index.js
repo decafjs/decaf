@@ -5,6 +5,13 @@
  * Time: 5:50 PM
  */
 
+/**
+ * @class support
+ * @singleton
+ *
+ * The support namespace provides utility methods, mostly encryption.
+ *
+ */
 /*global require, module */
 module.exports = {
     uuid          : require('lib/uuid'),

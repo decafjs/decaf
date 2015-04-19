@@ -1,13 +1,25 @@
 /**
- * @module http
- * @submodule Child
- * @private
+ * @class http.Child
+ *
+ * Thread to handle HTTP requests.
+ *
+ * There are typically numChildren (see Server.listen) Child threads spawned at start.
+ *
+ * The Child logic is two nested loops.  The outer loop accepts connections.  The inner loop
+ * processes requests on the accepted connection until the connection is closed or until
+ * the HTTP protocol requires the connection to be closed (Connection: close).
+ *
+ * If a request is an upgrade to WebSocket, the thread becomes dedicated to servicing the
+ * socket.
+ *
+ * A Request and Response object are created for each request handled.  See http/Request.js
+ * and http/Response.js for details.
+ *
+ * @param {Socket} serverSocket the Socket to accept connections from
+ * @param {object} server instance of the http Server that spawned this child
+ * @constructor
  */
 
-/*!
- * @private
- * @ignore
- */
 /*global require, exports, log, sync, java, io */
 (function() {
     "use strict";
@@ -66,25 +78,6 @@
         return keepAlive;
     }
 
-    /**
-     * Thread to handle HTTP requests.
-     *
-     * There are typically numChildren (see Server.listen) Child threads spawned at start.
-     *
-     * The Child logic is two nested loops.  The outer loop accepts connections.  The inner loop
-     * processes requests on the accepted connection until the connection is closed or until
-     * the HTTP protocol requires the connection to be closed (Connection: close).
-     *
-     * If a request is an upgrade to WebSocket, the thread becomes dedicated to servicing the
-     * socket.
-     *
-     * A Request and Response object are created for each request handled.  See http/Request.js
-     * and http/Response.js for details.
-     *
-     * @param {Socket} serverSocket the Socket to accept connections from
-     * @param {object} server instance of the http Server that spawned this child
-     * @constructor
-     */
     function Child(serverSocket, server) {
         var me = this;      // current Thread
 

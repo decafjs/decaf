@@ -1,15 +1,20 @@
-/**
+/*
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 6/29/13
  * Time: 9:21 PM
  */
 
-// inspired by helma.File
-
 /**
- * @module File
+ * @class File
+ *
+ * Class for accessing the file system.
+ *
+ *      var File = require('File');
+ *
+ *
  */
+// inspired by helma.File
 
 /*global java, module */
 "use strict";
@@ -30,10 +35,11 @@ var JavaFile = java.io.File,
     //    FileInputStream, InputStreamReader, ByteArrayOutputStream, BufferedInputStream} = java.io;
 
 /**
+ * @constructor
  * Crate a new File object representing a path.
  *
- * @class File
- * @constructor
+ * Once you have a File object, you can call the several File methods on it to query or manipulate the object in the file system.
+ *
  * @param {string} path that the File will represent, relative to where you started decaf, or absolute.
  */
 function File(path) {
@@ -96,6 +102,7 @@ decaf.extend(File, {
      * On Microsoft Windows systems it is ';'.
      *
      * @property pathSeparator
+     * @static
      * @type String
      */
     pathSeparator  : String(JavaFile.pathSeparator),
@@ -107,6 +114,7 @@ decaf.extend(File, {
      * On UNIX systems the value of this field is '/'; on Microsoft Windows systems it is '\'.
      *
      * @property separatorChar
+     * @static
      * @type String
      */
     separatorChar  : String.fromCharCode(JavaFile.separatorChar),
@@ -114,6 +122,7 @@ decaf.extend(File, {
      * The system wide temporary directory path
      *
      * @property tmpDir
+     * @static
      * @type String
      */
     tmpDir         : String(java.lang.System.getProperties().get('java.io.tmpdir'))
@@ -152,7 +161,7 @@ decaf.extend(File.prototype, {
      *
      * @method compareTo
      * @param {File} other file to compare to
-     * @return {int} Zero if the argument is equal to this abstract pathname, a value less than zero if this abstract pathname is lexicographically less than the argument, or a value greater than zero if this abstract pathname is lexicographically greater than the argument
+     * @return {Number} Zero if the argument is equal to this abstract pathname, a value less than zero if this abstract pathname is lexicographically less than the argument, or a value greater than zero if this abstract pathname is lexicographically greater than the argument
      */
     compareTo        : function (other) {
         return this.file.compareTo(other.file);
@@ -161,6 +170,7 @@ decaf.extend(File.prototype, {
      * Atomically creates a new, empty file named by this abstract pathname if and only if a file with this name does not yet exist.
      *
      * @method createNewFile
+     *
      * @return {boolean} true if the named file does not exist and was successfully created; false if the named file already exists
      */
     createNewFile    : function () {
@@ -321,7 +331,7 @@ decaf.extend(File.prototype, {
      * Returns the time that the file denoted by this abstract pathname was last modified.
      *
      * @method lastModified
-     * @return {int} A long value representing the time the file was last modified, measured in milliseconds since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if an I/O error occurs
+     * @return {Number} A long value representing the time the file was last modified, measured in milliseconds since the epoch (00:00:00 GMT, January 1, 1970), or 0L if the file does not exist or if an I/O error occurs
      */
     lastModified     : function () {
         return this.file.lastModified();
@@ -330,7 +340,7 @@ decaf.extend(File.prototype, {
      * Returns the length of the file denoted by this abstract pathname. The return value is unspecified if this pathname denotes a directory.
      *
      * @method size
-     * @return {int} The length, in bytes, of the file denoted by this abstract pathname, or 0L if the file does not exist. Some operating systems may return 0L for pathnames denoting system-dependent entities such as devices or pipes.
+     * @return {Number} The length, in bytes, of the file denoted by this abstract pathname, or 0L if the file does not exist. Some operating systems may return 0L for pathnames denoting system-dependent entities such as devices or pipes.
      */
     size             : function () {
         return this.file['length']();
@@ -343,7 +353,7 @@ decaf.extend(File.prototype, {
      * There is no guarantee that the name strings in the resulting array will appear in any specific order; they are not, in particular, guaranteed to appear in alphabetical order.
      *
      * @method list
-     * @param {regex} pattern - optional regex to match filenames against
+     * @param {RegExp} pattern - optional regex to match filenames against
      * @return {Array} An array of abstract pathnames denoting the files and directories in the directory denoted by this abstract pathname. The array will be empty if the directory is empty. Returns null if this abstract pathname does not denote a directory, or if an I/O error occurs.
      */
     list             : function (pattern) {
@@ -443,7 +453,7 @@ decaf.extend(File.prototype, {
      * All platforms support file-modification times to the nearest second, but some provide more precision. The argument will be truncated to fit the supported precision. If the operation succeeds and no intervening operations on the file take place, then the next invocation of the lastModified() method will return the (possibly truncated) time argument that was passed to this method.
      *
      * @method setLastModified
-     * @param {int} timestampMs - The new last-modified time, measured in milliseconds since the epoch (00:00:00 GMT, January 1, 1970)
+     * @param {Number} timestampMs - The new last-modified time, measured in milliseconds since the epoch (00:00:00 GMT, January 1, 1970)
      * @return {Boolean} true if and only if the operation succeeded; false otherwise
      */
     setLastModified  : function (timestampMs) {
@@ -549,8 +559,8 @@ decaf.extend(File.prototype, {
      * @method close
      */
     close            : function () {
-        readerWriter.close();
-        readerWriter = null;
+        this.readerWriter.close();
+        this.readerWriter = null;
     },
     /**
      * Read the file contents as a string.

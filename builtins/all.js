@@ -1,43 +1,36 @@
-/*!
- * Created with JetBrains WebStorm.
- * User: mschwartz
- * Date: 6/7/13
- * Time: 5:06 PM
- */
-
 /*global global:true, builtin: true, load, java */
 
 // ringo does:
 // Object.defineProperty(this, "global", { value: this });
 /**
+ *
  * # DecafJS Bootstrap Loader
  *
  * This file is the very first thing loaded into rhino.
  *
- * @fileoverview
- * @class global
-  */
-/** @private */
+ * ## global
+ *
+ * There is no DOM in the rhino/decafjs environment, so there is no "window" object.  Instead, there is a
+ * global variable named "global."
+ *
+ * Any access to "global.some_var" is the same as an access to "some_var" as long as there is no other "some_var" variable in scope.  That is, any global variable named "some_var" can be accessed as "global.some_var" or "some_var."
+ *
+ * <b>For example:</b>
+ *
+ * ```javascript
+ * some_var = 10;
+ * console.log(some_var); // -> 10
+ * console.log(global.some_var); // -> 10
+ * global.some_var = 20;
+ * console.log(some_var); // -> 20
+ * console.log(global.some_var); // -> 20
+ * ```
+ */
+ //* @class global
+ //* @singleton
+ //*/
+
 (function(that, arguments) {
-    /**
-     * ## global
-     *
-     * There is no DOM in the rhino/decafjs environment, so there is no "window" object.  Instead, there is a
-     * global variable named "global."
-     *
-     * Any access to "global.some_var" is the same as an access to "some_var" as long as there is no other "some_var" variable in scope.  That is, any global variable named "some_var" can be accessed as "global.some_var" or "some_var."
-     *
-     * <b>For example:</b>
-     *
-     * ```javascript
-     * some_var = 10;
-     * console.log(some_var); // -> 10
-     * console.log(global.some_var); // -> 10
-     * global.some_var = 20;
-     * console.log(some_var); // -> 20
-     * console.log(global.some_var); // -> 20
-     * ```
-     */
     global = that;
 
     global.NASHORN = typeof importPackage === 'undefined';
@@ -47,7 +40,7 @@
      *
      * Command line arguments to program as an Arguments array.
      *
-     * @property {Arguments} arguments
+     * @property  arguments
      */
     global.arguments = arguments;
 
@@ -69,6 +62,7 @@ if (NASHORN) {
 else {
     java.lang.System.out.println('RHINO');
 }
+
 /**
  * ## print(s)
  *
@@ -94,7 +88,7 @@ else {
  *
  * @method dump
  * @param {object} o - object to dump
- * @param {int} depth - how deep to recurse dumping object
+ * @param {Number} depth - how deep to recurse dumping object
  */
 function dump(o, depth) {
     console.log(builtin.print_r(o, depth || 4, ' ', 0));
@@ -110,7 +104,7 @@ function dump(o, depth) {
  *
  * @method d
  * @param {object} o - object to dump
- * @param {int} depth - how deep to recurse dumping object
+ * @param {Number} depth - how deep to recurse dumping object
  */
  d = NASHORN ? function(o, depth) {
      console.log(builtin.print_r(o, depth || 4, ' ', 0));

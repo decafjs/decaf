@@ -8,14 +8,25 @@
 "use strict";
 
 /*global java */
+/**
+ * @class http.GZIP
+ * @static
+ * A class for compressing a string or byte array using GZIP.
+ */
 var GZIP = {
-    compress: function(s) {
-        if (typeof s === 'string') {
-            s = decaf.toJavaByteArray(s);
+    /**
+     * Compress a Java byte array or String using GZIP compression.
+     *
+     * @param {String|byte[]} input the string or byte array to compress.
+     * @returns {byte[]} compressed version of input
+     */
+    compress: function(input) {
+        if (typeof input === 'string') {
+            input = decaf.toJavaByteArray(input);
         }
         var os = new java.io.ByteArrayOutputStream(),
             gz = new java.util.zip.GZIPOutputStream(os);
-        gz.write(s, 0, s.length);
+        gz.write(input, 0, input.length);
         gz.finish();
         return os.toByteArray();
     }

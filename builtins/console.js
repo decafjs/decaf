@@ -4,8 +4,8 @@
  * This class implements browser-like console singleton appropriate for server-side.
  *
  * The console object is globally available in any JavaScript code you write for DecafJS.
- *
- * @fileoverview
+ * @class console
+ * @static
  */
 /** @private */
 (function () {
@@ -65,11 +65,11 @@
          *
          * ### Arguments:
          * - {Mixed} o - the variable to be dumped
-         * - {int} n - optional maximum depth for recursion while dumping the object.  Defaults to 4.
+         * - {Number} n - optional maximum depth for recursion while dumping the object.  Defaults to 4.
          *
          * @method dir
          * @param {mixed} o - object to dump
-         * @param {int} n - depth (default 4)
+         * @param {Number} n - depth (default 4)
          */
         dir       : function (o, n) {
             n = n || 8;

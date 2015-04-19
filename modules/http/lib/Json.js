@@ -1,5 +1,5 @@
 /**
- * Construct a Json instance.
+ * @class http.Json
  *
  * The Json instance has the ability to handle sending JSON and JSONP success, failure, and
  * exception responses.
@@ -7,9 +7,12 @@
  * To deal with JSONP, and to handle responses that require being wrapped in textarea tag, the
  * methods look at the req (Request) headers and data.
  *
+ * @deprecated
+ * @constructor
+ * Construct a Json instance.
+ *
  * @param {Request} req http.Request object
  * @param {Response} res http.Response object
- * @constructor
  */
 function Json(req, res, gzip) {
     this.req = req;
@@ -31,7 +34,7 @@ decaf.extend(Json.prototype, {
      * Encode an object as JSON and return it as a formatted string, suitable for printing.
      *
      * @param {Object} obj - object to format.
-     * @param {int} spaces - number of spaces to indent while formatting.
+     * @param {Number} spaces - number of spaces to indent while formatting.
      */
     format: function(o, spaces) {
         spaces = spaces || 4;

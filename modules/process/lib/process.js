@@ -1,13 +1,21 @@
 /**
- * @module process
- * @fileoverview process module
- */
-
-/**
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 6/8/13
  * Time: 6:06 PM
+ */
+
+/**
+ * # process module
+ *
+ * Usage:
+ *
+ * ```javascript
+ *  var process = require('process');
+ *  ```
+ *
+ * @class process.process
+ * @singleton
  */
 
 /*global builtin, java, Iterator */
@@ -61,19 +69,21 @@ env.OS = properties['os.name'].toUpperCase();
 
 decaf.extend(exports, {
     /**
-     * Environment
+     * @property {Object} env
+     * Hash object of environment variable name/value pairs.
      */
     env: env,
-
     /**
-     * System/JVM properties
+     * @property {Object} properties
+     *
+     * Hash Object of the System/JVM properties
      */
     properties: properties,
 
     /**
      * Get UID of current user.
      *
-     * @returns {int} UID user id of current user.
+     * @returns {Number} UID user id of current user.
      */
     getuid: function () {
         return unixSystem.getUid();
@@ -82,7 +92,7 @@ decaf.extend(exports, {
     /**
      * Put current thread (or program) to sleep for a number of seconds.
      *
-     * @param {int} secs number of seconds to sleep
+     * @param {Number} secs number of seconds to sleep
      */
     sleep: function (secs) {
         Thread.sleep(secs * 1000);
@@ -91,7 +101,7 @@ decaf.extend(exports, {
     /**
      * Put current thread (or program) to sleep for a number of microseconds.
      *
-     * @param {int} usecs number of microseconds to sleep
+     * @param {Number} usecs number of microseconds to sleep
      */
     usleep: function (usecs) {
         Thread.sleep(usecs);
@@ -101,7 +111,7 @@ decaf.extend(exports, {
      * Exit the application.  Note that atExit() methods will be called before
      * the application truly exits.
      *
-     * @param {int} code process exit code
+     * @param {Number} code process exit code
      */
     exit: function (code) {
         System.exit(code || 0);
@@ -110,7 +120,7 @@ decaf.extend(exports, {
     /**
      * Returns the amount of free memory in the Java Virtual Machine. Calling the gc method may result in increasing the value returned by freeMemory.
      *
-     * @return {int} an approximation to the total amount of memory currently available for future allocated objects, measured in bytes.
+     * @return {Number} an approximation to the total amount of memory currently available for future allocated objects, measured in bytes.
      */
     getFreeMemory: function () {
         return Runtime.getRuntime().freeMemory();
@@ -119,7 +129,7 @@ decaf.extend(exports, {
     /**
      * Returns the maximum amount of memory that the Java virtual machine will attempt to use. If there is no inherent limit then the value Long.MAX_VALUE will be returned.
      *
-     * @return {int} the maximum amount of memory that the virtual machine will attempt to use, measured in bytes
+     * @return {Number} the maximum amount of memory that the virtual machine will attempt to use, measured in bytes
      */
     getMaxMemory: function () {
         return Runtime.getRuntime().maxMemory();
@@ -130,7 +140,7 @@ decaf.extend(exports, {
      *
      * Note that the amount of memory required to hold an object of any given type may be implementation-dependent.
      *
-     * @return {int} the total amount of memory currently available for current and future objects, measured in bytes.
+     * @return {Number} the total amount of memory currently available for current and future objects, measured in bytes.
      */
     getTotalMemory: function () {
         return Runtime.getRuntime().totalMemory();
@@ -141,7 +151,7 @@ decaf.extend(exports, {
      *
      * This value may change during a particular invocation of the virtual machine. Applications that are sensitive to the number of available processors should therefore occasionally poll this property and adjust their resource usage appropriately.
      *
-     * @return {int} the maximum number of processors available to the virtual machine; never smaller than one
+     * @return {Number} the maximum number of processors available to the virtual machine; never smaller than one
      */
     getAvailableProcessors: function () {
         return Runtime.getRuntime().availableProcessors();

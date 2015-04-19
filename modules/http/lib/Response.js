@@ -1,3 +1,8 @@
+/**
+ * @class http.Response
+ *
+ * Response instances are typically automatically created by http.Child
+ */
 /*global require, exports, toString, decaf, java */
 
 "use strict";
@@ -6,6 +11,7 @@ var mimeTypes = require('mimetypes').mimeTypes,
     GZIP      = require('GZIP').GZIP;
 
 /**
+ * @private
  * Hash containing HTTP status codes and the messages associated with them.
  */
 var responseCodeText = {
@@ -52,13 +58,14 @@ var responseCodeText = {
 };
 
 /**
+ * @class http.Response
+ * @constructor
  * Create an instance of an HTTP Response object.
  *
  * Response instances are typically automatically created by http.Child
  *
  * @param {OutputStream} os OutputStream to send response to
  * @param {Request} req http request object
- * @constructor
  */
 function Response(os, req) {
     this.os = os;
@@ -122,7 +129,7 @@ decaf.extend(Response.prototype, {
     /**
      * Set response status and headers.
      *
-     * @param {int} status HTTP status, e.g. 200 (for OK), 404 (not found), etc.
+     * @param {Number} status HTTP status, e.g. 200 (for OK), 404 (not found), etc.
      * @param {object} headers hash containing headers to be added to the response headers.
      */
     writeHead : function (status, headers) {
@@ -150,7 +157,7 @@ decaf.extend(Response.prototype, {
      * If the only argument is a number, it is assumed to be a status code and a response body
      * string is automatically sent (e.g. OK for 200, Not Found for 404, etc.)
      *
-     * @param {int} status - optional HTTP status code (e.g. 200, 404, etc.)
+     * @param {Number} status - optional HTTP status code (e.g. 200, 404, etc.)
      * @param {string|object|array|number} body - optional thing to be sent as the response
      */
     send : function (status, body) {
@@ -243,7 +250,7 @@ decaf.extend(Response.prototype, {
      *
      * @param {byte[]} bytes array of bytes to send
      * @param {string} mimeType mime-type to send (content-type)
-     * @param {int} lastModified timestamp byte array last modified
+     * @param {Number} lastModified timestamp byte array last modified
      * @param {string|int} modifiedSince if-modified-since request header value
      */
     sendBytes : function (bytes, mimeType, lastModified, modifiedSince) {

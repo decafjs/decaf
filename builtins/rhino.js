@@ -131,7 +131,7 @@
          *
          * - {String} src - the source code of the JavaScript to execute, as a string.
          * - {String} filename - (optional) the name of the file.  Defaults to 'unknown'
-         * - {int} lineNumber - {optional) the starting line number for exceptions purposes.  Defaults to 1.
+         * - {Number} lineNumber - {optional) the starting line number for exceptions purposes.  Defaults to 1.
          * - {Global Object} scope - (optional) the global object to be used during the script's execution.  Defaults to global.
          *
          * ### Returns:

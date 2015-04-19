@@ -1,7 +1,10 @@
 "use strict";
 
 /**
- * @fileoverview WebSocket implementation
+ * @class http.WebSocket
+ * WebSocket implementation
+ *
+ * Each WebSocket instance is observable.
  */
 
 /*global require, java, sync, exports */
@@ -29,6 +32,8 @@ function makeAccept(key) {
 var webSockets = {};
 
 /**
+ * @class http.WebSocket
+ * @constructor
  * Construct a new WebSocket.
  *
  * This constructor is typically not called by applications.  It is instantiated by
@@ -37,9 +42,20 @@ var webSockets = {};
  * The instantiated WebSocket object may well be manipulated (see member methods below)
  * by application code.
  *
- * @param {Request} req http.Request for the current Child Thread
- * @param {Response} res http.Response for the current Child Thread
- * @constructor
+ * @param {http.Request} req http.Request for the current Child Thread
+ * @param {http.Response} res http.Response for the current Child Thread
+ */
+
+/**
+ * @event message
+ * Fired when a message is received
+ *
+ * @param {Object} message the message that was received.
+ */
+
+/**
+ * @event close
+ * Fired when a WebSocket has been closed.
  */
 function WebSocket(req, res) {
     var me = this;

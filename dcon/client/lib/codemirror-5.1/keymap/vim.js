@@ -3195,7 +3195,7 @@
     /**
      * @param {CodeMirror} cm CodeMirror object.
      * @param {Pos} cur The position to start from.
-     * @param {int} repeat Number of words to move past.
+     * @param {Number} repeat Number of words to move past.
      * @param {boolean} forward True to search forward. False to search
      *     backward.
      * @param {boolean} wordEnd True to move to end of word. False to move to

@@ -1,11 +1,11 @@
 /**
- * Created with JetBrains WebStorm.
- * User: mschwartz
- * Date: 8/26/13
- * Time: 5:56 PM
+ * @class support
  */
 
 /**
+ * @method uuid
+ * @static
+ *
  * Generate something like a UUID
  *
  * @returns {string} 38 character UUID-like string

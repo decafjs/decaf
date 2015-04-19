@@ -8,10 +8,9 @@
  * # Bulitin global decaf singleton
  *
  * This singleton contains a number of general purpose static methods.  The decaf instance (and methods) are available in any JavaScript context within a DecafJS program.
- */
-/**
- * @module global
+ *
  * @class decaf
+ * @singleton
  */
 /** @private */
 var decaf = {
@@ -127,7 +126,7 @@ var decaf = {
      * Allocate a new Java Byte Array
      *
      * ### Arguments:
-     * - {int} len - size of the array to be created
+     * - {Number} len - size of the array to be created
      *
      * ### Returns:
      * - {Java Byte Array} - the allocated Java ByteArray
@@ -326,8 +325,6 @@ var decaf = {
         return typeof value !== 'undefined';
     },
     /**
-     * ## decaf.observable
-     *
      * This is an observable mixin.  It provides a mechanism to add and remove multiple event listeners to, and to fire events on, any object that implements the mixin.
      *
      * Event names are any arbitrary string.  Classes that include this mixin may define the event names they supports.
@@ -355,6 +352,7 @@ var decaf = {
      * ```
      *
      * For purposes of the rest of the observable mixin documentation, the term "observable" implies an instance of an object that has applied the mixin.
+     * @inheritable
      */
     observable       : {
         /**

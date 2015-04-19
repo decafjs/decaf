@@ -1,13 +1,15 @@
 "use strict";
 
 /**
- * Construct a Request instance
+ * @class http.Request
  *
  * Request instances are typically automatically created by http.Child
  *
  * @constructor
+ * Construct a Request instance
+ *
  * @param {InputStream} is InputStream
- * @param {int} maxUpload maximum bytes allowed for file upload
+ * @param {Number} maxUpload maximum bytes allowed for file upload
  */
 function Request(is, maxUpload) {
     this.is = is;

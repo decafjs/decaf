@@ -30,7 +30,7 @@
          *
          * ### Arguments:
          *
-         * - {int} secs - number of seconds to sleep.
+         * - {Number} secs - number of seconds to sleep.
          *
          * @param secs
          */
@@ -43,7 +43,7 @@
          * Put current thread to sleep (block) for specified number of milliseconds
          *
          * ### Arguments:
-         * - {int} msecs - number of milliseconds to sleep
+         * - {Number} msecs - number of milliseconds to sleep
          *
          * @param msecs
          */
@@ -57,7 +57,7 @@
          *
          * ### Arguments:
          *
-         * - {int} code - the exit code for the program
+         * - {Number} code - the exit code for the program
          *
          * @param code
          */
@@ -71,9 +71,9 @@
          *
          * ### Returns:
          *
-         * - {int} bytes - an approximation to the total amount of memory currently available for future allocated objects, in bytes.
+         * - {Number} bytes - an approximation to the total amount of memory currently available for future allocated objects, in bytes.
          *
-         * @returns {int} bytes - an approximation to the total amount of memory currently available for future allocated objects, in bytes.
+         * @returns {Number} bytes - an approximation to the total amount of memory currently available for future allocated objects, in bytes.
          */
         getFreeMemory  : function () {
             return Runtime.getRuntime().freeMemory();
@@ -85,9 +85,9 @@
          *
          * ### Returns:
          *
-         * - {int} bytes - the maximum amount of memory that the virtual machine will attempt to use, measured in bytes
+         * - {Number} bytes - the maximum amount of memory that the virtual machine will attempt to use, measured in bytes
          *
-         * @returns {int} bytes - the maximum amount of memory that the virtual machine will attempt to use, measured in bytes
+         * @returns {Number} bytes - the maximum amount of memory that the virtual machine will attempt to use, measured in bytes
          */
         getMaxMemory   : function () {
             return Runtime.getRuntime().maxMemory();
@@ -101,9 +101,9 @@
          *
          * ### Returns:
          *
-         * - {int} bytes - the total amount of memory currently available for current and future objects, measured in bytes.
+         * - {Number} bytes - the total amount of memory currently available for current and future objects, measured in bytes.
          *
-         * @returns {int} bytes - the total amount of memory currently available for current and future objects, measured in bytes.
+         * @returns {Number} bytes - the total amount of memory currently available for current and future objects, measured in bytes.
          */
         getTotalMemory : function () {
             return Runtime.getRuntime().totalMemory();

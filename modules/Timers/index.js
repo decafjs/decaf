@@ -5,4 +5,5 @@
  * Time: 4:46 PM
  */
 
+/** @private */
 module.exports = require('lib/timers');

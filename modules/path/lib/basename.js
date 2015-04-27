@@ -6,6 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * @method basename
+ * @member path
+ * @param p
+ * @param ext
+ * @returns {*}
+ */
 module.exports = function(p, ext) {
     if (!p) {
         return p;

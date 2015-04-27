@@ -61,7 +61,6 @@ var removeThread = sync(function(threadId) {
  * // 1
  * // 2
  * ```
- * @constructor
  * @param {Function} fn - function to run as thread
  * @param [Arguments] Zero or more arguments to be passed to fn
  */
@@ -164,7 +163,7 @@ decaf.extend(Thread.prototype, {
     /**
      * Fire an event on the thread.
      *
-     * @metod fire
+     * @method fire
      * @param event
      */
     fire        : function (event) {

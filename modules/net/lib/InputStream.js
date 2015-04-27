@@ -1,13 +1,21 @@
-/** @module InputStream */
+/**
+ * @class net.InputStream
+ * Buffered input from sockets.
+ *
+ * InputSStreams are used by the http module to communicate with the client/browser.
+ */
 
 /*global java, decaf */
 
 "use strict";
 
 /**
- *
- * @param socket
+ * @method InputStream
  * @constructor
+ * Construct a buffered input stream from a raw socket.
+ *
+ * @param {Socket} socket java.io.Socket to use as input stream.
+ *
  */
 function InputStream(socket) {
     this.socket = socket;
@@ -21,43 +29,42 @@ function InputStream(socket) {
 
 decaf.extend(InputStream.prototype, {
     /**
-     *
-     * @returns {string}
+     * Get remote address of socket connection
+     * @returns {String} IP address of other end of the socket connection.
      */
-    remoteAddress: function () {
+    remoteAddress : function () {
         return this.socket.getRemoteSocketAddress();
     },
-
     /**
-     *
+     * Close Stream and free any resources in use.
      */
-    destroy: function () {
+    destroy       : function () {
         this.buffer.close();
         this.is.close();
     },
-
     /**
-     *
-     * @returns {*}
+     * Read a byte from the input stream.
+     * @returns {Number} unsigned byte read from the input stream.
      */
-    readByte: function () {
+    readByte      : function () {
         return this.is.readUnsignedByte();
     },
-
     /**
+     * Read bytes from the input stream.
      *
-     * @param length
-     * @returns {*}
+     * @param {Number} length number of bytes to read
+     * @returns {Java Byte Array} bytes read in.
+     * @throws {String} EOF if there are no more data to read from the stream.
      */
-    read: function (length) {
+    read          : function (length) {
         if (this.eof) {
             throw 'EOF';
         }
         try {
             if (length) {
-                var ba = new java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length),
+                var ba        = new java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, length),
                     remaining = length,
-                    offset = 0,
+                    offset    = 0,
                     actual;
 
                 while (remaining > 0) {
@@ -79,12 +86,13 @@ decaf.extend(InputStream.prototype, {
             throw 'EOF';
         }
     },
-
     /**
+     * Read in a line from the input stream.
      *
-     * @returns {*}
+     * @returns {String} the line read in
+     * @throws {String} EOF if there are no more data to read from the stream.
      */
-    readLine: function () {
+    readLine      : function () {
         var s;
         try {
             s = this.is.readLine();

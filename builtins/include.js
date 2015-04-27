@@ -6,6 +6,9 @@
  */
 
 /**
+ * @class include
+ * @singleton
+ *
  * Global include().
  *
  * A global variable (function) include() is present in all decafjs contexts.
@@ -21,17 +24,16 @@
  * For example:
  *
  * ```javascript
- * require.extensions['.coffee'] = function(filename) {
+ * include.extensions['.coffee'] = function(filename) {
  *   return coffee.compile(new File(filename).readAll());
  * };
  *
- * var myCoffeeScriptModule = require('mymodule.coffee');
+ * include('mymodule.coffee');
  * // OR
- * var myCoffeeScriptModule = require('mymodule'); // knows to try .coffee extension
+ * include('mymodule'); // knows to try .coffee extension
  * ```
  */
 
-/** @private */
 /*global builtin, include: true */
 (function() {
     "use strict";
@@ -95,8 +97,9 @@
     }
 
     /**
-     * @global
-     * @param [...] files files to include
+     * @static
+     *
+     * @param {String...} files files to include
      */
     global.include = function() {
         var argLen = arguments.length;
@@ -105,7 +108,9 @@
         }
     };
     /**
-     * @memberOf global.include
+     * @property
+     * @member include
+     * @static
      * @type {Array}
      */
     include.paths = [
@@ -123,8 +128,8 @@
         '/usr/local/decaf/examples'
     ];
     /**
-     * @public
-     * @memberOf global.include
+     * @property
+     * @static
      * @type {{}}
      */
     include.extensions = {};

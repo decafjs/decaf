@@ -5,4 +5,6 @@
  * Time: 4:16 PM
  */
 
+/*global exports */
+/** @private */
 exports.mimeTypes = require('lib/mimetypes').mimeTypes;

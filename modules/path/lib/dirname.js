@@ -8,6 +8,13 @@
 "use strict";
 /*global module */
 
+/**
+ * @method dirname
+ * @member path
+ *
+ * @param p
+ * @returns {*}
+ */
 module.exports = function(p) {
     var parts = p.split('/');
     parts.pop();

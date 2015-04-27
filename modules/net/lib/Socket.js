@@ -1,4 +1,7 @@
-/** @module Socket */
+/**
+ * @class net.Socket
+ * Server socket impelmentation.
+ */
 
 "use strict";
 
@@ -7,7 +10,7 @@ var ServerSocket = java.net.ServerSocket,
     InetAddress = java.net.InetAddress;
 
 /**
- *
+ * @method Socket
  * @param socket
  * @param remote_addr
  * @constructor

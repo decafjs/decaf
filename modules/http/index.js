@@ -1,9 +1,3 @@
-/**
- * @module http
- * @main http
- */
-
-
 /*global require */
 
 (function() {

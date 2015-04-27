@@ -1,10 +1,16 @@
-/**
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 8/26/13
  * Time: 5:49 PM
  */
 
+/**
+ * @member support
+ * @static
+ * @param string
+ * @returns {string}
+ */
 function md5(string) {
     string = ''+string;
 

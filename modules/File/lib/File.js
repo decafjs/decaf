@@ -623,7 +623,7 @@ decaf.extend(File.prototype, {
     /**
      * Recursively list a directory.
      *
-     * @ethod listRecursive
+     * @method listRecursive
      * @param {regex} pattern - regex of names to match
      * @return {Array} array of filenames, including path (list method does not include path)
      */

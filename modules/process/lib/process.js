@@ -1,4 +1,4 @@
-/**
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 6/8/13

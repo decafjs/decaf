@@ -1,9 +1,7 @@
 /**
- * @module builtin
- * @submodule shell
- */
-
-/**
+ * @class global
+ * @singleton
+ *
  * # Application bootstrap
  *
  * Any .js files specified on the command line are loaded:
@@ -15,7 +13,7 @@
  *
  */
 
-/** @private */
+/** @ignore */
 /*global global, Packages, include, require, builtin */
 (function () {
     "use strict";

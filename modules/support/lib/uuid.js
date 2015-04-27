@@ -4,6 +4,7 @@
 
 /**
  * @method uuid
+ * @member support
  * @static
  *
  * Generate something like a UUID

@@ -1,0 +1,13 @@
+[
+  {
+    "title": "DecafJS guides",
+    "items": [
+      {
+        "name": "require",
+        "url" : "guides/require",
+        "title" : "DecafJS implementation of CommonJS require()",
+        "description" : "Detailed explanation of all the features of require"
+      }
+    ]
+  }
+]

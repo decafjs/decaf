@@ -1,15 +1,11 @@
-/**
+/*!
  * Created by alexandrulazar on 3/16/15.
  */
 /*global java, module */
 
 /**
- * @class support
- * @singleton
- */
-/**
  * @method BCrypt
- * @static
+ * @member support
  *
  * BCrypt encrtoption methods
  *

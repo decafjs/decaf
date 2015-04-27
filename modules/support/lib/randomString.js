@@ -1,4 +1,4 @@
-/**
+/*!
  * Created with WebStorm.
  * User: mschwartz
  * Date: 10/11/13
@@ -7,11 +7,14 @@
 
 /**
  * creates a random string (numbers and chars)
- * @param len length of key
- * @param mode determines which letters to use. null or 0 = all letters;
+ * @member support
+ * @static
+ *
+ * @param {Number} len length of key
+ * @param {Number} mode determines which letters to use. null or 0 = all letters;
  *      1 = skip 0, 1, l and o which can easily be mixed with numbers;
  *      2 = use numbers only
- * @returns random string
+ * @returns {String} random string
  */
 function randomString(len, mode) {
     if (mode == 2) {

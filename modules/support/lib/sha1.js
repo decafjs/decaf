@@ -1,5 +1,11 @@
 var utf8_encode = require('utf8_encode');
 
+/**
+ * @member support
+ * @static
+ * @param str
+ * @returns {string}
+ */
 function sha1 (str) {
     // http://kevin.vanzonneveld.net
     // +   original by: Webtoolkit.info (http://www.webtoolkit.info/)

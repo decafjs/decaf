@@ -1,4 +1,4 @@
-/**
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 6/8/13
@@ -8,12 +8,6 @@
 /*global require, exports, decaf */
 "use strict";
 
-/**
- * Threads module
- *
- * @module Threads
- * @main Threads
- */
 decaf.extend(exports, {
     Thread    : require('lib/Thread').Thread,
     Semaphore : require('lib/Semaphore').Semaphore,

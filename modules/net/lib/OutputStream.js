@@ -1,10 +1,8 @@
-/** @module OutputStream */
-
 /*global java, exports, decaf */
 "use strict";
 
 /**
- *
+ * @class net.OutputStream
  * @param socket
  * @constructor
  */

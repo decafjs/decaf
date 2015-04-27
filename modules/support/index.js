@@ -1,4 +1,4 @@
-/**
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 8/26/13
@@ -13,6 +13,7 @@
  *
  */
 /*global require, module */
+/** @private */
 module.exports = {
     uuid          : require('lib/uuid'),
     md5           : require('lib/md5'),

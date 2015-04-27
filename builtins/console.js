@@ -5,27 +5,19 @@
  *
  * The console object is globally available in any JavaScript code you write for DecafJS.
  * @class console
- * @static
+ * @singleton
  */
-/** @private */
+
 (function () {
-    var BufferedReader = java.io.BufferedReader,
+    var BufferedReader    = java.io.BufferedReader,
         InputStreamReader = java.io.InputStreamReader,
-        stdin = new BufferedReader(new InputStreamReader(java.lang.System.in));
+        stdin             = new BufferedReader(new InputStreamReader(java.lang.System.in));
 
     global.console = {
         /**
-         * ## console.readLine() : String
-         *
          * Read a line from the console/terminal (stdin)
          *
-         * ### Arguments:
-         *
-         *   - None
-         *
-         * ###Returns:
-         *
-         *   - {String} the line read from the terminal
+         * @return {String} the line read from the terminal
          */
         readLine  : function () {
             var s = stdin.readLine();
@@ -35,16 +27,12 @@
             return null;
         },
         /**
-         * ## console.log()
-         *
          * Output one or more strings to the console.
          *
-         * ### Arguments:
-         * - {String} ... - one or more strings to be printed on the console.
-         *
          * @method log
-         * @param [...] - things to display on the console
+         * @param {String...} things to display on the console
          */
+        /** @ignore */
         log       : function () {
             for (var i = 0, len = arguments.length; i < len; i++) {
                 var arg = arguments[i];
@@ -55,8 +43,6 @@
             }
         },
         /**
-         * ## console.dir(o, depth)
-         *
          * Dump a JavaScript object to stdout.
          *
          * The dump recursively prints members of the object up to the specified depth.
@@ -76,8 +62,6 @@
             java.lang.System.out.println(builtin.print_r(o, n));
         },
         /**
-         * ## console.format(fmt, o)
-         *
          * Interpolate an object into the format string and output to the console.
          *
          * This method is derived from String.prototype.supplant as described by Douglas Crockford here:
@@ -105,15 +89,10 @@
             ));
         },
         /**
-         * ## console.error()
-         *
          * Write strings to stderr
          *
-         * ### Arguments:
-         * - {String} ... - one or more strings to be printed to stderr.
-         *
          * @method error
-         * @param [...] - things to display to stderr
+         * @param {String...} - things to display to stderr
          */
         error     : function () {
             for (var i = 0, len = arguments.length; i < len; i++) {
@@ -125,15 +104,10 @@
             }
         },
         /**
-         * ## console.warn()
-         *
          * Write strings to stderr
          *
-         * ### Arguments:
-         * - {String} ... - one or more strings to be printed to stderr.
-         *
          * @method warn
-         * @param [...] - things to display to stderr
+         * @param {String...} - things to display to stderr
          */
         warn      : function () {
             for (var i = 0, len = arguments.length; i < len; i++) {
@@ -145,22 +119,11 @@
             }
         },
         /**
-         * ## console.exception(e)
-         *
          * Dump a JavaScript or Rhino Exception/Error to stdout.
-         *
-         * ### Arguments:
-         * - {Error} e - the Error to be displayed on the console.
          *
          * @param {Error} e - the exception object to dump.
          */
         exception : function (e) {
-            //try {
-            //    throw new Error('');
-            //}
-            //catch (ee) {
-            //    console.log(ee.stack);
-            //}
             var text = '';
             text += '**** EXCEPTION ****\n';
             if (!NASHORN && e instanceof org.mozilla.javascript.RhinoException) {
@@ -184,6 +147,5 @@
             }
             this.error(text);
         }
-        /**@private */
     };
 }());

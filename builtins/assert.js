@@ -31,8 +31,6 @@
 (function () {
 
     /**
-     * @static
-     *
      * Assert that the bool value is true.
      *
      * If it is true, assert() prints the optional trueMessage string (parameter) and returns true.
@@ -87,7 +85,7 @@
     };
 
     /**
-     * @property
+     * @property exit
      * @member assert
      * The setting of this member determines if the program exits when an assert() fails.
      *
@@ -97,5 +95,4 @@
      */
     assert.exit = true;
 
-    /** @private */
 }());

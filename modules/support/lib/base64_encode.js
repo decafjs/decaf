@@ -1,9 +1,14 @@
-/**
+/*!
  * Created by mschwartz on 2/21/15.
  */
 
 /*global module */
 
+/**
+ * @member support
+ * @static
+ * @param data
+ */
 function base64_encode (data) {
     // http://kevin.vanzonneveld.net
     // +   original by: Tyler Akins (http://rumkin.com)

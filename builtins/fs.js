@@ -1,13 +1,14 @@
 /**
+ * @class builtin.fs
+ * @singleton
+ *
  * # Builtin (private) Filesystem methods.
  *
  * The builtin.fs object.  Low-level file system methods
  *
  * These methods should be considered private as they are used internally by require() and include().
- * @fileoverview
  */
 
-/** @private */
 /*global builtin:true, java */
 (function() {
     "use strict";
@@ -24,64 +25,49 @@
         return file.isAbsolute() ? file : file.getAbsoluteFile();
     }
 
-    /**
-     * @private
-     * @module builtin.fs
-     * @type {{isFile: Function, isDir: Function, realpath: Function, readFile: Function}}
-     */
     builtin.fs = {
         /**
-         * ## builtin.fs.isFile(path) : boolean
-         *
          * Test if the specified path is a file.
          *
-         * @memberOf builtin.fs
          * @param path
-         * @returns {*}
+         * @returns {Boolean} true if specified path is a file.
          */
         isFile: function(path) {
             var file = resolveFile(path);
             return file.isFile();
         },
         /**
-         * ## builtin.fs.isDir(path) : boolean
-         *
          * Test if a path is a directory.
          *
-         * @memberOf builtin.fs
          * @param path
-         * @returns {*}
+         * @returns {Boolean} true if specified path is a directory.
          */
         isDir: function(path) {
             var file = resolveFile(path);
             return file.isDirectory();
         },
         /**
-         * ## builtin.fs.realpath(path) : boolean
-         *
          * Returns the canonical path that the argument path corresponds to.
          * If the file or directory does not exist, false is returned.
          *
          * Example:
          *
-         * ./foo/../bar -> bar
-         *
-         * @memberOf builtin.fs
+         * ```javascript
+         * fs.realPath('./foo/../bar'); // -> bar
+         * ```
          * @param path
-         * @returns {*}
+         * @returns {String} cannonical path or false if file/directory does not exist.
          */
         realpath: function(path) {
             var file = resolveFile(path);
             return file.exists() ? String(file.getCanonicalPath()) : false;
         },
         /**
-         * ## builtin.fs.readFile(path) : String
-         *
          * Read a file into a string.
          *
-         * @memberOf builtin.fs
          * @param path
-         * @returns {*}
+         * @returns {String} contents of file.
+         * @throws {Error} error if file could not be read, doesn't exist, etc.
          */
         readFile: function(path) {
             var file = resolveFile(path),
@@ -96,7 +82,6 @@
             stream.close();
             return String(body.toString());
         }
-        /** @private */
     };
 
 }());

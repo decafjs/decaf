@@ -45,7 +45,7 @@ var decaf = {
         }
     },
     /**
-     * ## decaf.extend(dest, src [, src...]) : dest (chainable)
+     * ## decaf.extend(dest, src ...src) : dest (chainable)
      *
      * Merge one or more Objects to a destination object
      *
@@ -64,7 +64,7 @@ var decaf = {
      *
      * @method extend
      * @param {Object} me - the destination object
-     * @param [...Object] objects - the objects to merge
+     * @param {Object...} objects - the objects to merge
      * @returns {Object} the merged (destination) object.
      */
     extend           : function ( me ) {
@@ -428,8 +428,8 @@ var decaf = {
          * ### Returns:
          * - {Object} the observable (the function becomes chainable)
          *
-         * @param name
-         * @param handler
+         * @param {String} name
+         * @param {Function} handler
          * @returns {decaf}
          */
         un   : function ( name, handler ) {
@@ -449,7 +449,6 @@ var decaf = {
             me.__eventHandlers__[ name ] = newHandlers;
             return me;
         }
-        /** @private */
     }
 
 };

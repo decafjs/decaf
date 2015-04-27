@@ -5,8 +5,12 @@
  * Time: 3:24 PM
  */
 
-/** @module timers */
-
+/**
+ * @class Timers
+ * Broser-like implementations of setTimeout, clearTimeout, setInterval, and clearInterval.
+ *
+ * Note that the callback functions will be called in a different thread!
+ */
 /*global exports */
 "use strict";
 
@@ -14,10 +18,11 @@ var counter = 1;
 var ids = {};
 
 /**
+ * Set a one-shot timer, call the specified function when the timer elapses.
  *
- * @param fn
- * @param delay
- * @returns {number}
+ * @param {Function} fn function to call when timer elapses
+ * @param {Number} delay number of milliseconds to delay
+ * @returns {Number} id of timer
  */
 var setTimeout = function (fn, delay) {
     var timer = new java.util.Timer(false);
@@ -37,8 +42,9 @@ var setTimeout = function (fn, delay) {
 };
 
 /**
+ * Cancel a timeout timer.
  *
- * @param id
+ * @param {Number} id id of timer to cancel.
  */
 var clearTimeout = function (id) {
     var timer = ids[id].timer;
@@ -48,10 +54,11 @@ var clearTimeout = function (id) {
 };
 
 /**
+ * Set an Interval Timer
  *
- * @param fn
- * @param delay
- * @returns {number}
+ * @param {Function} fn function to call each interval.
+ * @param {Number} delay how often to call function, in millseconds.
+ * @returns {number} id id of timer, to be used with clearInterval()
  */
 var setInterval = function (fn, delay) {
     var id = counter++;
@@ -62,11 +69,12 @@ var setInterval = function (fn, delay) {
     };
     timer.schedule(ids[id].task, delay, delay);
     return id;
-}
+};
 
 /**
+ * Cancel an interval timer
  *
- * @param id
+ * @param {Number} id id of timer to cancel.
  */
 var clearInterval = function (id) {
     var timer = ids[id].timer;

@@ -8,7 +8,8 @@
 /*global require, builtin */
 
 /**
- * ## builtin.applyExtensions(scope)
+ * @method applyExtensions
+ * @member builtin
  *
  * Apply assorted extensions to JavaScript primitives in the specified scope.
  *
@@ -19,13 +20,18 @@
  * ### Arguments:
  * - {Object} scope - the global scope to which extensions are to be added.
  *
- * @memberOf builtin
  * @param scope
  */
 builtin.applyExtensions = function ( scope ) {
 
     /**
-     * ## String.prototype.endsWith(s) : boolean
+     * @class String.prototype
+     *
+     * Custom additions to String prototype
+     */
+    /**
+     * @method endsWith
+     * @member String.prototype
      *
      * Test this string to see if it ends with another string.
      *
@@ -50,7 +56,8 @@ builtin.applyExtensions = function ( scope ) {
     }
 
     /**
-     * String.prototype.trimLeft()
+     * @method trimLeft
+     * @member String.prototype
      *
      * Strip all leading spaces from this string.
      *
@@ -61,7 +68,7 @@ builtin.applyExtensions = function ( scope ) {
     };
 
     /**
-     * ## String.prototype.trimRight()
+     * @member String.prototype
      *
      * Remove trailing spaces from string.
      *
@@ -71,19 +78,32 @@ builtin.applyExtensions = function ( scope ) {
         return this.replace(/\s+$/, '');
     };
 
+    /**
+     * @class Number.prototype
+     *
+     * Custom additions to Number prototype
+     */
+    /**
+     * @member Number.prototype
+     *
+     * Format number with , seperator
+     *
+     * @returns {string}
+     */
     scope.Number.prototype.commaFormat = function () {
         var parts = x.toString().split(".");
         return parts[ 0 ].replace(/\B(?=(\d{3})+(?=$))/g, ",") + (parts[ 1 ] ? "." + parts[ 1 ] : "");
     };
-    /** @private */
     decaf.extend(scope.Error.prototype, {
         /**
-         * Error.prototype.asText() : Stirng
+         * @class Error.prototype
+         *
+         * Custom additons to the Error prototype
+         */
+        /**
+         * @member Error.prototype
          *
          * Format this Error as a human readable string.
-         *
-         * ### Returns
-         * - {String} the formatted string representing the Error.
          *
          * ### Example:
          *
@@ -95,7 +115,7 @@ builtin.applyExtensions = function ( scope ) {
          *   console.log(e.asText());
          * }
          * ```
-         * @returns {string}
+         * @returns {string} the formatted string representing the Error.
          */
         asText   : function () {
             var e = this;
@@ -139,7 +159,7 @@ builtin.applyExtensions = function ( scope ) {
 
         },
         /**
-         * ## Error.prototype.dumpText()
+         * @member Error.prototype
          *
          * Print human readable information about this Error to stdout.
          *
@@ -157,7 +177,6 @@ builtin.applyExtensions = function ( scope ) {
         dumpText : function () {
             java.lang.System.out.println(this.asText());
         }
-/** @private */
     });
 
 };

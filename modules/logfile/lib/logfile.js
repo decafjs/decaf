@@ -1,12 +1,10 @@
-/**
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 6/21/13
  * Time: 4:37 PM
  * To change this template use File | Settings | File Templates.
  */
-
-/** @module LogFile */
 
 /*global require, sync */
 "use strict";

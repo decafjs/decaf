@@ -1,14 +1,11 @@
-/*global global:true, builtin: true, load, java */
+// # DecafJS Bootstrap Loader
+//
+// This file is the very first thing loaded into rhino.
+//
 
-// ringo does:
-// Object.defineProperty(this, "global", { value: this });
 /**
- *
- * # DecafJS Bootstrap Loader
- *
- * This file is the very first thing loaded into rhino.
- *
- * ## global
+ * @class global
+ * @singleton
  *
  * There is no DOM in the rhino/decafjs environment, so there is no "window" object.  Instead, there is a
  * global variable named "global."
@@ -26,33 +23,32 @@
  * console.log(global.some_var); // -> 20
  * ```
  */
- //* @class global
- //* @singleton
- //*/
 
+/*global global:true, builtin: true, load, java */
+
+/* ringo does:
+ Object.defineProperty(this, "global", { value: this });
+ */
+/** @ignore */
 (function(that, arguments) {
     global = that;
 
     global.NASHORN = typeof importPackage === 'undefined';
 
     /**
-     * ## global.arguments
-     *
      * Command line arguments to program as an Arguments array.
      *
      * @property  arguments
+     * @member global
      */
     global.arguments = arguments;
 
     /**
-     * ## global.__dirname
-     *
      * Current directory where decaf was run from.
      *
      * @property __dirname
      */
     global.__dirname = java.lang.System.getProperty('user.dir');
-/** @private */
 }(this, arguments));
 
 if (NASHORN) {
@@ -64,20 +60,16 @@ else {
 }
 
 /**
- * ## print(s)
- *
  * Shorthand function to print a string via console.log
- *
- * ### Arguments:
- *  - {string} s - the string to print to the console
  *
  * @method print
  * @param {string} s - string to print
  */
-//function print(s) {
-//    console.log(s);
-//}
-
+if (!NASHORN) {
+    function print(s) {
+        console.log(s);
+    }
+}
 /**
  * ## dump(o)
  *
@@ -112,12 +104,12 @@ function dump(o, depth) {
     return builtin.print_r(o, depth || 4, ' ', 0);
 };
 
-/**
+/*
  *  ## global.builtins
  *
  * The bootstrap process loads the remaining files from the builtins directory.  Most of these files augment the global.builtins object.
  */
-
+/** @ignore */
 (function() {
     "use strict";
     var prefix = java.lang.System.getProperty('decaf') + '/';
@@ -147,7 +139,7 @@ function dump(o, depth) {
 
 }());
 
-/**
+/*
  * ## REPL
  *
  * The builtin/shell loads the first .js file from the command line and runs it, then exits.
@@ -156,7 +148,6 @@ function dump(o, depth) {
  *
  */
 //BREAKPOINT
-debugger;
 if (NASHORN && arguments[0] === 'debug') {
     arguments.shift();
     try {
@@ -171,10 +162,3 @@ if (NASHORN && arguments[0] === 'debug') {
 else {
     include('builtins/shell.js');
 }
-
-//load('builtins/shell.js');
-//console.log('breakpoint')
-//function breakpoint() {
-//    console.log('breakpoint')
-//}
-

@@ -1,4 +1,4 @@
-/**
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 7/17/13
@@ -6,5 +6,5 @@
  */
 
 /*global exports */
-/** @private */
+/** @ignore */
 exports.mimeTypes = require('lib/mimetypes').mimeTypes;

@@ -67,15 +67,9 @@ function test_main(path) {
     });
 
     if (global.arguments.length > 1) {
-        console.dir(global.arguments);
         for (var i = 1; i < global.arguments.length; i++) {
-            var name = arguments[i];
-            console.log('running test ' + name);
+            var name = global.arguments[i];
             decaf.each(suites, function (suite) {
-                console.dir({
-                    description: suite.description,
-                    name: name
-                })
                 if (suite.description === name) {
                     runSuite(suite);
                 }

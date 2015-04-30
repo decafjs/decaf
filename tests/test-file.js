@@ -4,11 +4,13 @@
 
 /* global describe, it */
 
-describe('File Module', function() {
+var {suite, test, assert} = require('unit-test');
+
+suite('File Module', function() {
     var File = require('File'),
         tmpdir = File.tmpDir;
 
-    it('Require("File")', function() {
+    test('Require("File")', function() {
         assert(File, 'require of File failed');
         assert(typeof File === 'function', 'Expected File to be a constructor');
         assert(typeof File.pathSeparator === 'string', 'static File.pathSeparator is not a string');
@@ -17,7 +19,7 @@ describe('File Module', function() {
         assert(File.separatorChar === '/' || File.separatorChar === '\\', 'static File.separatorChar expected to be "/" or "\\" ' + File.separatorChar);
     });
 
-    it('createTempFile', function() {
+    test('createTempFile', function() {
         var f,
             name;
 

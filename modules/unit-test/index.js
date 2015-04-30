@@ -59,23 +59,24 @@ function test(description, fn) {
  */
 function test_main(path) {
     var File = require('File'),
-        dir = new File(path);
+        dir  = new File(path);
 
-    decaf.each(dir.list(/\.js$/), function(filename) {
+    decaf.each(dir.list(/\.js$/), function (filename) {
         include((path + '/' + filename).replace(/\/\//g, '/'));
     });
 
-    if (global.arguments.length) {
-        decaf.each(arguments, function(name) {
-            decaf.each(suites, function(suite) {
+    if (global.arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            var name = arguments[i];
+            decaf.each(suites, function (suite) {
                 if (suite.description === name) {
                     runSuite(suite);
                 }
             })
-        })
+        }
     }
     else {
-        decaf.each(suites, function(suite) {
+        decaf.each(suites, function (suite) {
             runSuite(suite);
         });
     }

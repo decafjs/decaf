@@ -67,8 +67,7 @@ function test_main(path) {
         dir  = new File(path);
 
     decaf.each(dir.list(/\.js$/), function (filename) {
-        var fn = require((path + '/' + filename).replace(/\/\//g)); // new Function(new File((path + '/' + filename).replace(/\/\//g, '/')).readAll());
-        fn();
+        require((path + '/' + filename).replace(/\/\//g)); // new Function(new File((path + '/' + filename).replace(/\/\//g, '/')).readAll());
     });
 
     if (global.arguments.length > 1) {

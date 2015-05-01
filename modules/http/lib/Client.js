@@ -129,7 +129,7 @@ decaf.extend(Client.prototype, {
         catch (e) {
             me.status = 200;
         }
-        me.responseMessage = conn.getResponseMessage();
+        me.responseMessage = String(conn.getResponseMessage());
         delete me.conn;
         return me;
     },

@@ -49,7 +49,7 @@ function runSuite(suite) {
  * @returns {Boolean} true if test succeeded
  */
 function test(description, fn) {
-    if (selectedTests.length && ~selectedTests.indexOf(description)) {
+    if (selectedTests.length && selectedTests.indexOf(description) === -1) {
         return true;
     }
     console.log('- Test #' + testNumber + ': ' + description);

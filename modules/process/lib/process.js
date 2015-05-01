@@ -66,6 +66,7 @@ else {
 }
 
 env.OS = properties['os.name'].toUpperCase();
+env.HOSTNAME = String(java.net.InetAddress.getLocalHost().getHostName());
 
 decaf.extend(exports, {
     /**

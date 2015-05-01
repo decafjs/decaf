@@ -17,7 +17,7 @@ var testNumber = 0;
  */
 var suites = [];
 
-var selectedTest = undefined;
+var selectedTests = [];
 
 /**
  * Declare a test suite
@@ -32,8 +32,7 @@ function suite(description, fn) {
     });
 }
 
-function runSuite(suite, test) {
-    selectedTest = test;
+function runSuite(suite) {
     testNumber = 1;
     console.log('--------------------');
     console.log('Unit Test: ' + suite.description);
@@ -50,7 +49,7 @@ function runSuite(suite, test) {
  * @returns {Boolean} true if test succeeded
  */
 function test(description, fn) {
-    if (selectedTest && description !== selectedTest) {
+    if (selectedTests.length && ~selectedTests.indexOf(description)) {
         return true;
     }
     console.log('- Test #' + testNumber + ': ' + description);
@@ -74,16 +73,17 @@ function test_main(path) {
 
     if (global.arguments.length > 1) {
         for (var i = 1; i < global.arguments.length; i++) {
-            var name = global.arguments[i],
-                testToRun = undefined;
+            var name = global.arguments[i];
             if (~name.indexOf('.')) {
-                name = name.split('.');
-                testToRun = name[1];
-                name = name[0];
+                selectedTests = name.split('.');
+                name = selectedTests.shift();
+            }
+            else {
+                selectedTests = [];
             }
             decaf.each(suites, function (suite) {
                 if (suite.description === name) {
-                    runSuite(suite, testToRun);
+                    runSuite(suite);
                 }
             })
         }

@@ -4,7 +4,6 @@
  * Buffered sockets for network programming.
  *
  * @class net
- * @singleton
  */
 /*global exports, require, decaf */
 decaf.extend(exports, {

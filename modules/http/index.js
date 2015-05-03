@@ -1,3 +1,8 @@
+/**
+ * @class http
+ *
+ * Http client and server module
+ */
 /*global require */
 
 (function() {

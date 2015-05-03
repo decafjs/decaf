@@ -6,6 +6,54 @@
  * @singleton
  *
  * Unit test framework
+ *
+ * ## example
+ *
+ * ### file: tests/File.js
+ * ```javascript
+ * // general initialization
+ * var File = require('File'),
+ *     tmpdir = File.tmpDir;
+ *
+ * // one or more test suites
+ * suite('File', function() {
+ *    // one or more tests
+ *    test('require', function() {
+ *        assert(File, 'require of File failed');
+ *        assert(typeof File === 'function', 'Expected File to be a constructor');
+ *        assert(typeof File.pathSeparator === 'string', 'static File.pathSeparator is not a string');
+ *        assert(File.pathSeparator === ':' || File.pathSeparator === ';', 'static File.pathSeparator expected to be ":" or ":"');
+ *        assert(typeof File.separatorChar === 'string', 'static File.separatorChar is not a string');
+ *        assert(File.separatorChar === '/' || File.separatorChar === '\\', 'static File.separatorChar expected to be "/" or "\\" ' + File.separatorChar);
+ *    });
+ * });
+ *```
+ *
+ * ### file: test.js
+ *
+ * ```javascript
+ * var {suite, test, assert, test_main} = require('Tests');
+ * test_main('tests');    // loads al files in tests/ directory and runs the ones specified on the command line or runs them all
+ * ```
+ *
+ * ### file: test.sh
+ *
+ * ```sh
+ * #!/bin/sh
+ *
+ * ./bower_components/decaf/bin/decaf test.js $*
+ *```
+ *
+ * From the command line, you can run:
+ *
+ * ```sh
+ * $ ./test.sh                  # runs all tests
+ * $ ./test.sh File             # runs only File suite
+ * $ ./test.sh File.require     # runs only the require test within File suite
+ * ```
+ *
+ * Multiple Suite[.test] may be provided on the command line.
+ *
  */
 
 /**
@@ -71,10 +119,15 @@ function test(description, fn) {
  */
 function test_main(path) {
     var File = require('File'),
+        dir;
+
+    decaf.each(arguments, function(path) {
         dir  = new File(path);
 
-    decaf.each(dir.list(/\.js$/), function (filename) {
-        require((path + '/' + filename).replace(/\/\//g)); // new Function(new File((path + '/' + filename).replace(/\/\//g, '/')).readAll());
+        decaf.each(dir.list(/\.js$/), function (filename) {
+            require((path + '/' + filename).replace(/\/\//g)); // new Function(new File((path + '/' + filename).replace(/\/\//g, '/')).readAll());
+        });
+
     });
 
     if (global.arguments.length > 1) {

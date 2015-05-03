@@ -6,5 +6,7 @@
  */
 
 /*global module */
-/** @private */
+/**
+ * @class process
+ */
 module.exports = require('lib/process');

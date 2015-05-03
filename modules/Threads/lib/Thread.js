@@ -33,13 +33,6 @@ var removeThread = sync(function(threadId) {
 
 /**
  * @class Threads.Thread
- * Threads implementation for DecafJS JavaScript programs.
- *
- * This class provides a JavaScript friendly wrapper around native JVM Threads.
- */
-
-/**
- * @class Threads.Thread
  * @constructor
  * Create a new Thread
  *

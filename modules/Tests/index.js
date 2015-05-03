@@ -2,6 +2,9 @@
  * Created by mschwartz on 4/29/15.
  */
 /**
+ * @class Tests
+ * @singleton
+ *
  * Unit test framework
  */
 
@@ -17,6 +20,10 @@ var testNumber = 0;
  */
 var suites = [];
 
+/**
+ * @private
+ * @type {Array}
+ */
 var selectedTests = [];
 
 /**
@@ -99,5 +106,5 @@ decaf.extend(exports, {
     test_main : test_main,
     suite     : suite,
     test      : test,
-    assert    : global.assert
+    assert    : require('lib/assert').assert
 });

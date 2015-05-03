@@ -4,7 +4,7 @@
 
 /* global describe, it */
 
-var {suite, test, assert} = require('unit-test');
+var {suite, test, assert} = require('Tests');
 
 suite('File Module', function() {
     var File = require('File'),

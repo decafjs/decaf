@@ -122,7 +122,6 @@ function dump(o, depth) {
     builtin.include('decaf.js');
     builtin.include('print_r.js');
     builtin.include('console.js');
-    builtin.include('assert.js');
     builtin.include('extensions.js');
     builtin.include('atexit.js');
     builtin.include('process.js');

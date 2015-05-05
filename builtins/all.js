@@ -70,16 +70,14 @@ if (!NASHORN) {
         console.log(s);
     }
 }
+
 /**
- * ## dump(o)
- *
  * Shorthand function to dump an object via console.log
  *
- * ### Arguments:
- *  - {Object} - the JavaScript object to dump
- *
  * @method dump
- * @param {object} o - object to dump
+ * @member global
+ *
+ * @param {Object} o - object to dump
  * @param {Number} depth - how deep to recurse dumping object
  */
 function dump(o, depth) {
@@ -87,22 +85,23 @@ function dump(o, depth) {
 }
 
 /**
- * ## d(o)
- *
  * Short hand function to dump an object to the debugger Evalutate tab.
- *
- * ### Arguments:
- *  - {Object} o - the object to dump
- *
  * @method d
- * @param {object} o - object to dump
+ * @member global
+ *
+ * @param {Object} o - object to dump
  * @param {Number} depth - how deep to recurse dumping object
  */
- d = NASHORN ? function(o, depth) {
-     console.log(builtin.print_r(o, depth || 4, ' ', 0));
- } : function(o, depth) {
-    return builtin.print_r(o, depth || 4, ' ', 0);
-};
+if (NASHORN) {
+    function d(o, depth) {
+        console.log(builtin.print_r(o, depth || 4, ' ', 0));
+    }
+}
+else {
+    function d(o, depth) {
+        return builtin.print_r(o, depth || 4, ' ', 0);
+    }
+}
 
 /*
  *  ## global.builtins

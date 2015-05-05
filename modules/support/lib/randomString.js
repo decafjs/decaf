@@ -8,7 +8,6 @@
 /**
  * creates a random string (numbers and chars)
  * @member support
- * @static
  *
  * @param {Number} len length of key
  * @param {Number} mode determines which letters to use. null or 0 = all letters;

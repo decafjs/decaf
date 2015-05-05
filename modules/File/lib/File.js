@@ -266,7 +266,7 @@ decaf.extend(File.prototype, {
      * Converts this abstract pathname into a pathname string. The resulting string uses the default name-separator character to separate the names in the name sequence.
      *
      * @method getPath
-     * @return {Strring} The string form of this abstract pathname
+     * @return {String} The string form of this abstract pathname
      */
     getPath          : function () {
         return String(this.file.getPath());
@@ -528,7 +528,7 @@ decaf.extend(File.prototype, {
      * Write a string or array of bytes to the file.
      *
      * @method write
-     * @param {String|Array<byte>} the string or Java byte array to write
+     * @param {String|Array.<Number>} what the string or Java byte array to write
      */
     write            : function (what) {
         if (what !== null) {
@@ -539,7 +539,7 @@ decaf.extend(File.prototype, {
      * Write a string or array of bytes, followed by a newline to the file.
      *
      * @method writeln
-     * @param {String|Array<byte>} the string or Java byte array
+     * @param {String|Array.<Number>} what the string or Java byte array
      */
     writeln          : function (what) {
         this.write(what);
@@ -566,7 +566,7 @@ decaf.extend(File.prototype, {
      * Read the file contents as a string.
      *
      * @method readAll
-     * @return {string} Content of the file
+     * @return {String} Content of the file
      */
     readAll          : function () {
         var file = this.file,
@@ -585,10 +585,10 @@ decaf.extend(File.prototype, {
      * Write the file from a string.
      *
      * @method writeFile
-     * @param {string} s - string to write
-     * @param {boolean} append - if true, string is appended to file
-     * @param {string} encoding - optional file encoding (utf8, etc.)
-     * @return {boolean} true if success
+     * @param {String} s - string to write
+     * @param {Boolean} append - if true, string is appended to file
+     * @param {String} encoding - optional file encoding (utf8, etc.)
+     * @return {Boolean} true if success
      */
     writeFile        : function (s, append, encoding) {
         var os = new FileOutputStream(this.file, !!append);
@@ -624,7 +624,7 @@ decaf.extend(File.prototype, {
      * Recursively list a directory.
      *
      * @method listRecursive
-     * @param {regex} pattern - regex of names to match
+     * @param {RegExp} pattern - regex of names to match
      * @return {Array} array of filenames, including path (list method does not include path)
      */
     listRecursive    : function (pattern) {
@@ -697,7 +697,7 @@ decaf.extend(File.prototype, {
      * Read file contents in as a byte array.
      *
      * @method toByteArray
-     * @return {Array<byte>} file contents as a java byte array
+     * @return {Array.<Number>} file contents as a Java byte array
      */
     toByteArray      : function () {
         var body = new ByteArrayOutputStream();
@@ -721,7 +721,7 @@ decaf.extend(File.prototype, {
      * Write file contents from a java byte array.
      *
      * @method fromByteArray
-     * @param {Array<byte>} bytes - bytes to write to the file.
+     * @param {Array.<Number>} bytes - Java Byte Array of bytes to write to the file.
      */
     fromByteArray    : function (bytes) {
         var stream = new FileOutputStream(this.getAbsolutePath());

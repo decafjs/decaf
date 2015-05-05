@@ -84,7 +84,7 @@ decaf.extend(Client.prototype, {
      *
      * The value returned is the client object.  It can be inspected for responseText, responseCode, etc.
      *
-     * @param {object} form the form data
+     * @param {Object} form the form data
      * @chainable
      */
     post : function( form ) {

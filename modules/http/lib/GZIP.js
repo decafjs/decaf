@@ -1,4 +1,4 @@
-/**
+/*!
  * Created with JetBrains WebStorm.
  * User: mschwartz
  * Date: 7/23/13
@@ -17,8 +17,8 @@ var GZIP = {
     /**
      * Compress a Java byte array or String using GZIP compression.
      *
-     * @param {String|byte[]} input the string or byte array to compress.
-     * @returns {byte[]} compressed version of input
+     * @param {String|Array.<Number>} input the string or byte array to compress.
+     * @returns {Array.<Number>} compressed version of input
      */
     compress: function(input) {
         if (typeof input === 'string') {

@@ -9,13 +9,15 @@
  *
  * BCrypt encrtoption methods
  *
- *     @example
- *     var hashed = BCrypt.hashpw("moduscreate", BCrypt.gensalt());
+ * ## Example:
  *
- *     if (BCrypt.checkpw("moduscreate", hashed)){
- *       // it matches
- *     }
+ * ```javascript
+ * var hashed = BCrypt.hashpw("moduscreate", BCrypt.gensalt());
  *
+ * if (BCrypt.checkpw("moduscreate", hashed)){
+ *    // it matches
+ * }
+ * ```
  */
 
 var BCrypt = Packages.org.mindrot.jbcrypt.BCrypt;

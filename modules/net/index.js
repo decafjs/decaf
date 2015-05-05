@@ -5,6 +5,10 @@
  *
  * @class net
  */
+
+/**
+ * @class java.io.Socket
+ */
 /*global exports, require, decaf */
 decaf.extend(exports, {
     Socket      : require('lib/Socket').Socket,

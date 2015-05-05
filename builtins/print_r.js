@@ -54,7 +54,6 @@
     }
 
     /**
-     * @static
      * @method print_r
      *
      * This method recursively examines members of the specified object.  It is possible to have an infinite loop if

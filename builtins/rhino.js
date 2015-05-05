@@ -50,7 +50,7 @@
          *
          * You will want to call rhino.releaseScope() to free the scope when you are done with it.
          *
-         * @returns {Global} scope - the initialized scope.
+         * @returns {Object} scope - the initialized scope.
          */
         createScope : function() {
             var cx = Packages.org.mozilla.javascript.Context.enter(),
@@ -70,7 +70,7 @@
          * You will want to call rhino.releaseScope() to free the scope when you are done with it.
          *
          * @param {Object} o - (optional) object to merge into the allocated scope
-         * @returns {Global} scope - an initialized scope
+         * @returns {Object} scope - an initialized scope
          */
         getScope : function(o) {
             var scope = allocScope();
@@ -89,7 +89,7 @@
          *
          * The Rhino Java code may allocate memory and objects behind the scenes that need to be cleaned up to prevent memory leaks.
          *
-         * @param {Global} scope - the scope to release
+         * @param {Object} scope - the scope to release
          */
         releaseScope: function(scope) {
             freeScope(scope);
@@ -103,9 +103,9 @@
          * @param {String} src - the source code of the JavaScript to execute, as a string.
          * @param {String} filename - (optional) the name of the file.  Defaults to 'unknown'
          * @param {Number} lineNumber - {optional) the starting line number for exceptions purposes.  Defaults to 1.
-         * @param {Global} scope - (optional) the global object to be used during the script's execution.  Defaults to global.
+         * @param {Object} scope - (optional) the global object to be used during the script's execution.  Defaults to global.
          *
-         * @returns {Mixed} whatever the script returns
+         * @returns {Object} whatever the script returns
          */
         runScript   : function(src, filename, lineNumber, scope) {
             filename = filename || 'unknown';

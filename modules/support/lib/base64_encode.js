@@ -6,7 +6,6 @@
 
 /**
  * @member support
- * @static
  * @param data
  */
 function base64_encode (data) {

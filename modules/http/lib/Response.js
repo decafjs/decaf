@@ -64,8 +64,8 @@ var responseCodeText = {
  *
  * Response instances are typically automatically created by http.Child
  *
- * @param {OutputStream} os OutputStream to send response to
- * @param {Request} req http request object
+ * @param {net.OutputStream} os OutputStream to send response to
+ * @param {http.Request} req http request object
  */
 function Response(os, req) {
     this.os = os;
@@ -130,7 +130,7 @@ decaf.extend(Response.prototype, {
      * Set response status and headers.
      *
      * @param {Number} status HTTP status, e.g. 200 (for OK), 404 (not found), etc.
-     * @param {object} headers hash containing headers to be added to the response headers.
+     * @param {Object} headers hash containing headers to be added to the response headers.
      */
     writeHead : function (status, headers) {
         var me = this;
@@ -158,7 +158,7 @@ decaf.extend(Response.prototype, {
      * string is automatically sent (e.g. OK for 200, Not Found for 404, etc.)
      *
      * @param {Number} status - optional HTTP status code (e.g. 200, 404, etc.)
-     * @param {string|object|array|number} body - optional thing to be sent as the response
+     * @param {String|Object} body - optional thing to be sent as the response
      */
     send : function (status, body) {
         if (typeof status === 'number') {
@@ -186,8 +186,8 @@ decaf.extend(Response.prototype, {
     /**
      * Send a file to the client.
      *
-     * @param {string} filename name of file to send
-     * @param {boolean} modifiedSince false to disable 304 if-modified-since processing
+     * @param {String} filename name of file to send
+     * @param {Boolean} modifiedSince false to disable 304 if-modified-since processing
      */
     sendFile : function (filename, modifiedSince) {
         var os = this.os,
@@ -248,10 +248,10 @@ decaf.extend(Response.prototype, {
     /**
      * Send a Java byte[] array to the client.
      *
-     * @param {byte[]} bytes array of bytes to send
-     * @param {string} mimeType mime-type to send (content-type)
+     * @param {Array.<Number>} bytes array of bytes to send
+     * @param {String} mimeType mime-type to send (content-type)
      * @param {Number} lastModified timestamp byte array last modified
-     * @param {string|int} modifiedSince if-modified-since request header value
+     * @param {String|Number} modifiedSince if-modified-since request header value
      */
     sendBytes : function (bytes, mimeType, lastModified, modifiedSince) {
         var os = this.os,

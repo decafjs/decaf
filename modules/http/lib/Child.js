@@ -15,8 +15,8 @@
  * A Request and Response object are created for each request handled.  See http/Request.js
  * and http/Response.js for details.
  *
- * @param {Socket} serverSocket the Socket to accept connections from
- * @param {object} server instance of the http Server that spawned this child
+ * @param {net.Socket} serverSocket the Socket to accept connections from
+ * @param {Object} server instance of the http Server that spawned this child
  * @constructor
  */
 

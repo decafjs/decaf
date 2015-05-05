@@ -8,7 +8,7 @@
  * @constructor
  * Construct a Request instance
  *
- * @param {InputStream} is InputStream
+ * @param {net.InputStream} is InputStream
  * @param {Number} maxUpload maximum bytes allowed for file upload
  */
 function Request(is, maxUpload) {

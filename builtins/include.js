@@ -97,7 +97,7 @@
     }
 
     /**
-     * @static
+     * Include one or more JavaScript files.  These files are loaded from disk and effectivly evaluated as if eval() were called.
      *
      * @param {String...} files files to include
      */
@@ -110,7 +110,6 @@
     /**
      * @property
      * @member include
-     * @static
      * @type {Array}
      */
     include.paths = [
@@ -129,8 +128,7 @@
     ];
     /**
      * @property
-     * @static
-     * @type {{}}
+     * @type {Object} hash map of filename extension to functions to process content of the extension type
      */
     include.extensions = {};
 }());

@@ -1,6 +1,5 @@
 /**
  * @member support
- * @static
  *
  * @param argString
  * @returns {string}

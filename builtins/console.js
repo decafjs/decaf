@@ -54,7 +54,7 @@
          * - {Number} n - optional maximum depth for recursion while dumping the object.  Defaults to 4.
          *
          * @method dir
-         * @param {mixed} o - object to dump
+         * @param {Object} o - object to dump
          * @param {Number} n - depth (default 4)
          */
         dir       : function (o, n) {

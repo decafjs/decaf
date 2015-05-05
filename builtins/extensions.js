@@ -8,19 +8,29 @@
 /*global require, builtin */
 
 /**
- * @method applyExtensions
- * @member builtin
+ * @class builtin.applyExtensions
+ * @singleton
  *
+ * # Built in Native Object prototype extensions.
+ *
+ * Decaf provides assorted extensions to the native Objects.  These are:
+ *
+ * - String.prototype.endsWith
+ * - String.prototype.trimLeft
+ * - String.prototype.trimRight
+ * - Number.prototype.commaFormat
+ * - Error.prototype.asText
+ * - Error.prototype.dumpText
+ */
+
+/**
  * Apply assorted extensions to JavaScript primitives in the specified scope.
  *
  * Typically the scope will be "global" (global.global), but if you create a new JavaScript context, you may want to apply these extensions to that context's global.
  *
  * *Note:  These extensions are applied to the global object in Decaf.*
  *
- * ### Arguments:
- * - {Object} scope - the global scope to which extensions are to be added.
- *
- * @param scope
+ * @param {Object} scope the global scope to which extensions are to be added.
  */
 builtin.applyExtensions = function ( scope ) {
 
@@ -35,11 +45,9 @@ builtin.applyExtensions = function ( scope ) {
      *
      * Test this string to see if it ends with another string.
      *
-     * ### Arguments:
-     * - {String} s - the string to test this string ends with.
+     * @param {String} s the string to test this string ends with.
      *
-     * ### Returns:
-     * - true if this string ends with the argument string.
+     * @return {Boolean} true if this string ends with the argument string.
      */
     if ( !scope.String.prototype.endsWith ) {
         Object.defineProperty(scope.String.prototype, 'endsWith', {
@@ -58,7 +66,7 @@ builtin.applyExtensions = function ( scope ) {
     /**
      * @method trimLeft
      * @member String.prototype
-     *
+     * @chainable
      * Strip all leading spaces from this string.
      *
      * @returns this
@@ -72,7 +80,7 @@ builtin.applyExtensions = function ( scope ) {
      *
      * Remove trailing spaces from string.
      *
-     * @returns {XML|*|string|void}
+     * @returns {String} the string with trailing spaces removed.
      */
     scope.String.prototype.trimRight = function () {
         return this.replace(/\s+$/, '');
@@ -86,20 +94,21 @@ builtin.applyExtensions = function ( scope ) {
     /**
      * @member Number.prototype
      *
-     * Format number with , seperator
+     * Format number with , separator
      *
-     * @returns {string}
+     * @returns {String} number formatted with commas
      */
     scope.Number.prototype.commaFormat = function () {
         var parts = x.toString().split(".");
         return parts[ 0 ].replace(/\B(?=(\d{3})+(?=$))/g, ",") + (parts[ 1 ] ? "." + parts[ 1 ] : "");
     };
+
+    /**
+     * @class Error.prototype
+     *
+     * Custom additions to the Error prototype
+     */
     decaf.extend(scope.Error.prototype, {
-        /**
-         * @class Error.prototype
-         *
-         * Custom additons to the Error prototype
-         */
         /**
          * @member Error.prototype
          *
@@ -163,7 +172,7 @@ builtin.applyExtensions = function ( scope ) {
          *
          * Print human readable information about this Error to stdout.
          *
-         * Example:
+         * ### Example:
          *
          * ```javascript
          * try {

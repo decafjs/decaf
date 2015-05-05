@@ -71,7 +71,7 @@ decaf.extend(Server.prototype, {
  * @static
  *
  * @param {Function} fn function to handle requests
- * @return {Server}
+ * @return {http.Server}
  */
 function createServer(fn) {
     return new Server(fn);

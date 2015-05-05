@@ -2,9 +2,9 @@ var utf8_encode = require('utf8_encode');
 
 /**
  * @member support
- * @static
- * @param str
- * @returns {string}
+ *
+ * @param {String} str
+ * @returns {String}
  */
 function sha1 (str) {
     // http://kevin.vanzonneveld.net

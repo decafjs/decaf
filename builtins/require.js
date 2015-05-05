@@ -215,7 +215,6 @@
      * - The first call to require() of a module returns its exports.
      * - Each successive call to require() of the same module returns the exports without running the code.
      *
-     * @static
      * @param module
      * @returns {*}
      */
@@ -301,7 +300,6 @@
 
     /**
      * See if the specified filename is a file that has been required.
-     * @static
      *
      * @param fn
      * @returns {boolean}

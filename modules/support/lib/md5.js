@@ -7,9 +7,9 @@
 
 /**
  * @member support
- * @static
+ *
  * @param string
- * @returns {string}
+ * @returns {String}
  */
 function md5(string) {
     string = ''+string;

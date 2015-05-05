@@ -11,8 +11,8 @@
  * @constructor
  * Construct a Json instance.
  *
- * @param {Request} req http.Request object
- * @param {Response} res http.Response object
+ * @param {http.Request} req http.Request object
+ * @param {http.Response} res http.Response object
  */
 function Json(req, res, gzip) {
     this.req = req;

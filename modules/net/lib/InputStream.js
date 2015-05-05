@@ -1,3 +1,6 @@
+/*global java, decaf */
+
+"use strict";
 /**
  * @class net.InputStream
  * Buffered input from sockets.
@@ -5,16 +8,12 @@
  * InputSStreams are used by the http module to communicate with the client/browser.
  */
 
-/*global java, decaf */
-
-"use strict";
-
 /**
  * @method InputStream
  * @constructor
  * Construct a buffered input stream from a raw socket.
  *
- * @param {Socket} socket java.io.Socket to use as input stream.
+ * @param {java.io.Socket} socket java.io.Socket to use as input stream.
  *
  */
 function InputStream(socket) {
@@ -53,7 +52,7 @@ decaf.extend(InputStream.prototype, {
      * Read bytes from the input stream.
      *
      * @param {Number} length number of bytes to read
-     * @returns {Java Byte Array} bytes read in.
+     * @returns {Array.<Number>} Java byte array of bytes read in.
      * @throws {String} EOF if there are no more data to read from the stream.
      */
     read          : function (length) {

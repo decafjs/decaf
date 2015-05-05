@@ -12,7 +12,7 @@ decaf.extend(exports, {
      *
      * The values are lowercase.
      *
-     * @type array
+     * @type Array.<String>
      */
     methods : [
         'get',

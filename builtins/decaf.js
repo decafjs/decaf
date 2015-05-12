@@ -89,7 +89,7 @@ var decaf = {
      * Get current time as a Unix timestamp.
      *
      * Unix timestamp is SECONDS since the epoch.
-     * 
+     *
      * @returns {Number}
      */
     timestamp: function() {

@@ -86,8 +86,16 @@ var decaf = {
         return me;
     },
     /**
-     * ## decaf.toJavaByteArray(thing, encoding) : Java ByteArray
+     * Get current time as a Unix timestamp.
      *
+     * Unix timestamp is SECONDS since the epoch.
+     * 
+     * @returns {Number}
+     */
+    timestamp: function() {
+        return parseInt(Date.now()/1000, 10);
+    },
+    /**
      * Convert a JavaScript string or array into a Java ByteArray.
      *
      * ### Arguments:
@@ -121,8 +129,6 @@ var decaf = {
         }
     },
     /**
-     * ## decaf.newJavaByteArray(len) : Java ByteArray
-     *
      * Allocate a new Java Byte Array
      *
      * ### Arguments:

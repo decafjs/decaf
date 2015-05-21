@@ -103,7 +103,7 @@
     java.lang.Runtime.getRuntime().addShutdownHook(new java.lang.Thread(function () {
         print('\nexiting');
         try {
-            d.each(exitFuncs, function (fn) {
+            decaf.each(exitFuncs, function (fn) {
                 try {
                     fn();
                 }

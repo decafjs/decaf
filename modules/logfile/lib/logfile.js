@@ -9,10 +9,10 @@
 /*global require, sync */
 "use strict";
 
-var File = require('File'),
+var File   = require('File'),
     atExit = require('builtin.atExit'),
     Thread = require('Threads').Thread,
-    sleep = require('process').sleep;
+    sleep  = require('process').sleep;
 
 /**
  * Create a new LogFile and thread to manage it.
@@ -86,35 +86,32 @@ function LogFile(filename, flushFrequency, unlink) {
 }
 
 decaf.extend(LogFile.prototype, {
-
     /**
      * Wait for LogFile to go into stopped state
      */
-    wait: function () {
+    wait    : function () {
         sleep(this.flushFrequency + 1);
         while (this.state !== 'stopped') {
             sleep(1);
         }
     },
-
     /**
      * Stop the LogFile (send it the stop signal)
      *
      * @param {boolean} wait wait for LogFile to go into stopped state if true.
      */
-    stop: function (wait) {
+    stop    : function (wait) {
         this.state = 'stop';
         if (wait) {
             this.wait();
         }
     },
-
     /**
      * Destroy the LogFile
      *
      * @param {boolean} wait wait for LogFile to go into stopped state if true.
      */
-    destroy: function (wait) {
+    destroy : function (wait) {
         this.state = 'destroy';
         if (wait) {
             this.wait();
@@ -123,5 +120,5 @@ decaf.extend(LogFile.prototype, {
 });
 
 decaf.extend(exports, {
-    LogFile: LogFile
+    LogFile : LogFile
 });

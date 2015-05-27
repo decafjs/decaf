@@ -41,7 +41,7 @@ function LogFile(filename, flushFrequency, unlink) {
     me.println = sync(function (s) {
         me.messages.push(s + '\n');
         return me;
-    });
+    }, me);
 
     /**
      * Flush buffered log file messages to disk.
@@ -55,7 +55,7 @@ function LogFile(filename, flushFrequency, unlink) {
         //fs.appendFile(me.filename, me.messages.join(''));
         me.messages = [];
         return me;
-    });
+    }, me);
     me.state = 'running';
     me.thread = new Thread(function () {
         while (me.state === 'running') {

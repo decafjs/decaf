@@ -163,6 +163,9 @@ function dump(o, depth) {
  */
 //BREAKPOINT
 debugger;
+
+java.lang.System.out.println('ALL');
+
 if (NASHORN && arguments[0] === 'debug') {
     arguments.shift();
     try {

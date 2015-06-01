@@ -22,7 +22,7 @@ fi
 # these flags for rhino are not well documented
 # -debug makes rhino process exceptions properly (a bug)
 # -version 180 tells rhino to enable ECMASCRIPT 1.8
-RHINOFLAGS="-version 180 -O 9"
+RHINOFLAGS="-version 180 -O 1"
 #RHINOFLAGS="-version 180"
 
 # functions in rhino .jar file to call for shell or debugger

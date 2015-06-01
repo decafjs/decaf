@@ -21,5 +21,5 @@ module.exports = {
     utf8_encode   : require('lib/utf8_encode'),
     randomString  : require('lib/randomString'),
     base64_encode : require('lib/base64_encode'),
-    BCrypt        : require('lib/bcrypt').BCrypt
+    BCrypt        : require('lib/bcrypt')
 };

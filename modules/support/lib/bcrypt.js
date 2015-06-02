@@ -30,9 +30,12 @@ decaf.extend(exports, {
         return String(JBCrypt.hashpw(password, salt));
     },
     gensalt    : function (len) {
+        if (!len) {
+            return String(JBCrypt.gensalt());
+        }
         return String(JBCrypt.gensalt(len));
     },
-    compare    : function (candidate, hashed) {
+    checkpw    : function (candidate, hashed) {
         return !!JBCrypt.checkpw(candidate, hashed);
     }
 });

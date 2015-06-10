@@ -61,15 +61,15 @@ function LogFile(filename, flushFrequency, unlink) {
         return ret;
     });
     if (me.filename === 'console') {
-        me.flush = function () {
-            me.file.writeFile(me.getMessages().join(''), true);
-            //fs.appendFile(me.filename, me.messages.join(''));
+        me.flush = function() {
+            java.lang.System.out.println(me.getMessages.join(''), true);
             return me;
         };
     }
     else {
-        me.flush = function() {
-            java.lang.System.out.println(me.getMessages.join(''), true);
+        me.flush = function () {
+            me.file.writeFile(me.getMessages().join(''), true);
+            //fs.appendFile(me.filename, me.messages.join(''));
             return me;
         };
     }

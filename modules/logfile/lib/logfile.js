@@ -62,7 +62,10 @@ function LogFile(filename, flushFrequency, unlink) {
     });
     if (me.filename === 'console') {
         me.flush = function() {
-            java.lang.System.out.println(me.getMessages().join(''), true);
+            var messages = me.getMessages().join('');
+            if (messages.length) {
+                java.lang.System.out.println(messages, true);
+            }
             return me;
         };
     }

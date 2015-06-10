@@ -64,7 +64,7 @@ function LogFile(filename, flushFrequency, unlink) {
         me.flush = function() {
             var messages = me.getMessages().join('');
             if (messages.length) {
-                java.lang.System.out.println(messages, true);
+                java.lang.System.out.print(messages);
             }
             return me;
         };

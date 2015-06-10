@@ -17,7 +17,7 @@ var File   = require('File'),
 /**
  * Create a new LogFile and thread to manage it.
  *
- * @param {string} filename - name/path of logfile on disk
+ * @param {string} filename - name/path of logfile on disk OR 'console' to log to stdout
  * @param {Number} flushFrequency - how often, in seconds, to flush logfile to disk
  * @param {boolean} unlink - true to remove the file on exit.
  * @constructor
@@ -28,7 +28,12 @@ function LogFile(filename, flushFrequency, unlink) {
     me.filename = filename;
     me.flushFrequency = flushFrequency || 5;
     me.messages = [];
-    me.file = new File(me.filename);
+    if (me.filename !== 'console') {
+        me.file = new File(me.filename);
+    }
+    else {
+        me.file = null;
+    }
 
     /**
      * Print a string, followed by a newline to the log file.
@@ -50,12 +55,24 @@ function LogFile(filename, flushFrequency, unlink) {
      * every flushFrequency seconds and calls this.
      * @chainable
      */
-    me.flush = sync(function () {
-        me.file.writeFile(me.messages.join(''), true);
-        //fs.appendFile(me.filename, me.messages.join(''));
+    me.getMessages = sync(function() {
+        var ret = me.messages;
         me.messages = [];
-        return me;
-    }, me);
+        return ret;
+    });
+    if (me.filename === 'console') {
+        me.flush = function () {
+            me.file.writeFile(me.getMessages().join(''), true);
+            //fs.appendFile(me.filename, me.messages.join(''));
+            return me;
+        };
+    }
+    else {
+        me.flush = function() {
+            java.lang.System.out.println(me.getMessages.join(''), true);
+            return me;
+        };
+    }
     me.state = 'running';
     me.thread = new Thread(function () {
         while (me.state === 'running') {
@@ -64,7 +81,9 @@ function LogFile(filename, flushFrequency, unlink) {
         }
         switch (me.state) {
             case 'destroy':
-                me.file.remove();
+                if (me.file) {
+                    me.file.remove();
+                }
                 //fs.unlink(me.filename);
                 break;
         }

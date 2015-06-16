@@ -447,7 +447,7 @@ var decaf = {
             if ( !me.__eventHandlers__[ name ] ) {
                 me.__eventHandlers__[ name ] = [];
             }
-            decacf.each(me.__eventHandlers__[ name ], function ( existing ) {
+            decaf.each(me.__eventHandlers__[ name ], function ( existing ) {
                 if ( handler !== existing ) {
                     newHandlers.push(existing);
                 }

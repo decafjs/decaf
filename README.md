@@ -112,6 +112,13 @@ One option to get Decaf is to clone the GitHub repository. Something like:
 % cd decaf
 ```
 
+If you do not have an ssh key uploaded to GitHub, you can do a read-only clone:
+
+```sh
+% git clone https://github.com/decafjs/decaf.git
+% cd decaf
+```
+
 From here, you can run decaf, try the examples/ programs, and so on.
 
 ```sh

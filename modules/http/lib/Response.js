@@ -421,6 +421,9 @@ decaf.extend(Response.prototype, {
             if (me.port !== 80) {
                 base += ':' + me.req.port;
             }
+            if (uri.substr(0, 1) !== '/') {
+                uri = '/' + uri;
+            }
             uri = base + uri;
         }
         me.headers['Location'] = uri;

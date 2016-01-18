@@ -4,20 +4,28 @@
  * This class implements browser-like console singleton appropriate for server-side.
  *
  * The console object is globally available in any JavaScript code you write for DecafJS.
- * @class console
- * @singleton
+ *
+ * @fileoverview
  */
-
+/** @private */
 (function () {
-    var BufferedReader    = java.io.BufferedReader,
+    var BufferedReader = java.io.BufferedReader,
         InputStreamReader = java.io.InputStreamReader,
-        stdin             = new BufferedReader(new InputStreamReader(java.lang.System.in));
+        stdin = new BufferedReader(new InputStreamReader(java.lang.System.in));
 
     global.console = {
         /**
+         * ## console.readLine() : String
+         *
          * Read a line from the console/terminal (stdin)
          *
-         * @return {String} the line read from the terminal
+         * ### Arguments:
+         *
+         *   - None
+         *
+         * ###Returns:
+         *
+         *   - {String} the line read from the terminal
          */
         readLine  : function () {
             var s = stdin.readLine();
@@ -27,22 +35,29 @@
             return null;
         },
         /**
+         * ## console.log()
+         *
          * Output one or more strings to the console.
          *
+         * ### Arguments:
+         * - {String} ... - one or more strings to be printed on the console.
+         *
          * @method log
-         * @param {String...} things to display on the console
+         * @param [...] - things to display on the console
          */
-        /** @ignore */
         log       : function () {
             for (var i = 0, len = arguments.length; i < len; i++) {
                 var arg = arguments[i];
                 if (arg === undefined) {
                     arg = 'undefined';
                 }
-                java.lang.System.out.println(arg);
+                java.lang.System.out.print(arg);
             }
+            java.lang.System.out.println('');
         },
         /**
+         * ## console.dir(o, depth)
+         *
          * Dump a JavaScript object to stdout.
          *
          * The dump recursively prints members of the object up to the specified depth.
@@ -51,17 +66,19 @@
          *
          * ### Arguments:
          * - {Mixed} o - the variable to be dumped
-         * - {Number} n - optional maximum depth for recursion while dumping the object.  Defaults to 4.
+         * - {int} n - optional maximum depth for recursion while dumping the object.  Defaults to 4.
          *
          * @method dir
-         * @param {Object} o - object to dump
-         * @param {Number} n - depth (default 4)
+         * @param {mixed} o - object to dump
+         * @param {int} n - depth (default 4)
          */
         dir       : function (o, n) {
             n = n || 8;
             java.lang.System.out.println(builtin.print_r(o, n));
         },
         /**
+         * ## console.format(fmt, o)
+         *
          * Interpolate an object into the format string and output to the console.
          *
          * This method is derived from String.prototype.supplant as described by Douglas Crockford here:
@@ -89,10 +106,15 @@
             ));
         },
         /**
+         * ## console.error()
+         *
          * Write strings to stderr
          *
+         * ### Arguments:
+         * - {String} ... - one or more strings to be printed to stderr.
+         *
          * @method error
-         * @param {String...} - things to display to stderr
+         * @param [...] - things to display to stderr
          */
         error     : function () {
             for (var i = 0, len = arguments.length; i < len; i++) {
@@ -104,10 +126,15 @@
             }
         },
         /**
+         * ## console.warn()
+         *
          * Write strings to stderr
          *
+         * ### Arguments:
+         * - {String} ... - one or more strings to be printed to stderr.
+         *
          * @method warn
-         * @param {String...} - things to display to stderr
+         * @param [...] - things to display to stderr
          */
         warn      : function () {
             for (var i = 0, len = arguments.length; i < len; i++) {
@@ -119,11 +146,22 @@
             }
         },
         /**
+         * ## console.exception(e)
+         *
          * Dump a JavaScript or Rhino Exception/Error to stdout.
+         *
+         * ### Arguments:
+         * - {Error} e - the Error to be displayed on the console.
          *
          * @param {Error} e - the exception object to dump.
          */
         exception : function (e) {
+            try {
+                throw new Error('');
+            }
+            catch (ee) {
+                console.log(ee.stack);
+            }
             var text = '';
             text += '**** EXCEPTION ****\n';
             if (!NASHORN && e instanceof org.mozilla.javascript.RhinoException) {
@@ -147,5 +185,6 @@
             }
             this.error(text);
         }
+        /**@private */
     };
 }());

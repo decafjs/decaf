@@ -17,7 +17,7 @@
         Request: require('./lib/Request'),
         Response: require('./lib/Response'),
         WebSocket: require('./lib/WebSocket').WebSocket,
-		Json: require('./lib/Json').Json,
+        Json: require('./lib/Json').Json,
         GZIP: require('./lib/GZIP').GZIP,
         Client: require('./lib/Client').Client
     });

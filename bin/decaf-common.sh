@@ -47,7 +47,7 @@ if [[ $OSTYPE == "linux-gnu" ]]; then
 fi
 
 # set up class path for java/rhino
-CP="."
+CP=".:$LOCALCP"
 
 if [ ! -z "$MODULES" ]; then
     CP="$CP:$MODULES/*/java/*.jar"

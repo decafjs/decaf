@@ -51,6 +51,9 @@
                 if (arg === undefined) {
                     arg = 'undefined';
                 }
+                if(i > 0) {
+                  java.lang.System.out.print(' ');
+                }
                 java.lang.System.out.print(arg);
             }
             java.lang.System.out.println('');

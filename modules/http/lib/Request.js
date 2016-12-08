@@ -195,6 +195,8 @@ function Request(is, maxUpload) {
             mimeParts = post.split('--' + boundary);
             mimeParts.shift();
             mimeParts.pop();
+            var mimePartNames = {};
+            
             decaf.each(mimeParts, function(part) {
                 part = part.substr(2).slice(0, -2);
                 var line,
@@ -235,7 +237,21 @@ function Request(is, maxUpload) {
                 }
                 mimePart.content = part;
                 mimePart.size = part.length;
-                data[mimePart.name] = mimePart;
+                if( mimePartNames[mimePart.name] === 1 ) {
+                  oldData = data[mimePart.name];
+                  data[mimePart.name] = [];
+                  data[mimePart.name].push(oldData);
+                }
+                if( mimePartNames[mimePart.name] )
+                {
+                  data[mimePart.name].push(mimePart);
+                  mimePartNames[mimePart.name] += 1;
+                }
+                else
+                {
+                  data[mimePart.name] = mimePart;
+                  mimePartNames[mimePart.name] = 1;
+                }
             });
         }
         else if (contentType.indexOf('application/x-www-form-urlencoded') !== -1) {

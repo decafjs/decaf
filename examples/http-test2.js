@@ -6,7 +6,7 @@
 /*global require */
 
 var http = require('http'),
-    fs = require('fs');
+    File = require('File');
 
 function serveForm() {
     var html = '<html><head><title>Form test</title></head><body>';
@@ -23,7 +23,8 @@ http.createServer(function(req, res) {
         res.end(serveForm());
     }
     else if (req.uri === '/testPost') {
-        fs.writeFile('foo', req.data.upload.content);
+        fs = new File('foo');
+        fs.writeFile(req.data.upload.content, false, 'latin1');
         if (req.data.upload && req.data.upload.size > 100) {
             req.data.upload.content = '';
         }

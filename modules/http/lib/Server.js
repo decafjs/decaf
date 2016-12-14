@@ -38,9 +38,10 @@ decaf.extend(Server.prototype, {
      * @param port
      * @param bindAddress
      * @param numChildren
+     * @param maxUploadSize
      * @return {*}
      */
-    listen   : function (port, bindAddress, numChildren) {
+    listen   : function (port, bindAddress, numChildren, maxUploadSize) {
         numChildren = numChildren || 50;
         try {
             var serverSocket = new Socket();
@@ -51,7 +52,7 @@ decaf.extend(Server.prototype, {
             process.exit(1);
         }
         for (var i = 0; i < numChildren; i++) {
-            new Thread(Child, serverSocket, this).start();
+            new Thread(Child, serverSocket, this, maxUploadSize).start();
         }
         return this;
     },

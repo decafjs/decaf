@@ -5,7 +5,7 @@
  * @class net.InputStream
  * Buffered input from sockets.
  *
- * InputSStreams are used by the http module to communicate with the client/browser.
+ * InputStreams are used by the http module to communicate with the client/browser.
  */
 
 /**
@@ -103,7 +103,25 @@ decaf.extend(InputStream.prototype, {
             throw 'EOF';
         }
         return String(s);
+    },
+    /**
+     * Mark the current position of the stream to be able to return to it with a later call to reset()
+     * @param {Number} readahead: the number of bytes that can be read before tha mark is invalidated
+     *
+     * @returns nothing
+     */
+    mark          : function (readAhead) {
+        this.is.mark(readAhead);
+    },    
+    /**
+     * Reset the position of the stream to the last position marked by a call to mark()
+     *
+     * @returns nothing
+     */
+    reset         : function () {
+        this.is.reset();
     }
+  
 });
 
 exports.InputStream = InputStream;

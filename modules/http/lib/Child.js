@@ -35,8 +35,8 @@
         Response = require('Response').Response,
         WebSocket = require('WebSocket').WebSocket;
 
-    function handleRequest(is, os, fn, webSockets, maxUploadSize) {
-        var request = new Request(is, maxUploadSize),
+    function handleRequest(is, os, fn, webSockets, uploadMaxSize, uploadBlocksize, uploadDir) {
+        var request = new Request(is, uploadMaxSize, uploadBlocksize, uploadDir),
             response = new Response(os, request),
             keepAlive = true;
 
@@ -78,11 +78,11 @@
         return keepAlive;
     }
 
-    function Child(serverSocket, server, maxUploadSize) {
+    function Child(serverSocket, server, uploadMaxSize, uploadBlocksize, uploadDir) {
         var me = this;      // current Thread
 
         me.on('exit', function() {
-            new Thread(Child, serverSocket, server, maxUploadSize).start();
+            new Thread(Child, serverSocket, server, uploadMaxSize, uploadBlocksize, uploadDir).start();
         });
 
         var accept = sync(function() {
@@ -103,7 +103,7 @@
             while (keepAlive) {
                 try {
 //                    var start = new Date().getTime(); // java.lang.System.nanoTime();
-                    keepAlive = keepAlive && handleRequest.call(this, is, os, fn, webSockets, maxUploadSize);
+                    keepAlive = keepAlive && handleRequest.call(this, is, os, fn, webSockets, uploadMaxSize, uploadBlocksize, uploadDir);
                     me.fire('endRequest');
 //                    var elapsed = new Date().getTime() - start; // java.lang.System.nanoTime() - start;
 //                    console.log(elapsed);

@@ -1,4 +1,5 @@
 "use strict";
+var File = require('File');
 
 /**
  * @class http.Request
@@ -9,11 +10,19 @@
  * Construct a Request instance
  *
  * @param {net.InputStream} is InputStream
- * @param {Number} maxUpload maximum bytes allowed for file upload
+ * @param {Number} uploadMaxSize maximum bytes allowed for file upload, defaults to 10MB 
+ * @param {Number} uploadBlocksize the blocksize to read at one time from the input stream
+ * @param {String} uploadDir the directory to write uploaded files to
  */
-function Request(is, maxUpload) {
+function Request(is, uploadMaxSize, uploadBlocksize, uploadDir) {
     this.is = is;
-    maxUpload = maxUpload || (10 * 1024 * 1024); // default max upload is 10M
+    uploadMaxSize = uploadMaxSize || (10 * 1024 * 1024); // default max upload is 10M
+    uploadBlocksize = uploadBlocksize || (64 * 1024); // default blocksize is 64K
+    uploadDir = uploadDir || './';
+    if(!uploadDir.endsWith('/')) {
+      uploadDir += '/';
+    }
+       
 
     var line;
 
@@ -178,83 +187,153 @@ function Request(is, maxUpload) {
     var contentLength = parseInt(headers['content-length'] || '0',10);
 
     if (contentLength) {
-        if (contentLength > maxUpload) {
-            throw new Error('413 File upload exceeds ' + maxUpload + ' bytes');
+        if (contentLength > uploadMaxSize) {
+            throw new Error('413 File upload exceeds ' + uploadMaxSize + ' bytes');
         }
 
-        var raw = is.read(contentLength),
-            contentType = (headers['content-type'] || ''),
-            post,
-            mimeParts = [];
+        var raw,
+            rawAdd,
+            contentType = (headers['content-type'] || '');
 
 
         if (contentType.toLowerCase().indexOf('multipart/form-data') !== -1) {
-            // handle multipart mime
-            post = String(new java.lang.String(raw, 'latin1'));
-            var boundary = contentType.replace(/^.*?boundary=/i, '');
-            mimeParts = post.split('--' + boundary);
-            mimeParts.shift();
-            mimeParts.pop();
-            var mimePartNames = {};
+          var boundary = contentType.replace(/^.*?boundary=/i, '');
+          var longBoundary = '--' + boundary;
+          
+          var offset = 0;
+          var blockSize;
+          var inFile = false;
+          var currentFile = 0;
+
+          var mimePart = {};
+          
+          while( offset < contentLength) {
+            blockSize = Math.min(uploadBlocksize, contentLength - offset);
+            // read in 64k blocks and look for the boundary
+            raw = is.read(blockSize);
+
+            var blockOffset = 0;
+
+            if(blockSize === uploadBlocksize) {
+              is.mark(longBoundary.length);
+              rawAdd = is.read(longBoundary.length - 1);
+              is.reset();
+              rawString = String(new java.lang.String(raw, 'latin1')) + String(new java.lang.String(rawAdd, 'latin1'));
+            }
+            else {
+              rawString = String(new java.lang.String(raw, 'latin1'));
+            }
+
             
-            decaf.each(mimeParts, function(part) {
-                part = part.substr(2).slice(0, -2);
-                var line,
-                    len,
-                    mimePart = {};
+            // check, if theres a boundary in the part
+            var boundaryIndex = rawString.indexOf(longBoundary);
+            if(inFile) {
+              if( boundaryIndex == -1) {
+                mimePart.size += blockSize;
+                currentFile.writeFile(rawString.substring(0, blockSize), true, 'latin1');
+              }
+              else {
+                // cr/lf in front of boundary index
+                mimePart.size += boundaryIndex - 2;
+                currentFile.writeFile(rawString.substring(0, boundaryIndex -2), true, 'latin1');
+                inFile = false;
+                data[mimePart.name].push(mimePart);
+                mimePart = {};
 
-                while (true) {
-                    line = part.split('\r\n', 1)[0];
-                    len = line.length;
-                    part = part.substr(len + 2);
-                    if (len === 0) {
-                        break;
-                    }
-                    var mimeparts = line.split(': '),
-                        mimeKey = mimeparts[0],
-                        mimeValue = mimeparts[1];
+              }
+            }
+            while(boundaryIndex != -1) {
 
-                    //var [ mimeKey, mimeValue ] = line.split(': ');
-                    switch (mimeKey.toLowerCase()) {
-                        case 'content-disposition':
-                            decaf.each(mimeValue.split(/;\s*/), function(disposition) {
-                                var parts = disposition.split('='),
-                                    key = parts[0],
-                                    value = parts[1];
-                                //var [ key, value ] = disposition.split('=');
-                                if (value !== undefined) {
-                                    mimePart[key.toLowerCase()] = value.replace(/"/g, '');
-                                }
-                            });
-                            break;
-                        case 'content-type':
-                            mimePart.contentType = mimeValue;
-                            break;
-                        default:
-                            mimePart[mimeKey.toLowerCase()] = mimeValue;
-                            break;
-                    }
+              var rawOffset = boundaryIndex + longBoundary.length + 2;
+              // read first line to check if it is a file or a form field
+              var endLine = rawString.indexOf("\r\n", rawOffset);
+              while(endLine != -1) {
+                var line = rawString.substring(rawOffset, endLine);
+                var len = line.length;
+                if(len === 0) {
+                  break;
                 }
-                mimePart.content = part;
-                mimePart.size = part.length;
-                if( mimePartNames[mimePart.name] === 1 ) {
-                  oldData = data[mimePart.name];
+                  
+                rawOffset = endLine + 2;
+                
+                var lineParts = line.split(": ");
+                
+                var contentKey = lineParts[0];
+                var contentValue = lineParts[1];
+                
+                switch(contentKey.toLowerCase() ) {
+                  case 'content-disposition':
+                    decaf.each(contentValue.split(/;\s*/), function(disposition) {
+                      var parts = disposition.split('='),
+                          key = parts[0],
+                          value = parts[1];
+                      if (value !== undefined) {
+                        mimePart[key.toLowerCase()] = value.replace(/"/g, '');
+                      }
+                    });
+                    break;
+                  case 'content-type':
+                    mimePart.contentType = contentValue;
+                    break;
+                  default:
+                    console.log("FILEUPLOAD: THIS SHOULD NEVER HAPPEN");
+                    mimePart[contentKey.toLowerCase()] = contentValue;
+                }
+                endLine = rawString.indexOf("\r\n", rawOffset);
+              }
+              rawOffset += 2; // consume the empty line
+              
+              boundaryIndex = rawString.indexOf(longBoundary, rawOffset);
+              
+              if(mimePart.filename && mimePart.contentType) {
+                if(!data[mimePart.name]) {
                   data[mimePart.name] = [];
-                  data[mimePart.name].push(oldData);
                 }
-                if( mimePartNames[mimePart.name] )
-                {
+
+                mimePart.size = 0;
+                
+                if(!inFile) {
+                  console.log("Creating file:", uploadDir + mimePart.filename);
+
+                  currentFile = new File(uploadDir + mimePart.filename);
+                  currentFile.createNewFile();
+                  inFile = true;
+                }
+                
+                if(boundaryIndex == -1) {
+                  mimePart.size += rawString.substring(rawOffset, blockSize).length;
+                  currentFile.writeFile(rawString.substring(rawOffset, blockSize), false, 'latin1');
+                }
+                else {
+                  mimePart.size += rawString.substring(rawOffset, boundaryIndex - 2).length;
+                  currentFile.writeFile(rawString.substring(rawOffset, boundaryIndex - 2), false, 'latin1');
+                  inFile = false;
                   data[mimePart.name].push(mimePart);
-                  mimePartNames[mimePart.name] += 1;
+                  mimePart = {};
+
                 }
-                else
-                {
+                
+              }
+              else {
+                inFile = false;
+                if(boundaryIndex != -1) {
+                  mimePart.content = rawString.substring(rawOffset, boundaryIndex - 2);
+                  rawOffset = boundaryIndex;
+                  boundaryIndex = rawString.indexOf(longBoundary, rawOffset);
                   data[mimePart.name] = mimePart;
-                  mimePartNames[mimePart.name] = 1;
+                  mimePart = {};
                 }
-            });
-        }
+
+              }
+              
+            }
+            
+            offset += blockSize;
+          }
+            
+        } 
         else if (contentType.indexOf('application/x-www-form-urlencoded') !== -1) {
+            raw = is.read(contentLength);
             post = String(new java.lang.String(raw, 'utf8'));
             if (post.indexOf('&') !== -1 && post.indexOf('=') !== -1) {
                 decaf.each(post.split('&'), function(part) {
@@ -267,11 +346,13 @@ function Request(is, maxUpload) {
             }
         }
         else if (contentType.indexOf('application/json') !== -1) {
+            raw = is.read(contentLength);
             post = String(new java.lang.String(raw, 'utf8'));
             this.post = JSON.parse(post);
             decaf.extend(data, this.post);
         }
         else {
+            raw = is.read(contentLength);
             post = String(new java.lang.String(raw, 'latin1'));
             data.post = post;
             this.post = post;
